@@ -206,7 +206,7 @@ export default function Recommendations() {
 
             {/* BELL */}
 
-            <button className="w-12 h-12 rounded-2xl bg-white border border-[#e8e6e1] flex items-center justify-center">
+            <button className="w-12 h-12 rounded-2xl bg-white border border-[#e8e6e1] flex items-center justify-center transition-all duration-300 hover:shadow-[0_10px_25px_rgba(0,0,0,0.08)] hover:scale-[1.03] active:scale-[0.97]">
               <Bell className="w-5 h-5 text-[#1d1d1f]" />
             </button>
 
@@ -216,7 +216,7 @@ export default function Recommendations() {
               <img
                 src="https://i.pravatar.cc/100?img=32"
                 alt="profile"
-                className="w-12 h-12 rounded-full object-cover"
+                className="w-12 h-12 rounded-full object-cover transition-all duration-300 hover:shadow-[0_10px_25px_rgba(0,0,0,0.12)]"
               />
 
               <div>
@@ -237,9 +237,9 @@ export default function Recommendations() {
         <div className="grid lg:grid-cols-4 gap-5 mb-8">
           {/* CARD */}
 
-          <div className="bg-white border border-[#e8e6e1] rounded-[2rem] p-6">
+          <div className="group bg-white border border-[#e8e6e1] rounded-[2rem] p-6 transition-all duration-500 opacity-100 hover:-translate-y-2 hover:shadow-[0_18px_40px_rgba(0,0,0,0.08)] hover:border-[#d9e8ff]">
             <div className="flex items-center gap-5">
-              <div className="w-18 h-18 rounded-[1.5rem] bg-[#eef5ff] flex items-center justify-center">
+              <div className="w-18 h-18 rounded-[1.5rem] bg-[#eef5ff] flex items-center justify-center transition-all duration-300 group-hover:scale-105">
                 <Briefcase className="w-8 h-8 text-blue-600" />
               </div>
 
@@ -261,9 +261,9 @@ export default function Recommendations() {
 
           {/* CARD */}
 
-          <div className="bg-white border border-[#e8e6e1] rounded-[2rem] p-6">
+          <div className="group bg-white border border-[#e8e6e1] rounded-[2rem] p-6 transition-all duration-500 opacity-100 hover:-translate-y-2 hover:shadow-[0_18px_40px_rgba(0,0,0,0.08)] hover:border-[#d6eddc]">
             <div className="flex items-center gap-5">
-              <div className="w-18 h-18 rounded-[1.5rem] bg-[#edf8ef] flex items-center justify-center">
+              <div className="w-18 h-18 rounded-[1.5rem] bg-[#edf8ef] flex items-center justify-center transition-all duration-300 group-hover:scale-105">
                 <GraduationCap className="w-8 h-8 text-green-600" />
               </div>
 
@@ -285,9 +285,9 @@ export default function Recommendations() {
 
           {/* CARD */}
 
-          <div className="bg-white border border-[#e8e6e1] rounded-[2rem] p-6">
+          <div className="group bg-white border border-[#e8e6e1] rounded-[2rem] p-6 transition-all duration-500 opacity-100 hover:-translate-y-2 hover:shadow-[0_18px_40px_rgba(0,0,0,0.08)] hover:border-[#e4dcff]">
             <div className="flex items-center gap-5">
-              <div className="w-18 h-18 rounded-[1.5rem] bg-[#f3ecff] flex items-center justify-center">
+              <div className="w-18 h-18 rounded-[1.5rem] bg-[#f3ecff] flex items-center justify-center transition-all duration-300 group-hover:scale-105">
                 <Building2 className="w-8 h-8 text-purple-600" />
               </div>
 
@@ -309,9 +309,9 @@ export default function Recommendations() {
 
           {/* CARD */}
 
-          <div className="bg-white border border-[#e8e6e1] rounded-[2rem] p-6">
+          <div className="group bg-white border border-[#e8e6e1] rounded-[2rem] p-6 transition-all duration-500 opacity-100 hover:-translate-y-2 hover:shadow-[0_18px_40px_rgba(0,0,0,0.08)] hover:border-[#ffe4c4]">
             <div className="flex items-center gap-5">
-              <div className="w-18 h-18 rounded-[1.5rem] bg-[#fff3df] flex items-center justify-center">
+              <div className="w-18 h-18 rounded-[1.5rem] bg-[#fff3df] flex items-center justify-center transition-all duration-300 group-hover:scale-105">
                 <Star className="w-8 h-8 text-orange-500" />
               </div>
 
@@ -341,19 +341,19 @@ export default function Recommendations() {
             {/* TABS */}
 
             <div className="flex items-center gap-3 mb-8">
-              <button className="h-11 px-6 rounded-full bg-[#1d1d1f] text-white text-sm font-semibold">
+              <button className="h-11 px-6 rounded-full bg-[#1d1d1f] text-white text-sm font-semibold transition-all duration-300 hover:scale-[1.03] active:scale-[0.97]">
                 Career Matches
               </button>
 
-              <button className="h-11 px-6 rounded-full bg-[#f7f5f2] text-sm font-medium">
+              <button className="h-11 px-6 rounded-full bg-[#f7f5f2] text-sm font-medium transition-all duration-300 hover:bg-[#ece7df]">
                 Course Suggestions
               </button>
 
-              <button className="h-11 px-6 rounded-full bg-[#f7f5f2] text-sm font-medium">
+              <button className="h-11 px-6 rounded-full bg-[#f7f5f2] text-sm font-medium transition-all duration-300 hover:bg-[#ece7df]">
                 Internships
               </button>
 
-              <button className="h-11 px-6 rounded-full bg-[#f7f5f2] text-sm font-medium">
+              <button className="h-11 px-6 rounded-full bg-[#f7f5f2] text-sm font-medium transition-all duration-300 hover:bg-[#ece7df]">
                 Project Ideas
               </button>
             </div>
@@ -364,16 +364,16 @@ export default function Recommendations() {
               {matches.map((item, index) => (
                 <div
                   key={index}
-                  className="border border-[#ececec] rounded-[1.7rem] p-5 flex items-center justify-between"
+                  className="group border border-[#ececec] rounded-[1.7rem] p-5 flex items-center justify-between transition-all duration-500 opacity-100 hover:-translate-y-2 hover:shadow-[0_18px_40px_rgba(0,0,0,0.08)] hover:border-[#e4d3b3]"
                 >
                   {/* LEFT */}
 
                   <div className="flex items-center gap-5">
-                    <div className="w-20 h-20 rounded-2xl bg-white border border-[#ececec] flex items-center justify-center">
+                    <div className="w-20 h-20 rounded-2xl bg-white border border-[#ececec] flex items-center justify-center transition-all duration-300 group-hover:shadow-[0_8px_20px_rgba(0,0,0,0.06)]">
                       <img
                         src={item.logo}
                         alt="logo"
-                        className="w-12 h-12 object-contain"
+                        className="w-12 h-12 object-contain transition-all duration-300 group-hover:scale-[1.03]"
                       />
                     </div>
 
@@ -390,7 +390,7 @@ export default function Recommendations() {
                         {item.skills.map((skill, idx) => (
                           <div
                             key={idx}
-                            className="px-3 py-1 rounded-lg bg-[#f5f5f5] text-sm font-medium text-[#1d1d1f]"
+                            className="px-3 py-1 rounded-lg bg-[#f5f5f5] text-sm font-medium text-[#1d1d1f] transition-all duration-300 hover:bg-[#ece7df]"
                           >
                             {skill}
                           </div>
@@ -405,7 +405,7 @@ export default function Recommendations() {
                     {/* SCORE */}
 
                     <div className="text-center">
-                      <div className="w-16 h-16 rounded-full border-[5px] border-green-500 border-l-[#e8f8ef] border-b-[#e8f8ef] flex items-center justify-center mx-auto mb-2">
+                      <div className="w-16 h-16 rounded-full border-[5px] border-green-500 border-l-[#e8f8ef] border-b-[#e8f8ef] flex items-center justify-center mx-auto mb-2 transition-all duration-300 group-hover:rotate-6">
                         <span className="text-sm font-bold">
                           {item.score}
                         </span>
@@ -418,7 +418,7 @@ export default function Recommendations() {
 
                     {/* BUTTON */}
 
-                    <button className="h-12 px-6 rounded-xl border border-[#e8e6e1] font-semibold hover:bg-[#faf7f2] transition-all">
+                    <button className="group/bookmark h-12 px-6 rounded-xl border border-[#e8e6e1] font-semibold transition-all duration-300 hover:bg-[#faf7f2] hover:scale-[1.03] active:scale-[0.97]">
                       View Details
                     </button>
                   </div>
@@ -429,10 +429,10 @@ export default function Recommendations() {
             {/* BUTTON */}
 
             <div className="flex justify-center mt-8">
-              <button className="h-14 px-8 rounded-2xl border border-[#e8e6e1] font-semibold flex items-center gap-3 hover:bg-[#faf7f2] transition-all">
+              <button className="group h-14 px-8 rounded-2xl border border-[#e8e6e1] font-semibold flex items-center gap-3 transition-all duration-300 hover:bg-[#faf7f2] hover:scale-[1.02] hover:shadow-[0_10px_25px_rgba(0,0,0,0.06)] active:scale-[0.98]">
                 View All Career Matches
 
-                <ArrowRight className="w-5 h-5" />
+                <ArrowRight className="w-5 h-5 transition-all duration-300 group-hover:translate-x-1" />
               </button>
             </div>
           </div>
@@ -442,7 +442,7 @@ export default function Recommendations() {
           <div className="space-y-6">
             {/* WHY */}
 
-            <div className="bg-white border border-[#e8e6e1] rounded-[2rem] p-6">
+            <div className="group bg-white border border-[#e8e6e1] rounded-[2rem] p-6 transition-all duration-500 opacity-100 hover:-translate-y-2 hover:shadow-[0_18px_40px_rgba(0,0,0,0.08)]">
               <h2 className="text-3xl font-semibold text-[#1d1d1f] mb-8">
                 Why these recommendations?
               </h2>
@@ -456,7 +456,7 @@ export default function Recommendations() {
                 ].map((item, index) => (
                   <div
                     key={index}
-                    className="flex items-center gap-4"
+                    className="flex items-center gap-4 transition-all duration-300 hover:translate-x-1"
                   >
                     <div className="w-8 h-8 rounded-full bg-[#fff3df] flex items-center justify-center">
                       <CheckCircle2 className="w-4 h-4 text-[#c89a2b]" />
@@ -472,14 +472,17 @@ export default function Recommendations() {
 
             {/* SKILLS */}
 
-            <div className="bg-white border border-[#e8e6e1] rounded-[2rem] p-6">
+            <div className="group bg-white border border-[#e8e6e1] rounded-[2rem] p-6 transition-all duration-500 opacity-100 hover:-translate-y-2 hover:shadow-[0_18px_40px_rgba(0,0,0,0.08)]">
               <h2 className="text-3xl font-semibold text-[#1d1d1f] mb-8">
                 Top In-Demand Skills for You
               </h2>
 
               <div className="space-y-6 mb-8">
                 {topSkills.map((skill, index) => (
-                  <div key={index}>
+                  <div
+                    key={index}
+                    className="transition-all duration-300 hover:translate-x-1"
+                  >
                     <div className="flex items-center justify-between mb-3">
                       <h3 className="font-semibold text-[#1d1d1f]">
                         {skill.name}
@@ -492,7 +495,7 @@ export default function Recommendations() {
 
                     <div className="h-2 rounded-full bg-[#ececec] overflow-hidden">
                       <div
-                        className="h-full bg-[#d4a44d] rounded-full"
+                        className="h-full bg-[#d4a44d] rounded-full transition-all duration-500"
                         style={{ width: skill.width }}
                       ></div>
                     </div>
@@ -500,10 +503,10 @@ export default function Recommendations() {
                 ))}
               </div>
 
-              <button className="w-full h-14 rounded-2xl border border-[#e8e6e1] font-semibold flex items-center justify-center gap-3 hover:bg-[#faf7f2] transition-all">
+              <button className="group w-full h-14 rounded-2xl border border-[#e8e6e1] font-semibold flex items-center justify-center gap-3 transition-all duration-300 hover:bg-[#faf7f2] hover:scale-[1.02] hover:shadow-[0_10px_25px_rgba(0,0,0,0.06)] active:scale-[0.98]">
                 Improve These Skills
 
-                <ArrowRight className="w-5 h-5" />
+                <ArrowRight className="w-5 h-5 transition-all duration-300 group-hover:translate-x-1" />
               </button>
             </div>
           </div>

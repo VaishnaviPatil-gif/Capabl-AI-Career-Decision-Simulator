@@ -6,7 +6,6 @@ import {
   FileText,
   Video,
   FolderKanban,
-  Briefcase,
   Bookmark,
   User,
   Settings,
@@ -30,103 +29,103 @@ export default function Analyzer() {
   return (
     <div className="min-h-screen bg-[#f7f5f2] flex">
       {/* SIDEBAR */}
-<aside className="w-[270px] bg-white border-r border-[#e8e6e1] min-h-screen px-6 py-8 hidden lg:flex flex-col fixed left-0 top-0">
-  {/* LOGO */}
 
-  <a href="/" className="flex items-center gap-2 mb-12">
-    <div className="w-8 h-8 rounded-full border-[3px] border-[#1d1d1f] flex items-center justify-center">
-      <div className="w-1.5 h-1.5 bg-[#1d1d1f] rounded-full"></div>
-    </div>
+      <aside className="w-[270px] bg-white border-r border-[#e8e6e1] min-h-screen px-6 py-8 hidden lg:flex flex-col fixed left-0 top-0">
+        {/* LOGO */}
 
-    <span className="text-xl font-bold">
-      Capabl
-    </span>
-  </a>
+        <a href="/" className="flex items-center gap-2 mb-12">
+          <div className="w-8 h-8 rounded-full border-[3px] border-[#1d1d1f] flex items-center justify-center">
+            <div className="w-1.5 h-1.5 bg-[#1d1d1f] rounded-full"></div>
+          </div>
 
-  {/* NAV */}
+          <span className="text-xl font-bold">Capabl</span>
+        </a>
 
-  <div className="space-y-2">
-    <a
-      href="/dashboard"
-      className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all font-medium"
-    >
-      <LayoutDashboard className="w-5 h-5" />
-      Dashboard
-    </a>
+        {/* NAV */}
 
-    <a
-      href="/analyzer"
-      className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-[#1d1d1f] text-white font-semibold"
-    >
-      <Brain className="w-5 h-5 text-white" />
-      AI Analyzer
-    </a>
+        <div className="space-y-2">
+          <a
+            href="/dashboard"
+            className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all duration-200 hover:translate-x-1 font-medium"
+          >
+            <LayoutDashboard className="w-5 h-5" />
+            Dashboard
+          </a>
 
-    <a
-      href="/road-map"
-      className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all font-medium"
-    >
-      <Route className="w-5 h-5" />
-      Roadmap
-    </a>
+          <a
+            href="/analyzer"
+            className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-[#1d1d1f] text-white font-semibold shadow-lg"
+          >
+            <Brain className="w-5 h-5 text-white" />
+            AI Analyzer
+          </a>
 
-    <a
-      href="/skill-gap"
-      className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all font-medium"
-    >
-      <FileSearch className="w-5 h-5" />
-      Skill Gap
-    </a>
+          <a
+            href="/road-map"
+            className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all duration-200 hover:translate-x-1 font-medium"
+          >
+            <Route className="w-5 h-5" />
+            Roadmap
+          </a>
 
-    <a
-      href="/resume"
-      className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all font-medium"
-    >
-      <FileText className="w-5 h-5" />
-      Resume
-    </a>
+          <a
+            href="/skill-gap"
+            className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all duration-200 hover:translate-x-1 font-medium"
+          >
+            <FileSearch className="w-5 h-5" />
+            Skill Gap
+          </a>
 
-    <a
-      href="/interview"
-      className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all font-medium"
-    >
-      <Video className="w-5 h-5" />
-      Mock Interview
-    </a>
+          <a
+            href="/resume"
+            className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all duration-200 hover:translate-x-1 font-medium"
+          >
+            <FileText className="w-5 h-5" />
+            Resume
+          </a>
 
-    <a
-      href="/projects"
-      className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all font-medium"
-    >
-      <FolderKanban className="w-5 h-5" />
-      Projects
-    </a>
+          <a
+            href="/interview"
+            className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all duration-200 hover:translate-x-1 font-medium"
+          >
+            <Video className="w-5 h-5" />
+            Mock Interview
+          </a>
 
-    <a
-      href="/recommendations"
-      className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all font-medium"
-    >
-      <Bookmark className="w-5 h-5" />
-      Recommendations
-    </a>
+          <a
+            href="/projects"
+            className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all duration-200 hover:translate-x-1 font-medium"
+          >
+            <FolderKanban className="w-5 h-5" />
+            Projects
+          </a>
 
-    <a
-      href="/profile"
-      className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all font-medium"
-    >
-      <User className="w-5 h-5" />
-      Profile
-    </a>
+          <a
+            href="/recommendations"
+            className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all duration-200 hover:translate-x-1 font-medium"
+          >
+            <Bookmark className="w-5 h-5" />
+            Recommendations
+          </a>
 
-    <a
-      href="/settings"
-      className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all font-medium"
-    >
-      <Settings className="w-5 h-5" />
-      Settings
-    </a>
-  </div>
-</aside>
+          <a
+            href="/profile"
+            className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all duration-200 hover:translate-x-1 font-medium"
+          >
+            <User className="w-5 h-5" />
+            Profile
+          </a>
+
+          <a
+            href="/settings"
+            className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all duration-200 hover:translate-x-1 font-medium"
+          >
+            <Settings className="w-5 h-5" />
+            Settings
+          </a>
+        </div>
+      </aside>
+
       {/* MAIN */}
 
       <main className="flex-1 lg:ml-[270px] p-8 lg:p-12">
@@ -148,11 +147,11 @@ export default function Analyzer() {
           {/* RIGHT */}
 
           <div className="flex items-center gap-5">
-            <button className="w-12 h-12 rounded-2xl bg-white border border-[#e8e6e1] flex items-center justify-center">
+            <button className="w-12 h-12 rounded-2xl bg-white border border-[#e8e6e1] flex items-center justify-center hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
               <Bell className="w-5 h-5 text-[#1d1d1f]" />
             </button>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 bg-white px-4 py-2 rounded-2xl border border-[#ece8df] hover:shadow-lg transition-all duration-300">
               <img
                 src="https://i.pravatar.cc/100?img=32"
                 alt="profile"
@@ -176,7 +175,7 @@ export default function Analyzer() {
 
         {/* BANNER */}
 
-        <div className="bg-[#f8f1e5] border border-[#ece3d3] rounded-[2rem] p-8 mb-8 flex items-center justify-between">
+        <div className="bg-[#f8f1e5] border border-[#ece3d3] rounded-[2rem] p-8 mb-8 flex items-center justify-between hover:shadow-xl transition-all duration-300">
           <div>
             <h2 className="text-3xl font-bold text-[#1d1d1f] mb-3">
               Analyze Your Career Profile
@@ -190,13 +189,13 @@ export default function Analyzer() {
           </div>
 
           <div className="hidden lg:flex w-[230px] h-[140px] rounded-[2rem] bg-white/60 items-center justify-center">
-            <Brain className="w-20 h-20 text-[#c4a05d]" />
+            <Brain className="w-20 h-20 text-[#c4a05d] animate-pulse" />
           </div>
         </div>
 
         {/* CONNECT */}
 
-        <section className="bg-white border border-[#e8e6e1] rounded-[2rem] p-8 mb-8">
+        <section className="bg-white border border-[#e8e6e1] rounded-[2rem] p-8 mb-8 shadow-sm">
           <h2 className="text-3xl font-bold text-[#1d1d1f] mb-2">
             Connect Your Profiles
           </h2>
@@ -209,7 +208,7 @@ export default function Analyzer() {
           <div className="grid lg:grid-cols-3 gap-6">
             {/* RESUME */}
 
-            <div className="border border-[#e8e6e1] rounded-[2rem] p-6">
+            <div className="border border-[#e8e6e1] rounded-[2rem] p-6 bg-white hover:-translate-y-2 hover:shadow-2xl transition-all duration-300">
               <div className="flex gap-4 mb-6">
                 <div className="w-14 h-14 rounded-2xl bg-[#f5f1ea] flex items-center justify-center">
                   <FileText className="w-7 h-7 text-[#b89968]" />
@@ -230,8 +229,8 @@ export default function Analyzer() {
                 </div>
               </div>
 
-              <div className="h-[130px] border border-dashed border-[#d8d4cc] rounded-2xl flex flex-col items-center justify-center text-center">
-                <Upload className="w-6 h-6 mb-3" />
+              <div className="h-[130px] border border-dashed border-[#d8d4cc] rounded-2xl flex flex-col items-center justify-center text-center hover:bg-[#faf7f2] transition-all duration-300 cursor-pointer">
+                <Upload className="w-6 h-6 mb-3 hover:scale-110 transition-all duration-200" />
 
                 <h4 className="font-semibold text-[#1d1d1f]">
                   Upload PDF
@@ -248,7 +247,7 @@ export default function Analyzer() {
                   Resume uploaded
                 </div>
 
-                <button className="text-[#b89968] font-semibold text-sm">
+                <button className="text-[#b89968] font-semibold text-sm hover:scale-105 active:scale-95 transition-all duration-200">
                   Change
                 </button>
               </div>
@@ -260,7 +259,7 @@ export default function Analyzer() {
 
             {/* LINKEDIN */}
 
-            <div className="border border-[#e8e6e1] rounded-[2rem] p-6">
+            <div className="border border-[#e8e6e1] rounded-[2rem] p-6 bg-white hover:-translate-y-2 hover:shadow-2xl transition-all duration-300">
               <div className="flex gap-4 mb-6">
                 <div className="w-14 h-14 rounded-2xl bg-[#eef5ff] flex items-center justify-center">
                   <img
@@ -285,7 +284,7 @@ export default function Analyzer() {
                 type="text"
                 value="https://linkedin.com/in/reyadoshi"
                 readOnly
-                className="w-full h-12 border border-[#e8e6e1] rounded-xl px-4 text-sm outline-none"
+                className="w-full h-12 border border-[#e8e6e1] rounded-xl px-4 text-sm outline-none focus:ring-2 focus:ring-[#b89968]/30 transition-all"
               />
 
               <div className="flex items-center justify-between mt-5">
@@ -294,7 +293,7 @@ export default function Analyzer() {
                   LinkedIn connected
                 </div>
 
-                <button className="text-[#b89968] font-semibold text-sm">
+                <button className="text-[#b89968] font-semibold text-sm hover:scale-105 active:scale-95 transition-all duration-200">
                   Change
                 </button>
               </div>
@@ -302,7 +301,7 @@ export default function Analyzer() {
 
             {/* GITHUB */}
 
-            <div className="border border-[#e8e6e1] rounded-[2rem] p-6">
+            <div className="border border-[#e8e6e1] rounded-[2rem] p-6 bg-white hover:-translate-y-2 hover:shadow-2xl transition-all duration-300">
               <div className="flex gap-4 mb-6">
                 <div className="w-14 h-14 rounded-2xl bg-[#f5f5f5] flex items-center justify-center">
                   <img
@@ -327,7 +326,7 @@ export default function Analyzer() {
                 type="text"
                 value="https://github.com/Reya-Doshi"
                 readOnly
-                className="w-full h-12 border border-[#e8e6e1] rounded-xl px-4 text-sm outline-none"
+                className="w-full h-12 border border-[#e8e6e1] rounded-xl px-4 text-sm outline-none focus:ring-2 focus:ring-[#b89968]/30 transition-all"
               />
 
               <div className="flex items-center justify-between mt-5">
@@ -336,7 +335,7 @@ export default function Analyzer() {
                   GitHub connected
                 </div>
 
-                <button className="text-[#b89968] font-semibold text-sm">
+                <button className="text-[#b89968] font-semibold text-sm hover:scale-105 active:scale-95 transition-all duration-200">
                   Change
                 </button>
               </div>
@@ -345,9 +344,9 @@ export default function Analyzer() {
 
           {/* BUTTON */}
 
-          <button className="w-full h-[76px] bg-[#1d1d1f] rounded-[1.5rem] text-white mt-8 flex flex-col items-center justify-center hover:opacity-95 transition-all">
+          <button className="w-full h-[76px] bg-[#1d1d1f] rounded-[1.5rem] text-white mt-8 flex flex-col items-center justify-center hover:opacity-95 hover:scale-[1.01] active:scale-[0.98] transition-all duration-200 shadow-lg hover:shadow-2xl">
             <div className="flex items-center gap-2 mb-1">
-              <Sparkles className="w-4 h-4" />
+              <Sparkles className="w-4 h-4 animate-pulse" />
 
               <span className="font-bold text-lg">
                 Analyze My Profiles
@@ -363,7 +362,7 @@ export default function Analyzer() {
 
         {/* RESULTS */}
 
-        <section className="bg-white border border-[#e8e6e1] rounded-[2rem] p-8">
+        <section className="bg-white border border-[#e8e6e1] rounded-[2rem] p-8 shadow-sm">
           <div className="flex items-center justify-between mb-8">
             <div>
               <h2 className="text-3xl font-bold text-[#1d1d1f] mb-2">
@@ -387,12 +386,12 @@ export default function Analyzer() {
           <div className="grid lg:grid-cols-5 gap-5 mb-8">
             {/* MAIN SCORE */}
 
-            <div className="border border-[#e8e6e1] rounded-[2rem] p-6 text-center">
+            <div className="border border-[#e8e6e1] rounded-[2rem] p-6 text-center hover:-translate-y-2 hover:shadow-2xl transition-all duration-300">
               <h3 className="font-bold text-[#1d1d1f] mb-5">
                 Overall Readiness Score
               </h3>
 
-              <div className="w-32 h-32 mx-auto rounded-full border-[8px] border-[#cfa04e] flex items-center justify-center mb-4">
+              <div className="w-32 h-32 mx-auto rounded-full border-[8px] border-[#cfa04e] flex items-center justify-center mb-4 hover:scale-105 transition-all duration-300">
                 <div>
                   <h2 className="text-4xl font-bold text-[#1d1d1f] leading-none">
                     78
@@ -404,9 +403,7 @@ export default function Analyzer() {
                 </div>
               </div>
 
-              <h4 className="font-bold text-lg mb-1">
-                Good
-              </h4>
+              <h4 className="font-bold text-lg mb-1">Good</h4>
 
               <p className="text-sm text-slate-500">
                 You're on the right track!
@@ -461,7 +458,7 @@ export default function Analyzer() {
             ].map((item, index) => (
               <div
                 key={index}
-                className="border border-[#e8e6e1] rounded-[2rem] p-5"
+                className="border border-[#e8e6e1] rounded-[2rem] p-5 hover:-translate-y-2 hover:shadow-2xl transition-all duration-300"
               >
                 <div className="w-12 h-12 rounded-2xl bg-[#f5f1ea] flex items-center justify-center mb-5">
                   {item.icon}
@@ -499,7 +496,7 @@ export default function Analyzer() {
           <div className="grid lg:grid-cols-3 gap-6 mb-8">
             {/* STRENGTHS */}
 
-            <div className="border border-[#e8e6e1] rounded-[2rem] p-6">
+            <div className="border border-[#e8e6e1] rounded-[2rem] p-6 hover:-translate-y-2 hover:shadow-2xl transition-all duration-300">
               <h3 className="text-xl font-bold text-[#1d1d1f] mb-6">
                 Top Strengths
               </h3>
@@ -525,18 +522,18 @@ export default function Analyzer() {
               </div>
 
               <a
-  href="/resume"
-  className="w-full h-12 border border-[#e8e6e1] rounded-xl mt-8 flex items-center justify-center gap-2 font-semibold hover:bg-[#f5f1ea] transition-all"
->
-  View Full Analysis
+                href="/resume"
+                className="w-full h-12 border border-[#e8e6e1] rounded-xl mt-8 flex items-center justify-center gap-2 font-semibold hover:bg-[#f5f1ea] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
+              >
+                View Full Analysis
 
-  <ArrowRight className="w-4 h-4" />
-</a>
+                <ArrowRight className="w-4 h-4" />
+              </a>
             </div>
 
             {/* IMPROVE */}
 
-            <div className="border border-[#e8e6e1] rounded-[2rem] p-6">
+            <div className="border border-[#e8e6e1] rounded-[2rem] p-6 hover:-translate-y-2 hover:shadow-2xl transition-all duration-300">
               <h3 className="text-xl font-bold text-[#1d1d1f] mb-6">
                 Key Areas to Improve
               </h3>
@@ -562,18 +559,18 @@ export default function Analyzer() {
               </div>
 
               <a
-  href="/skill-gap"
-  className="w-full h-12 border border-[#e8e6e1] rounded-xl mt-8 flex items-center justify-center gap-2 font-semibold hover:bg-[#f5f1ea] transition-all"
->
-  View Skill Gap
+                href="/skill-gap"
+                className="w-full h-12 border border-[#e8e6e1] rounded-xl mt-8 flex items-center justify-center gap-2 font-semibold hover:bg-[#f5f1ea] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
+              >
+                View Skill Gap
 
-  <ArrowRight className="w-4 h-4" />
-</a>
+                <ArrowRight className="w-4 h-4" />
+              </a>
             </div>
 
             {/* RECOMMENDATIONS */}
 
-            <div className="border border-[#e8e6e1] rounded-[2rem] p-6">
+            <div className="border border-[#e8e6e1] rounded-[2rem] p-6 hover:-translate-y-2 hover:shadow-2xl transition-all duration-300">
               <h3 className="text-xl font-bold text-[#1d1d1f] mb-6">
                 AI Recommendations
               </h3>
@@ -599,19 +596,19 @@ export default function Analyzer() {
               </div>
 
               <a
-  href="/road-map"
-  className="w-full h-12 border border-[#e8e6e1] rounded-xl mt-8 flex items-center justify-center gap-2 font-semibold hover:bg-[#f5f1ea] transition-all"
->
-  View Recommendations
+                href="/road-map"
+                className="w-full h-12 border border-[#e8e6e1] rounded-xl mt-8 flex items-center justify-center gap-2 font-semibold hover:bg-[#f5f1ea] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
+              >
+                View Recommendations
 
-  <ArrowRight className="w-4 h-4" />
-</a>
+                <ArrowRight className="w-4 h-4" />
+              </a>
             </div>
           </div>
 
           {/* FOOTER */}
 
-          <div className="bg-[#f8f1e5] border border-[#ece3d3] rounded-[2rem] p-6 flex items-center justify-between">
+          <div className="bg-[#f8f1e5] border border-[#ece3d3] rounded-[2rem] p-6 flex items-center justify-between hover:shadow-xl transition-all duration-300">
             <div className="flex items-center gap-5">
               <div className="w-14 h-14 rounded-2xl bg-white flex items-center justify-center">
                 <Eye className="w-7 h-7 text-[#cfa04e]" />
@@ -629,7 +626,7 @@ export default function Analyzer() {
               </div>
             </div>
 
-            <button className="h-12 px-7 bg-[#1d1d1f] text-white rounded-xl flex items-center gap-2 font-semibold">
+            <button className="h-12 px-7 bg-[#1d1d1f] text-white rounded-xl flex items-center gap-2 font-semibold hover:scale-[1.03] active:scale-[0.97] transition-all duration-200 shadow-md hover:shadow-xl">
               <RotateCw className="w-4 h-4" />
 
               Re-analyze Now

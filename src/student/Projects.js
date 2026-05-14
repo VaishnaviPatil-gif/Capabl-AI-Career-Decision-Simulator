@@ -113,9 +113,7 @@ export default function Projects() {
             <div className="w-1.5 h-1.5 bg-[#1d1d1f] rounded-full"></div>
           </div>
 
-          <span className="text-xl font-bold">
-            Capabl
-          </span>
+          <span className="text-xl font-bold">Capabl</span>
         </a>
 
         <div className="space-y-2">
@@ -258,9 +256,9 @@ export default function Projects() {
         <div className="grid lg:grid-cols-4 gap-5 mb-8">
           {/* CARD */}
 
-          <div className="bg-[#faf7f2] border border-[#ece3d3] rounded-[2rem] p-6">
+          <div className="group bg-[#faf7f2] border border-[#ece3d3] rounded-[2rem] p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_15px_35px_rgba(0,0,0,0.08)] hover:border-[#e4d3b3]">
             <div className="flex items-center gap-5">
-              <div className="w-20 h-20 rounded-[1.7rem] bg-[#fff1cf] flex items-center justify-center">
+              <div className="w-20 h-20 rounded-[1.7rem] bg-[#fff1cf] flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:rotate-3">
                 <Folder className="w-9 h-9 text-[#d4a44d]" />
               </div>
 
@@ -282,9 +280,9 @@ export default function Projects() {
 
           {/* CARD */}
 
-          <div className="bg-[#f3faf5] border border-[#dfeee3] rounded-[2rem] p-6">
+          <div className="group bg-[#f3faf5] border border-[#dfeee3] rounded-[2rem] p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_15px_35px_rgba(0,0,0,0.08)] hover:border-[#cfe8d6]">
             <div className="flex items-center gap-5">
-              <div className="w-20 h-20 rounded-[1.7rem] bg-[#dff5e5] flex items-center justify-center">
+              <div className="w-20 h-20 rounded-[1.7rem] bg-[#dff5e5] flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:rotate-3">
                 <CheckCircle2 className="w-9 h-9 text-green-600" />
               </div>
 
@@ -306,9 +304,9 @@ export default function Projects() {
 
           {/* CARD */}
 
-          <div className="bg-[#f7f4ff] border border-[#e7e0ff] rounded-[2rem] p-6">
+          <div className="group bg-[#f7f4ff] border border-[#e7e0ff] rounded-[2rem] p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_15px_35px_rgba(0,0,0,0.08)] hover:border-[#ddd0ff]">
             <div className="flex items-center gap-5">
-              <div className="w-20 h-20 rounded-[1.7rem] bg-[#e8dcff] flex items-center justify-center">
+              <div className="w-20 h-20 rounded-[1.7rem] bg-[#e8dcff] flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:rotate-3">
                 <Code2 className="w-9 h-9 text-purple-600" />
               </div>
 
@@ -330,9 +328,9 @@ export default function Projects() {
 
           {/* CARD */}
 
-          <div className="bg-[#f4f8ff] border border-[#dde9ff] rounded-[2rem] p-6">
+          <div className="group bg-[#f4f8ff] border border-[#dde9ff] rounded-[2rem] p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_15px_35px_rgba(0,0,0,0.08)] hover:border-[#cfe0ff]">
             <div className="flex items-center gap-5">
-              <div className="w-20 h-20 rounded-[1.7rem] bg-[#dceaff] flex items-center justify-center">
+              <div className="w-20 h-20 rounded-[1.7rem] bg-[#dceaff] flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:rotate-3">
                 <Star className="w-9 h-9 text-blue-600" />
               </div>
 
@@ -359,8 +357,6 @@ export default function Projects() {
           {/* LEFT */}
 
           <div>
-            {/* TOP */}
-
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-3xl font-semibold text-[#1d1d1f]">
                 Your Projects
@@ -397,14 +393,16 @@ export default function Projects() {
               {projects.map((project, index) => (
                 <div
                   key={index}
-                  className="bg-white border border-[#e8e6e1] rounded-[1.7rem] p-4 flex items-center justify-between"
+                  className="group bg-white border border-[#e8e6e1] rounded-[1.7rem] p-4 flex items-center justify-between transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_18px_40px_rgba(0,0,0,0.08)] hover:border-[#e4d3b3]"
                 >
                   <div className="flex items-center gap-5">
-                    <img
-                      src={project.image}
-                      alt="project"
-                      className="w-[190px] h-[110px] rounded-2xl object-cover"
-                    />
+                    <div className="overflow-hidden rounded-2xl">
+                      <img
+                        src={project.image}
+                        alt="project"
+                        className="w-[190px] h-[110px] rounded-2xl object-cover transition-all duration-500 group-hover:scale-[1.03]"
+                      />
+                    </div>
 
                     <div>
                       <h3 className="text-[28px] font-semibold text-[#1d1d1f] mb-2">
@@ -432,17 +430,17 @@ export default function Projects() {
                       </div>
                     </div>
 
-                    <ChevronRight className="w-5 h-5 text-slate-400" />
+                    <ChevronRight className="w-5 h-5 text-slate-400 transition-all duration-300 group-hover:translate-x-1 group-hover:text-[#c89a2b]" />
                   </div>
                 </div>
               ))}
 
               {/* BUTTON */}
 
-              <button className="w-full h-14 rounded-2xl bg-white border border-[#e8e6e1] font-semibold text-[#1d1d1f] flex items-center justify-center gap-3 hover:bg-[#faf7f2] transition-all">
+              <button className="group w-full h-14 rounded-2xl bg-white border border-[#e8e6e1] font-semibold text-[#1d1d1f] flex items-center justify-center gap-3 transition-all duration-300 hover:bg-[#faf7f2] hover:scale-[1.01] hover:shadow-[0_10px_30px_rgba(0,0,0,0.06)] active:scale-[0.99]">
                 View All Projects
 
-                <ChevronRight className="w-4 h-4" />
+                <ChevronRight className="w-4 h-4 transition-all duration-300 group-hover:translate-x-1" />
               </button>
             </div>
           </div>
@@ -450,8 +448,6 @@ export default function Projects() {
           {/* RIGHT */}
 
           <div>
-            {/* TOP */}
-
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-3xl font-semibold text-[#1d1d1f]">
                 Recommended Projects
@@ -468,11 +464,11 @@ export default function Projects() {
               {recommended.map((item, index) => (
                 <div
                   key={index}
-                  className="bg-white border border-[#e8e6e1] rounded-[1.7rem] p-5"
+                  className="group bg-white border border-[#e8e6e1] rounded-[1.7rem] p-5 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_15px_35px_rgba(0,0,0,0.08)] hover:border-[#e4d3b3]"
                 >
                   <div className="flex gap-4">
                     <div
-                      className={`w-20 h-20 rounded-[1.5rem] ${item.iconBg} flex items-center justify-center text-4xl`}
+                      className={`w-20 h-20 rounded-[1.5rem] ${item.iconBg} flex items-center justify-center text-4xl transition-all duration-300 group-hover:scale-110`}
                     >
                       {item.icon}
                     </div>
@@ -519,8 +515,8 @@ export default function Projects() {
             </div>
           </div>
 
-          <button className="h-14 px-8 rounded-2xl bg-[#1d1d1f] text-white flex items-center gap-3 font-semibold hover:opacity-90 transition-all">
-            <Plus className="w-5 h-5" />
+          <button className="group h-14 px-8 rounded-2xl bg-[#1d1d1f] text-white flex items-center gap-3 font-semibold transition-all duration-300 hover:scale-105 hover:shadow-[0_10px_30px_rgba(0,0,0,0.18)] active:scale-95">
+            <Plus className="w-5 h-5 transition-all duration-300 group-hover:rotate-90" />
             Add New Project
           </button>
         </div>

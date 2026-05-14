@@ -16,18 +16,12 @@ import {
   Mail,
   Calendar,
   CheckCircle2,
-  GraduationCap,
-  BarChart3,
-  Phone,
   Globe,
   Camera,
 } from "lucide-react";
 
 export default function Profile() {
-  const tabs = [
-    "Overview",
-    
-  ];
+  const tabs = ["Overview"];
 
   const skills = [
     "JavaScript",
@@ -52,9 +46,7 @@ export default function Profile() {
             <div className="w-1.5 h-1.5 bg-[#1d1d1f] rounded-full"></div>
           </div>
 
-          <span className="text-xl font-bold">
-            Capabl
-          </span>
+          <span className="text-xl font-bold">Capabl</span>
         </a>
 
         {/* NAV */}
@@ -175,7 +167,7 @@ export default function Profile() {
               <img
                 src="https://i.pravatar.cc/150?img=32"
                 alt="profile"
-                className="w-11 h-11 rounded-full object-cover"
+                className="w-11 h-11 rounded-full object-cover transition-all duration-300 hover:shadow-[0_8px_25px_rgba(0,0,0,0.18)]"
               />
 
               <ChevronDown className="w-4 h-4" />
@@ -200,16 +192,19 @@ export default function Profile() {
             </div>
 
             <a
-  href="/settings"
-  className="h-12 px-6 rounded-2xl border border-[#d4a44d] text-[#c89a2b] flex items-center gap-3 text-[14px] font-semibold hover:bg-[#fff8eb] transition-all"
->
-  ✏️ Edit Profile
-</a>
+              href="/settings"
+              className="group h-12 px-6 rounded-2xl border border-[#d4a44d] text-[#c89a2b] flex items-center gap-3 text-[14px] font-semibold transition-all duration-300 hover:bg-[#fff8eb] hover:shadow-[0_10px_30px_rgba(200,154,43,0.12)] hover:scale-[1.02] active:scale-[0.98]"
+            >
+              <span className="transition-all duration-300 group-hover:rotate-6">
+                ✏️
+              </span>
+              Edit Profile
+            </a>
           </div>
 
           {/* PROFILE CARD */}
 
-          <div className="bg-white border border-[#e8e6e1] rounded-[22px] p-7 mb-7">
+          <div className="bg-white border border-[#e8e6e1] rounded-[22px] p-7 mb-7 transition-all duration-300 hover:shadow-[0_15px_40px_rgba(0,0,0,0.06)]">
             <div className="flex items-center justify-between">
               {/* LEFT */}
 
@@ -220,11 +215,11 @@ export default function Profile() {
                   <img
                     src="https://i.pravatar.cc/250?img=32"
                     alt="profile"
-                    className="w-[120px] h-[120px] rounded-full object-cover"
+                    className="w-[120px] h-[120px] rounded-full object-cover transition-all duration-300 hover:shadow-[0_18px_40px_rgba(0,0,0,0.18)]"
                   />
 
-                  <button className="absolute bottom-1 right-1 w-11 h-11 rounded-full bg-white border border-[#ececec] flex items-center justify-center shadow-sm">
-                    <Camera className="w-5 h-5" />
+                  <button className="group absolute bottom-1 right-1 w-11 h-11 rounded-full bg-white border border-[#ececec] flex items-center justify-center shadow-sm transition-all duration-300 hover:shadow-[0_10px_25px_rgba(0,0,0,0.12)] hover:bg-[#faf7f2] active:scale-95">
+                    <Camera className="w-5 h-5 transition-all duration-300 group-hover:rotate-12" />
                   </button>
                 </div>
 
@@ -312,15 +307,15 @@ export default function Profile() {
           <div className="grid lg:grid-cols-[1fr,1fr,1fr] gap-5">
             {/* ABOUT */}
 
-            <div className="bg-white border border-[#e8e6e1] rounded-[22px] p-6">
+            <div className="group bg-white border border-[#e8e6e1] rounded-[22px] p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_15px_40px_rgba(0,0,0,0.08)]">
               <h2 className="text-[18px] font-semibold text-[#111111] mb-6">
                 About Me
               </h2>
 
               <p className="text-[14px] text-[#6b7280] leading-7 mb-7">
-                A passionate and curious developer who loves
-                building real-world solutions. I enjoy learning new
-                technologies and turning ideas into products.
+                A passionate and curious developer who loves building
+                real-world solutions. I enjoy learning new technologies
+                and turning ideas into products.
               </p>
 
               <div className="border-t border-[#ececec] pt-6 mb-6">
@@ -353,17 +348,17 @@ export default function Profile() {
                 <img
                   src="/linkedin.jpg"
                   alt="LinkedIn"
-                  className="w-11 h-11 rounded-full object-cover border border-[#ece7dc] p-2 bg-white"
+                  className="w-11 h-11 rounded-full object-cover border border-[#ece7dc] p-2 bg-white transition-all duration-300 hover:shadow-[0_8px_20px_rgba(0,0,0,0.12)]"
                 />
 
                 <img
                   src="/github.jpg"
                   alt="GitHub"
-                  className="w-11 h-11 rounded-full object-cover border border-[#ece7dc] p-2 bg-white"
+                  className="w-11 h-11 rounded-full object-cover border border-[#ece7dc] p-2 bg-white transition-all duration-300 hover:shadow-[0_8px_20px_rgba(0,0,0,0.12)]"
                 />
 
-                <button className="w-11 h-11 rounded-full bg-[#f5f5f5] flex items-center justify-center">
-                  <Globe className="w-5 h-5" />
+                <button className="group w-11 h-11 rounded-full bg-[#f5f5f5] flex items-center justify-center transition-all duration-300 hover:bg-[#ece7df] hover:shadow-[0_8px_20px_rgba(0,0,0,0.10)] active:scale-95">
+                  <Globe className="w-5 h-5 transition-all duration-300 group-hover:rotate-12" />
                 </button>
               </div>
             </div>
@@ -373,19 +368,18 @@ export default function Profile() {
             <div className="space-y-5">
               {/* EDUCATION */}
 
-              <div className="bg-white border border-[#e8e6e1] rounded-[22px] p-6">
+              <div className="group bg-white border border-[#e8e6e1] rounded-[22px] p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_15px_40px_rgba(0,0,0,0.08)]">
                 <h2 className="text-[18px] font-semibold text-[#111111] mb-6">
                   Education
                 </h2>
 
-                <div className="border border-[#ececec] rounded-2xl p-5">
+                <div className="border border-[#ececec] rounded-2xl p-5 transition-all duration-300 group-hover:border-[#ddd3c4]">
                   <h3 className="text-[17px] font-semibold mb-2">
                     B.Tech in Information Technology
                   </h3>
 
                   <p className="text-[14px] text-[#6b7280] mb-3">
-                    Brewc College of Engineering for Women,
-                    Hyderabad
+                    Brewc College of Engineering for Women, Hyderabad
                   </p>
 
                   <div className="flex items-center gap-4">
@@ -402,13 +396,13 @@ export default function Profile() {
 
               {/* SKILLS */}
 
-              <div className="bg-white border border-[#e8e6e1] rounded-[22px] p-6">
+              <div className="group bg-white border border-[#e8e6e1] rounded-[22px] p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_15px_40px_rgba(0,0,0,0.08)]">
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-[18px] font-semibold text-[#111111]">
                     Skills
                   </h2>
 
-                  <button className="text-[#c89a2b] text-[13px] font-semibold">
+                  <button className="group text-[#c89a2b] text-[13px] font-semibold transition-all duration-300 hover:tracking-wide">
                     View All
                   </button>
                 </div>
@@ -417,7 +411,7 @@ export default function Profile() {
                   {skills.map((skill, index) => (
                     <div
                       key={index}
-                      className="px-4 py-2 rounded-full bg-[#f7f5f2] text-[13px] font-medium"
+                      className="px-4 py-2 rounded-full bg-[#f7f5f2] text-[13px] font-medium transition-all duration-300 hover:bg-[#ece7df] hover:shadow-sm"
                     >
                       {skill}
                     </div>
@@ -431,7 +425,7 @@ export default function Profile() {
             <div className="space-y-5">
               {/* QUICK STATS */}
 
-              <div className="bg-white border border-[#e8e6e1] rounded-[22px] p-6">
+              <div className="group bg-white border border-[#e8e6e1] rounded-[22px] p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_15px_40px_rgba(0,0,0,0.08)]">
                 <h2 className="text-[18px] font-semibold text-[#111111] mb-6">
                   Quick Stats
                 </h2>
@@ -446,7 +440,7 @@ export default function Profile() {
                   ].map((item, index) => (
                     <div
                       key={index}
-                      className="flex items-center justify-between"
+                      className="flex items-center justify-between p-2 rounded-xl transition-all duration-300 hover:bg-[#faf7f2]"
                     >
                       <p className="text-[14px] text-[#6b7280]">
                         {item[0]}
@@ -462,13 +456,13 @@ export default function Profile() {
 
               {/* BADGES */}
 
-              <div className="bg-white border border-[#e8e6e1] rounded-[22px] p-6">
+              <div className="group bg-white border border-[#e8e6e1] rounded-[22px] p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_15px_40px_rgba(0,0,0,0.08)]">
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-[18px] font-semibold text-[#111111]">
                     Badges
                   </h2>
 
-                  <button className="text-[#c89a2b] text-[13px] font-semibold">
+                  <button className="text-[#c89a2b] text-[13px] font-semibold transition-all duration-300 hover:tracking-wide">
                     View All
                   </button>
                 </div>
@@ -478,7 +472,7 @@ export default function Profile() {
                     (badge, index) => (
                       <div
                         key={index}
-                        className="w-16 h-16 rounded-2xl bg-[#f7f5f2] flex items-center justify-center text-3xl"
+                        className="w-16 h-16 rounded-2xl bg-[#f7f5f2] flex items-center justify-center text-3xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_20px_rgba(0,0,0,0.08)]"
                       >
                         {badge}
                       </div>

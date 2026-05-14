@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   LayoutDashboard,
   Brain,
@@ -21,6 +22,16 @@ import {
 } from "lucide-react";
 
 export default function Interview() {
+  const [showFeedback, setShowFeedback] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowFeedback(true);
+    }, 700);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   const interviewTypes = [
     {
       title: "Technical Interview",
@@ -71,9 +82,7 @@ export default function Interview() {
             <div className="w-1.5 h-1.5 bg-[#1d1d1f] rounded-full"></div>
           </div>
 
-          <span className="text-xl font-bold">
-            Capabl
-          </span>
+          <span className="text-xl font-bold">Capabl</span>
         </a>
 
         <div className="space-y-2">
@@ -199,9 +208,7 @@ export default function Interview() {
                   Reya Doshi
                 </h3>
 
-                <p className="text-sm text-slate-500">
-                  Student
-                </p>
+                <p className="text-sm text-slate-500">Student</p>
               </div>
 
               <ChevronDown className="w-4 h-4" />
@@ -221,12 +228,12 @@ export default function Interview() {
               </h2>
 
               <p className="text-slate-600 text-xl leading-relaxed mb-8 font-medium">
-                Realistic questions, instant feedback and
-                performance insights.
+                Realistic questions, instant feedback and performance
+                insights.
               </p>
 
-              <button className="h-14 px-8 rounded-2xl bg-[#1d1d1f] text-white flex items-center gap-3 font-semibold hover:opacity-90 transition-all">
-                <PlayCircle className="w-5 h-5" />
+              <button className="group h-14 px-8 rounded-2xl bg-[#1d1d1f] text-white flex items-center gap-3 font-semibold transition-all duration-300 hover:scale-105 hover:shadow-[0_10px_30px_rgba(0,0,0,0.18)] active:scale-95">
+                <PlayCircle className="w-5 h-5 transition-all duration-300 group-hover:scale-110" />
                 Start New Interview
               </button>
             </div>
@@ -246,25 +253,25 @@ export default function Interview() {
 
               <div className="h-20 bg-[#f5f1ea] rounded-xl mb-6 flex items-center justify-center">
                 <div className="flex items-center gap-2">
-                  <div className="w-2 h-8 rounded-full bg-[#d4a44d]"></div>
-                  <div className="w-2 h-14 rounded-full bg-[#d4a44d]"></div>
-                  <div className="w-2 h-10 rounded-full bg-[#d4a44d]"></div>
-                  <div className="w-2 h-16 rounded-full bg-[#d4a44d]"></div>
-                  <div className="w-2 h-8 rounded-full bg-[#d4a44d]"></div>
-                  <div className="w-2 h-5 rounded-full bg-[#d4a44d]"></div>
+                  <div className="w-2 h-8 rounded-full bg-[#d4a44d] animate-pulse"></div>
+                  <div className="w-2 h-14 rounded-full bg-[#d4a44d] animate-pulse"></div>
+                  <div className="w-2 h-10 rounded-full bg-[#d4a44d] animate-pulse"></div>
+                  <div className="w-2 h-16 rounded-full bg-[#d4a44d] animate-pulse"></div>
+                  <div className="w-2 h-8 rounded-full bg-[#d4a44d] animate-pulse"></div>
+                  <div className="w-2 h-5 rounded-full bg-[#d4a44d] animate-pulse"></div>
                 </div>
               </div>
 
               <div className="flex items-center justify-between">
-                <button className="w-12 h-12 rounded-full bg-[#f5f1ea] flex items-center justify-center">
+                <button className="w-12 h-12 rounded-full bg-[#f5f1ea] flex items-center justify-center transition-all duration-300 hover:scale-110">
                   🎤
                 </button>
 
-                <button className="w-14 h-14 rounded-full bg-red-500 text-white flex items-center justify-center">
+                <button className="w-14 h-14 rounded-full bg-red-500 text-white flex items-center justify-center transition-all duration-300 hover:scale-110">
                   📞
                 </button>
 
-                <button className="w-12 h-12 rounded-full bg-[#f5f1ea] flex items-center justify-center">
+                <button className="w-12 h-12 rounded-full bg-[#f5f1ea] flex items-center justify-center transition-all duration-300 hover:scale-110">
                   📹
                 </button>
               </div>
@@ -299,99 +306,101 @@ export default function Interview() {
             </div>
           </div>
         </div>
-<div className="grid lg:grid-cols-[0.9fr,0.9fr,0.9fr,0.9fr,1.05fr] gap-4 mb-10">
-  {/* TYPES */}
 
-  {interviewTypes.map((item, index) => (
-    <div
-      key={index}
-      className="bg-white border border-[#e8e6e1] rounded-[1.7rem] p-5"
-    >
-      <div
-        className={`w-14 h-14 rounded-[1.3rem] ${item.color} flex items-center justify-center mb-5`}
-      >
-        {item.icon}
-      </div>
+        {/* INTERVIEW TYPES */}
 
-      <h3 className="text-[22px] font-semibold text-[#1d1d1f] mb-3 leading-snug">
-        {item.title}
-      </h3>
+        <div className="grid lg:grid-cols-[0.9fr,0.9fr,0.9fr,0.9fr,1.05fr] gap-4 mb-10">
+          {interviewTypes.map((item, index) => (
+            <div
+              key={index}
+              className="group bg-white border border-[#e8e6e1] rounded-[1.7rem] p-5 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_15px_35px_rgba(0,0,0,0.08)] hover:border-[#e6d5b5]"
+            >
+              <div
+                className={`w-14 h-14 rounded-[1.3rem] ${item.color} flex items-center justify-center mb-5 transition-all duration-300 group-hover:scale-110`}
+              >
+                {item.icon}
+              </div>
 
-      <p className="text-slate-500 leading-relaxed mb-6 font-medium text-[15px]">
-        {item.description}
-      </p>
+              <h3 className="text-[22px] font-semibold text-[#1d1d1f] mb-3 leading-snug">
+                {item.title}
+              </h3>
 
-      <button
-        className={`w-full h-11 rounded-xl font-semibold text-[15px] transition-all ${item.button}`}
-      >
-        Start Interview
-      </button>
-    </div>
-  ))}
+              <p className="text-slate-500 leading-relaxed mb-6 font-medium text-[15px]">
+                {item.description}
+              </p>
 
-  {/* PERFORMANCE */}
+              <button
+                className={`w-full h-11 rounded-xl font-semibold text-[15px] transition-all duration-300 hover:scale-[1.03] active:scale-95 ${item.button}`}
+              >
+                Start Interview
+              </button>
+            </div>
+          ))}
 
-  <div className="bg-white border border-[#e8e6e1] rounded-[1.7rem] p-5">
-    <h2 className="text-[22px] font-semibold text-[#1d1d1f] mb-6">
-      Your Performance
-    </h2>
+          {/* PERFORMANCE */}
 
-    <div className="flex justify-center mb-6">
-      <div className="w-36 h-36 rounded-full border-[10px] border-green-500 border-l-[#e8f8ef] border-b-[#e8f8ef] flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-4xl font-bold text-[#1d1d1f]">
-            72%
-          </h2>
+          <div className="group bg-white border border-[#e8e6e1] rounded-[1.7rem] p-5 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_15px_35px_rgba(0,0,0,0.08)]">
+            <h2 className="text-[22px] font-semibold text-[#1d1d1f] mb-6">
+              Your Performance
+            </h2>
 
-          <p className="text-slate-500 text-sm mt-1">
-            Overall Score
-          </p>
+            <div className="flex justify-center mb-6">
+              <div className="w-36 h-36 rounded-full border-[10px] border-green-500 border-l-[#e8f8ef] border-b-[#e8f8ef] flex items-center justify-center transition-all duration-500 group-hover:rotate-6">
+                <div className="text-center">
+                  <h2 className="text-4xl font-bold text-[#1d1d1f]">
+                    72%
+                  </h2>
+
+                  <p className="text-slate-500 text-sm mt-1">
+                    Overall Score
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-4 mb-6">
+              <div className="flex items-center justify-between">
+                <p className="text-slate-500 font-medium text-[15px]">
+                  Interviews Taken
+                </p>
+
+                <p className="font-semibold text-[#1d1d1f]">12</p>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <p className="text-slate-500 font-medium text-[15px]">
+                  Avg. Score
+                </p>
+
+                <p className="font-semibold text-[#1d1d1f]">72%</p>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <p className="text-slate-500 font-medium text-[15px]">
+                  Best Score
+                </p>
+
+                <p className="font-semibold text-[#1d1d1f]">88%</p>
+              </div>
+            </div>
+
+            <button className="text-[#c89a2b] font-semibold flex items-center gap-2 text-[15px] group">
+              View Performance
+
+              <ArrowRight className="w-4 h-4 transition-all duration-300 group-hover:translate-x-1" />
+            </button>
+          </div>
         </div>
-      </div>
-    </div>
 
-    <div className="space-y-4 mb-6">
-      <div className="flex items-center justify-between">
-        <p className="text-slate-500 font-medium text-[15px]">
-          Interviews Taken
-        </p>
-
-        <p className="font-semibold text-[#1d1d1f]">
-          12
-        </p>
-      </div>
-
-      <div className="flex items-center justify-between">
-        <p className="text-slate-500 font-medium text-[15px]">
-          Avg. Score
-        </p>
-
-        <p className="font-semibold text-[#1d1d1f]">
-          72%
-        </p>
-      </div>
-
-      <div className="flex items-center justify-between">
-        <p className="text-slate-500 font-medium text-[15px]">
-          Best Score
-        </p>
-
-        <p className="font-semibold text-[#1d1d1f]">
-          88%
-        </p>
-      </div>
-    </div>
-
-    <button className="text-[#c89a2b] font-semibold flex items-center gap-2 text-[15px]">
-      View Performance
-
-      <ArrowRight className="w-4 h-4" />
-    </button>
-  </div>
-</div>
         {/* TABLE */}
 
-        <div className="bg-white border border-[#e8e6e1] rounded-[2rem] overflow-hidden">
+        <div
+          className={`bg-white border border-[#e8e6e1] rounded-[2rem] overflow-hidden transition-all duration-700 ${
+            showFeedback
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 translate-y-6"
+          }`}
+        >
           {/* TOP */}
 
           <div className="flex items-center justify-between px-8 py-6 border-b border-[#f1f1f1]">
@@ -399,10 +408,10 @@ export default function Interview() {
               Recent Interviews
             </h2>
 
-            <button className="text-[#c89a2b] font-semibold flex items-center gap-2">
+            <button className="text-[#c89a2b] font-semibold flex items-center gap-2 group">
               View All Interviews
 
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-4 h-4 transition-all duration-300 group-hover:translate-x-1" />
             </button>
           </div>
 
@@ -441,10 +450,10 @@ export default function Interview() {
               <tbody>
                 {/* ROW */}
 
-                <tr className="border-b border-[#f1f1f1]">
+                <tr className="border-b border-[#f1f1f1] transition-all duration-300 hover:bg-[#faf7f2]">
                   <td className="px-8 py-6">
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-2xl bg-[#f3ecff] flex items-center justify-center">
+                      <div className="w-12 h-12 rounded-2xl bg-[#f3ecff] flex items-center justify-center transition-all duration-300 hover:scale-110">
                         <Code2 className="w-5 h-5 text-purple-600" />
                       </div>
 
@@ -477,7 +486,7 @@ export default function Interview() {
                   </td>
 
                   <td className="px-6 py-6">
-                    <button className="h-11 px-5 rounded-xl border border-[#d4a44d] text-[#c89a2b] font-semibold hover:bg-[#fff8eb] transition-all">
+                    <button className="h-11 px-5 rounded-xl border border-[#d4a44d] text-[#c89a2b] font-semibold transition-all duration-300 hover:bg-[#fff8eb] hover:scale-105 active:scale-95">
                       View Report
                     </button>
                   </td>
@@ -485,10 +494,10 @@ export default function Interview() {
 
                 {/* ROW */}
 
-                <tr>
+                <tr className="transition-all duration-300 hover:bg-[#faf7f2]">
                   <td className="px-8 py-6">
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-2xl bg-[#edf8ef] flex items-center justify-center">
+                      <div className="w-12 h-12 rounded-2xl bg-[#edf8ef] flex items-center justify-center transition-all duration-300 hover:scale-110">
                         <Briefcase className="w-5 h-5 text-green-600" />
                       </div>
 
@@ -521,7 +530,7 @@ export default function Interview() {
                   </td>
 
                   <td className="px-6 py-6">
-                    <button className="h-11 px-5 rounded-xl border border-[#d4a44d] text-[#c89a2b] font-semibold hover:bg-[#fff8eb] transition-all">
+                    <button className="h-11 px-5 rounded-xl border border-[#d4a44d] text-[#c89a2b] font-semibold transition-all duration-300 hover:bg-[#fff8eb] hover:scale-105 active:scale-95">
                       View Report
                     </button>
                   </td>

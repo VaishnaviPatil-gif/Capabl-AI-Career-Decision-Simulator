@@ -11,7 +11,6 @@ import {
   Settings,
   Bell,
   ChevronDown,
-  Globe,
   Shield,
   Trash2,
   Camera,
@@ -31,9 +30,7 @@ export default function SettingsPage() {
             <div className="w-1.5 h-1.5 bg-[#1d1d1f] rounded-full"></div>
           </div>
 
-          <span className="text-xl font-bold">
-            Capabl
-          </span>
+          <span className="text-xl font-bold">Capabl</span>
         </a>
 
         {/* NAV */}
@@ -171,7 +168,7 @@ export default function SettingsPage() {
 
           {/* PROFILE INFO */}
 
-          <div className="bg-white border border-[#e8e6e1] rounded-[22px] p-7 mb-6">
+          <div className="bg-white border border-[#e8e6e1] rounded-[22px] p-7 mb-6 transition-all duration-300 hover:shadow-[0_10px_30px_rgba(0,0,0,0.05)]">
             <div className="flex items-start justify-between mb-6">
               <div>
                 <h2 className="text-[20px] font-semibold text-[#111111] mb-1">
@@ -183,7 +180,7 @@ export default function SettingsPage() {
                 </p>
               </div>
 
-              <button className="h-11 px-5 rounded-xl bg-[#c89a2b] text-white text-[14px] font-medium hover:opacity-90 transition">
+              <button className="group h-11 px-5 rounded-xl bg-[#c89a2b] text-white text-[14px] font-medium transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_10px_25px_rgba(200,154,43,0.22)] active:scale-[0.97]">
                 Save Changes
               </button>
             </div>
@@ -198,8 +195,8 @@ export default function SettingsPage() {
                   className="w-[110px] h-[110px] rounded-full object-cover"
                 />
 
-                <button className="absolute bottom-0 right-0 w-10 h-10 rounded-full bg-[#1d1d1f] flex items-center justify-center border-4 border-white">
-                  <Camera className="w-4 h-4 text-white" />
+                <button className="group absolute bottom-0 right-0 w-10 h-10 rounded-full bg-[#1d1d1f] flex items-center justify-center border-4 border-white transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_20px_rgba(0,0,0,0.18)] active:scale-95">
+                  <Camera className="w-4 h-4 text-white transition-all duration-300 group-hover:rotate-12" />
                 </button>
               </div>
 
@@ -214,7 +211,7 @@ export default function SettingsPage() {
                   <input
                     type="text"
                     value="Reya Doshi"
-                    className="w-full h-12 px-4 rounded-xl border border-[#dedad2] outline-none text-[14px]"
+                    className="w-full h-12 px-4 rounded-xl border border-[#dedad2] outline-none text-[14px] focus:border-[#c89a2b] transition-all"
                   />
                 </div>
 
@@ -226,7 +223,7 @@ export default function SettingsPage() {
                   <input
                     type="text"
                     value="reya@gmail.com"
-                    className="w-full h-12 px-4 rounded-xl border border-[#dedad2] outline-none text-[14px]"
+                    className="w-full h-12 px-4 rounded-xl border border-[#dedad2] outline-none text-[14px] focus:border-[#c89a2b] transition-all"
                   />
                 </div>
 
@@ -238,7 +235,7 @@ export default function SettingsPage() {
                   <input
                     type="text"
                     value="BRECW Hyderabad"
-                    className="w-full h-12 px-4 rounded-xl border border-[#dedad2] outline-none text-[14px]"
+                    className="w-full h-12 px-4 rounded-xl border border-[#dedad2] outline-none text-[14px] focus:border-[#c89a2b] transition-all"
                   />
                 </div>
 
@@ -250,7 +247,7 @@ export default function SettingsPage() {
                   <input
                     type="text"
                     value="B.Tech Information Technology"
-                    className="w-full h-12 px-4 rounded-xl border border-[#dedad2] outline-none text-[14px]"
+                    className="w-full h-12 px-4 rounded-xl border border-[#dedad2] outline-none text-[14px] focus:border-[#c89a2b] transition-all"
                   />
                 </div>
               </div>
@@ -259,7 +256,7 @@ export default function SettingsPage() {
 
           {/* PREFERENCES */}
 
-          <div className="bg-white border border-[#e8e6e1] rounded-[22px] p-7 mb-6">
+          <div className="bg-white border border-[#e8e6e1] rounded-[22px] p-7 mb-6 transition-all duration-300 hover:shadow-[0_10px_30px_rgba(0,0,0,0.05)]">
             <div className="mb-6">
               <h2 className="text-[20px] font-semibold text-[#111111] mb-1">
                 Preferences
@@ -276,7 +273,7 @@ export default function SettingsPage() {
                   Language
                 </label>
 
-                <select className="w-full h-12 px-4 rounded-xl border border-[#dedad2] outline-none text-[14px] bg-white">
+                <select className="w-full h-12 px-4 rounded-xl border border-[#dedad2] outline-none text-[14px] bg-white transition-all focus:border-[#c89a2b]">
                   <option>English</option>
                   <option>Hindi</option>
                 </select>
@@ -287,7 +284,7 @@ export default function SettingsPage() {
                   Time Zone
                 </label>
 
-                <select className="w-full h-12 px-4 rounded-xl border border-[#dedad2] outline-none text-[14px] bg-white">
+                <select className="w-full h-12 px-4 rounded-xl border border-[#dedad2] outline-none text-[14px] bg-white transition-all focus:border-[#c89a2b]">
                   <option>
                     (GMT+05:30) India Standard Time
                   </option>
@@ -299,7 +296,7 @@ export default function SettingsPage() {
                   Notification Plan
                 </label>
 
-                <select className="w-full h-12 px-4 rounded-xl border border-[#dedad2] outline-none text-[14px] bg-white">
+                <select className="w-full h-12 px-4 rounded-xl border border-[#dedad2] outline-none text-[14px] bg-white transition-all focus:border-[#c89a2b]">
                   <option>Standard</option>
                   <option>Important Only</option>
                   <option>All Notifications</option>
@@ -313,7 +310,7 @@ export default function SettingsPage() {
           <div className="grid grid-cols-2 gap-6 mb-6">
             {/* NOTIFICATIONS */}
 
-            <div className="bg-white border border-[#e8e6e1] rounded-[22px] p-7">
+            <div className="bg-white border border-[#e8e6e1] rounded-[22px] p-7 transition-all duration-300 hover:shadow-[0_10px_30px_rgba(0,0,0,0.05)]">
               <div className="mb-6">
                 <h2 className="text-[20px] font-semibold text-[#111111] mb-1">
                   Notifications
@@ -357,13 +354,13 @@ export default function SettingsPage() {
                     </div>
 
                     <button
-                      className={`w-11 h-6 rounded-full flex items-center px-1 transition ${
+                      className={`w-11 h-6 rounded-full flex items-center px-1 transition-all duration-300 ${
                         item[2]
                           ? "bg-[#c89a2b] justify-end"
                           : "bg-[#e5e5e5] justify-start"
                       }`}
                     >
-                      <div className="w-4 h-4 bg-white rounded-full"></div>
+                      <div className="w-4 h-4 bg-white rounded-full transition-all duration-300"></div>
                     </button>
                   </div>
                 ))}
@@ -372,7 +369,7 @@ export default function SettingsPage() {
 
             {/* PRIVACY */}
 
-            <div className="bg-white border border-[#e8e6e1] rounded-[22px] p-7">
+            <div className="bg-white border border-[#e8e6e1] rounded-[22px] p-7 transition-all duration-300 hover:shadow-[0_10px_30px_rgba(0,0,0,0.05)]">
               <div className="mb-6">
                 <h2 className="text-[20px] font-semibold text-[#111111] mb-1">
                   Privacy & Security
@@ -400,10 +397,10 @@ export default function SettingsPage() {
                 ].map((item, index) => (
                   <div
                     key={index}
-                    className="flex items-center justify-between"
+                    className="flex items-center justify-between p-2 rounded-2xl transition-all duration-300 hover:bg-[#faf7f2]"
                   >
                     <div className="flex items-start gap-4">
-                      <div className="w-10 h-10 rounded-xl bg-[#f7f5f2] flex items-center justify-center">
+                      <div className="w-10 h-10 rounded-xl bg-[#f7f5f2] flex items-center justify-center transition-all duration-300 hover:bg-[#ece7df]">
                         {index === 0 && (
                           <Shield className="w-5 h-5" />
                         )}
@@ -428,7 +425,7 @@ export default function SettingsPage() {
                       </div>
                     </div>
 
-                    <ChevronDown className="-rotate-90 w-5 h-5 text-slate-400" />
+                    <ChevronDown className="-rotate-90 w-5 h-5 text-slate-400 transition-all duration-300 hover:translate-x-1" />
                   </div>
                 ))}
               </div>
@@ -437,7 +434,7 @@ export default function SettingsPage() {
 
           {/* DANGER ZONE */}
 
-          <div className="bg-[#fff5f3] border border-[#f4d5cf] rounded-[22px] p-7 flex items-center justify-between">
+          <div className="bg-[#fff5f3] border border-[#f4d5cf] rounded-[22px] p-7 flex items-center justify-between transition-all duration-300 hover:shadow-[0_10px_30px_rgba(180,35,24,0.06)]">
             <div>
               <h2 className="text-[20px] font-semibold text-[#b42318] mb-1">
                 Danger Zone
@@ -448,8 +445,8 @@ export default function SettingsPage() {
               </p>
             </div>
 
-            <button className="h-11 px-6 rounded-xl border border-[#ef4444] text-[#dc2626] text-[14px] font-medium hover:bg-red-50 transition flex items-center gap-2">
-              <Trash2 className="w-4 h-4" />
+            <button className="group h-11 px-6 rounded-xl border border-[#ef4444] text-[#dc2626] text-[14px] font-medium transition-all duration-300 hover:bg-red-50 hover:scale-[1.03] active:scale-[0.97] flex items-center gap-2">
+              <Trash2 className="w-4 h-4 transition-all duration-300 group-hover:rotate-6" />
               Delete Account
             </button>
           </div>

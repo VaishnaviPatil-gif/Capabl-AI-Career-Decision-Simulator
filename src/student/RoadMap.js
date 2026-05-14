@@ -91,103 +91,103 @@ export default function RoadMap() {
   return (
     <div className="min-h-screen bg-[#f7f5f2] flex">
       {/* SIDEBAR */}
-<aside className="w-[270px] bg-white border-r border-[#e8e6e1] min-h-screen px-6 py-8 hidden lg:flex flex-col fixed left-0 top-0">
-  {/* LOGO */}
+      <aside className="w-[270px] bg-white border-r border-[#e8e6e1] min-h-screen px-6 py-8 hidden lg:flex flex-col fixed left-0 top-0">
+        {/* LOGO */}
 
-  <a href="/" className="flex items-center gap-2 mb-12">
-    <div className="w-8 h-8 rounded-full border-[3px] border-[#1d1d1f] flex items-center justify-center">
-      <div className="w-1.5 h-1.5 bg-[#1d1d1f] rounded-full"></div>
-    </div>
+        <a href="/" className="flex items-center gap-2 mb-12">
+          <div className="w-8 h-8 rounded-full border-[3px] border-[#1d1d1f] flex items-center justify-center">
+            <div className="w-1.5 h-1.5 bg-[#1d1d1f] rounded-full"></div>
+          </div>
 
-    <span className="text-xl font-bold">
-      Capabl
-    </span>
-  </a>
+          <span className="text-xl font-bold">
+            Capabl
+          </span>
+        </a>
 
-  {/* NAV */}
+        {/* NAV */}
 
-  <div className="space-y-2">
-    <a
-      href="/dashboard"
-      className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all font-medium"
-    >
-      <LayoutDashboard className="w-5 h-5" />
-      Dashboard
-    </a>
+        <div className="space-y-2">
+          <a
+            href="/dashboard"
+            className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all font-medium"
+          >
+            <LayoutDashboard className="w-5 h-5" />
+            Dashboard
+          </a>
 
-    <a
-      href="/analyzer"
-      className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all font-medium"
-    >
-      <Brain className="w-5 h-5" />
-      AI Analyzer
-    </a>
+          <a
+            href="/analyzer"
+            className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all font-medium"
+          >
+            <Brain className="w-5 h-5" />
+            AI Analyzer
+          </a>
 
-    <a
-      href="/road-map"
-      className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-[#1d1d1f] text-white font-semibold"
-    >
-      <Route className="w-5 h-5 text-white" />
-      Roadmap
-    </a>
+          <a
+            href="/road-map"
+            className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-[#1d1d1f] text-white font-semibold"
+          >
+            <Route className="w-5 h-5 text-white" />
+            Roadmap
+          </a>
 
-    <a
-      href="/skill-gap"
-      className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all font-medium"
-    >
-      <FileSearch className="w-5 h-5" />
-      Skill Gap
-    </a>
+          <a
+            href="/skill-gap"
+            className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all font-medium"
+          >
+            <FileSearch className="w-5 h-5" />
+            Skill Gap
+          </a>
 
-    <a
-      href="/resume"
-      className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all font-medium"
-    >
-      <FileText className="w-5 h-5" />
-      Resume
-    </a>
+          <a
+            href="/resume"
+            className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all font-medium"
+          >
+            <FileText className="w-5 h-5" />
+            Resume
+          </a>
 
-    <a
-      href="/interview"
-      className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all font-medium"
-    >
-      <Video className="w-5 h-5" />
-      Mock Interview
-    </a>
+          <a
+            href="/interview"
+            className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all font-medium"
+          >
+            <Video className="w-5 h-5" />
+            Mock Interview
+          </a>
 
-    <a
-      href="/projects"
-      className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all font-medium"
-    >
-      <FolderKanban className="w-5 h-5" />
-      Projects
-    </a>
+          <a
+            href="/projects"
+            className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all font-medium"
+          >
+            <FolderKanban className="w-5 h-5" />
+            Projects
+          </a>
 
-    <a
-      href="/recommendations"
-      className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all font-medium"
-    >
-      <Bookmark className="w-5 h-5" />
-      Recommendations
-    </a>
+          <a
+            href="/recommendations"
+            className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all font-medium"
+          >
+            <Bookmark className="w-5 h-5" />
+            Recommendations
+          </a>
 
-    <a
-      href="/profile"
-      className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all font-medium"
-    >
-      <User className="w-5 h-5" />
-      Profile
-    </a>
+          <a
+            href="/profile"
+            className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all font-medium"
+          >
+            <User className="w-5 h-5" />
+            Profile
+          </a>
 
-    <a
-      href="/settings"
-      className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all font-medium"
-    >
-      <Settings className="w-5 h-5" />
-      Settings
-    </a>
-  </div>
-</aside>
+          <a
+            href="/settings"
+            className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all font-medium"
+          >
+            <Settings className="w-5 h-5" />
+            Settings
+          </a>
+        </div>
+      </aside>
 
       {/* MAIN */}
 
@@ -238,101 +238,102 @@ export default function RoadMap() {
           </div>
         </div>
 
-        {/* TOP CARDS */}
+{/* TOP CARDS */}
 
-        <div className="grid lg:grid-cols-4 gap-5 mb-10">
-          {/* CARD */}
+<div className="grid lg:grid-cols-4 gap-5 mb-10">
+  {/* CARD */}
 
-          <div className="bg-white border border-[#e8e6e1] rounded-[2rem] p-6">
-            <div className="flex items-center justify-between mb-5">
-              <h3 className="font-semibold text-[#1d1d1f]">
-                Overall Progress
-              </h3>
+  <div className="bg-white border border-[#e8e6e1] rounded-[2rem] p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-[#c89a2b]/10">
+    <div className="flex items-center justify-between mb-5">
+      <h3 className="font-semibold text-[#1d1d1f]">
+        Overall Progress
+      </h3>
 
-              <div className="w-12 h-12 rounded-2xl bg-[#f8f1e5] flex items-center justify-center">
-                <TrendingUp className="w-5 h-5 text-[#c89a2b]" />
-              </div>
-            </div>
+      <div className="w-12 h-12 rounded-2xl bg-[#f8f1e5] flex items-center justify-center">
+        <TrendingUp className="w-5 h-5 text-[#c89a2b]" />
+      </div>
+    </div>
 
-            <h2 className="text-4xl font-bold text-[#c89a2b] mb-4">
-              62%
-            </h2>
+    <h2 className="text-4xl font-bold text-[#c89a2b] mb-4">
+      62%
+    </h2>
 
-            <div className="w-full h-3 rounded-full bg-[#ece6dc] overflow-hidden mb-3">
-              <div className="w-[62%] h-full bg-[#c89a2b] rounded-full"></div>
-            </div>
+    <div className="w-full h-3 rounded-full bg-[#ece6dc] overflow-hidden mb-3">
+      <div className="w-[62%] h-full bg-[#c89a2b] rounded-full transition-all duration-1000 ease-out"></div>
+    </div>
 
-            <p className="text-sm text-slate-500">
-              Keep going! You're doing great.
-            </p>
-          </div>
+    <p className="text-sm text-slate-500">
+      Keep going! You're doing great.
+    </p>
+  </div>
 
-          {/* CARD */}
+  {/* CARD */}
 
-          <div className="bg-white border border-[#e8e6e1] rounded-[2rem] p-6">
-            <div className="flex items-center justify-between mb-5">
-              <h3 className="font-semibold text-[#1d1d1f]">
-                Estimated Time
-              </h3>
+  <div className="bg-white border border-[#e8e6e1] rounded-[2rem] p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-[#c89a2b]/10">
+    <div className="flex items-center justify-between mb-5">
+      <h3 className="font-semibold text-[#1d1d1f]">
+        Estimated Time
+      </h3>
 
-              <div className="w-12 h-12 rounded-2xl bg-[#f8f1e5] flex items-center justify-center">
-                <Clock3 className="w-5 h-5 text-[#c89a2b]" />
-              </div>
-            </div>
+      <div className="w-12 h-12 rounded-2xl bg-[#f8f1e5] flex items-center justify-center">
+        <Clock3 className="w-5 h-5 text-[#c89a2b]" />
+      </div>
+    </div>
 
-            <h2 className="text-3xl font-bold text-[#1d1d1f] mb-4">
-              3.5 Months
-            </h2>
+    <h2 className="text-3xl font-bold text-[#1d1d1f] mb-4">
+      3.5 Months
+    </h2>
 
-            <p className="text-sm text-slate-500">
-              To reach your goal
-            </p>
-          </div>
+    <p className="text-sm text-slate-500">
+      To reach your goal
+    </p>
+  </div>
 
-          {/* CARD */}
+  {/* CARD */}
 
-          <div className="bg-white border border-[#e8e6e1] rounded-[2rem] p-6">
-            <div className="flex items-center justify-between mb-5">
-              <h3 className="font-semibold text-[#1d1d1f]">
-                Current Stage
-              </h3>
+  <div className="bg-white border border-[#e8e6e1] rounded-[2rem] p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-green-200/40">
+    <div className="flex items-center justify-between mb-5">
+      <h3 className="font-semibold text-[#1d1d1f]">
+        Current Stage
+      </h3>
 
-              <div className="w-12 h-12 rounded-2xl bg-[#edf8ef] flex items-center justify-center">
-                <Flag className="w-5 h-5 text-green-600" />
-              </div>
-            </div>
+      <div className="w-12 h-12 rounded-2xl bg-[#edf8ef] flex items-center justify-center">
+        <Flag className="w-5 h-5 text-green-600" />
+      </div>
+    </div>
 
-            <h2 className="text-3xl font-bold text-[#1d1d1f] mb-4">
-              2 of 5
-            </h2>
+    <h2 className="text-3xl font-bold text-[#1d1d1f] mb-4">
+      2 of 5
+    </h2>
 
-            <p className="text-sm text-slate-500">
-              Core Skills
-            </p>
-          </div>
+    <p className="text-sm text-slate-500">
+      Core Skills
+    </p>
+  </div>
 
-          {/* CARD */}
+  {/* CARD */}
 
-          <div className="bg-white border border-[#e8e6e1] rounded-[2rem] p-6">
-            <div className="flex items-center justify-between mb-5">
-              <h3 className="font-semibold text-[#1d1d1f]">
-                Target Role
-              </h3>
+  <div className="bg-white border border-[#e8e6e1] rounded-[2rem] p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-purple-200/40">
+    <div className="flex items-center justify-between mb-5">
+      <h3 className="font-semibold text-[#1d1d1f]">
+        Target Role
+      </h3>
 
-              <div className="w-12 h-12 rounded-2xl bg-[#f4efff] flex items-center justify-center">
-                <BriefcaseBusiness className="w-5 h-5 text-purple-500" />
-              </div>
-            </div>
+      <div className="w-12 h-12 rounded-2xl bg-[#f4efff] flex items-center justify-center">
+        <BriefcaseBusiness className="w-5 h-5 text-purple-500" />
+      </div>
+    </div>
 
-            <h2 className="text-2xl font-bold text-[#1d1d1f] leading-tight mb-3">
-              Full Stack Developer
-            </h2>
+    <h2 className="text-2xl font-bold text-[#1d1d1f] leading-tight mb-3">
+      Full Stack Developer
+    </h2>
 
-            <p className="text-sm text-slate-500">
-              Next: Advanced Concepts
-            </p>
-          </div>
-        </div>
+    <p className="text-sm text-slate-500">
+      Next: Advanced Concepts
+    </p>
+  </div>
+</div>
+
 
         {/* ROADMAP */}
 
@@ -352,7 +353,13 @@ export default function RoadMap() {
 
         <div className="space-y-5 mb-8">
           {stages.map((stage, index) => (
-            <div key={index} className="flex gap-6">
+            <div
+              key={index}
+              className="flex gap-6 opacity-0 animate-[fadeIn_0.6s_ease_forwards]"
+              style={{
+                animationDelay: `${index * 0.12}s`,
+              }}
+            >
               {/* LEFT */}
 
               <div className="w-[240px] flex gap-5">
@@ -404,10 +411,12 @@ export default function RoadMap() {
               {/* RIGHT */}
 
               <div
-                className={`flex-1 border rounded-[2rem] p-6 ${
+                className={`flex-1 border rounded-[2rem] p-6 transition-all duration-300 ${
                   stage.active
-                    ? "border-[#e7c47c] bg-[#fffdfa]"
-                    : "border-[#e8e6e1] bg-white"
+                    ? "border-[#e7c47c] bg-[#fffdfa] hover:-translate-y-1 hover:shadow-2xl"
+                    : stage.locked
+                    ? "border-[#e8e6e1] bg-white hover:opacity-90 hover:shadow-md"
+                    : "border-[#e8e6e1] bg-white hover:-translate-y-1 hover:shadow-2xl"
                 }`}
               >
                 <div className="flex items-start justify-between gap-5">
@@ -421,7 +430,7 @@ export default function RoadMap() {
                     {stage.active && (
                       <div className="flex items-center gap-4 mb-5">
                         <div className="flex-1 h-3 rounded-full bg-[#ece6dc] overflow-hidden">
-                          <div className="w-[60%] h-full bg-[#c89a2b] rounded-full"></div>
+                          <div className="w-[60%] h-full bg-[#c89a2b] rounded-full transition-all duration-1000 ease-out"></div>
                         </div>
 
                         <span className="font-semibold text-[#c89a2b]">
@@ -511,6 +520,22 @@ export default function RoadMap() {
             </button>
           </div>
         </div>
+
+        {/* ANIMATION STYLE */}
+
+        <style jsx>{`
+          @keyframes fadeIn {
+            from {
+              opacity: 0;
+              transform: translateY(20px);
+            }
+
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+        `}</style>
       </main>
     </div>
   );

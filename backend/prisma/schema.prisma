@@ -36,6 +36,65 @@ model User {
 
   aiAnalysis      AIAnalysis?
 
+  skillProgress   SkillProgress[]
+  weeklyProgress  WeeklyTaskProgress[]
+
+  interviews      InterviewSession[]
+
+}
+
+model InterviewSession {
+
+  id              Int      @id @default(autoincrement())
+
+  topic           String
+  level           String   @default("medium")
+  durationKey     String   @default("medium")
+  totalQuestions  Int      @default(5)
+
+  status          String   @default("active")
+
+  transcript      Json?
+
+  score           Int?
+  strengths       String[]
+  weaknesses      String[]
+  advice          String[]
+  summary         String?
+
+  startedAt       DateTime @default(now())
+  finishedAt      DateTime?
+
+  userId          Int
+  user            User     @relation(fields: [userId], references: [id])
+}
+
+model SkillProgress {
+
+  id          Int      @id @default(autoincrement())
+
+  skillName   String
+  source      String?  @default("manual")
+  completedAt DateTime @default(now())
+
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, skillName])
+}
+
+model WeeklyTaskProgress {
+
+  id          Int      @id @default(autoincrement())
+
+  week        Int
+  taskKey     String
+  completedAt DateTime @default(now())
+
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, week, taskKey])
 }
 
 model Skill {

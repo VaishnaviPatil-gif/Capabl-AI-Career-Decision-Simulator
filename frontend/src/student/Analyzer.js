@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import logout from "../utils/logout";
 
 import {
   LayoutDashboard,
@@ -32,7 +33,7 @@ const LinkedinIcon = (props) => (
   <img src="/linkedin.jpg" alt="LinkedIn" {...props} />
 );
 
-import logout from "../utils/logout";
+
 
 const SidebarLink = ({ href, icon: Icon, label, active }) => (
   <a

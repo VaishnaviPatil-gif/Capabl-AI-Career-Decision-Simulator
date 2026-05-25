@@ -50,12 +50,12 @@ function gapTone(gapPct) {
   return { bar: "bg-green-500", chip: "bg-[#e7f7ea] text-green-700" };
 }
 
-function levelLabel(known, stageStatus) {
-  if (known) return "Confident";
-  if (stageStatus === "active") return "In progress";
-  if (stageStatus === "completed") return "Confident";
-  return "Beginner";
-}
+const EVIDENCE_LABEL = {
+  resume: "from resume",
+  profile: "in profile",
+  github: "on GitHub",
+  completed: "marked done",
+};
 
 export default function SkillGap() {
   const [loading, setLoading] = useState(true);
@@ -80,53 +80,16 @@ export default function SkillGap() {
     })();
   }, []);
 
-  // Build the per-skill breakdown rows from the role's required skills.
-  // For each required skill we say:
-  //   - level: what the user currently has (Confident / In progress / Beginner)
-  //   - required: target level (Advanced for required skills)
-  //   - gap%: 0 if known, otherwise scaled by how early in the roadmap the
-  //           skill appears (earlier stage = bigger gap, since it's a blocker)
+  // Per-skill rows now come straight from the backend's `skillProficiency`
+  // array — it derives `level`, `currentPct`, and `gapPct` from REAL evidence
+  // sources (resume parse, profile skills, GitHub languages, manually-marked
+  // roadmap completions) instead of synthetic stage-index math.
   const rows = useMemo(() => {
     if (!analysis) return [];
-    const stages = analysis.roadmapStages || [];
-    const knownSet = new Set(
-      (analysis.extractedSkills || []).map((s) => s.toLowerCase())
-    );
-
-    const stageBySkill = new Map();
-    stages.forEach((stage, stageIdx) => {
-      (stage.skills || []).forEach((sk) => {
-        if (!stageBySkill.has(sk.name)) {
-          stageBySkill.set(sk.name, { stage, stageIdx });
-        }
-      });
-    });
-
-    const required = analysis.requiredSkills || [];
-    return required.map((name) => {
-      const known = knownSet.has(name);
-      const meta = stageBySkill.get(name);
-      const stageIdx = meta?.stageIdx ?? stages.length - 1;
-      const stageStatus = meta?.stage?.status || "locked";
-
-      // Earlier stages have a bigger relative gap (blocking foundations).
-      const gapPct = known
-        ? 0
-        : Math.round(
-            100 - Math.min(80, stageIdx * 20) // stage 0 → 100, stage 1 → 80, stage 2 → 60 ...
-          ) + (stageStatus === "locked" ? 0 : -10);
-
-      const safeGap = Math.max(20, Math.min(100, gapPct));
-
-      return {
-        name,
-        level: levelLabel(known, stageStatus),
-        required: "Advanced",
-        currentPct: known ? 100 : Math.max(20, 100 - safeGap),
-        targetPct: 100,
-        gapPct: known ? 0 : safeGap,
-      };
-    });
+    return (analysis.skillProficiency || []).map((s) => ({
+      ...s,
+      required: "Advanced",
+    }));
   }, [analysis]);
 
   if (loading) {
@@ -337,11 +300,29 @@ export default function SkillGap() {
                   return (
                     <div
                       key={skill.name}
-                      className="grid grid-cols-1 sm:grid-cols-[1fr_1fr_1fr_auto] items-center gap-4 sm:gap-5 border-b border-[#f2f2f2] pb-4 rounded-2xl px-3 py-3 hover:bg-[#faf8f4] transition-all"
+                      className="grid grid-cols-1 sm:grid-cols-[1.2fr_1fr_1fr_auto] items-center gap-4 sm:gap-5 border-b border-[#f2f2f2] pb-4 rounded-2xl px-3 py-3 hover:bg-[#faf8f4] transition-all"
                     >
-                      <h3 className="font-medium text-[#1d1d1f] capitalize">
-                        {skill.name}
-                      </h3>
+                      <div>
+                        <h3 className="font-medium text-[#1d1d1f] capitalize mb-1">
+                          {skill.name}
+                        </h3>
+                        {skill.evidence && skill.evidence.length > 0 ? (
+                          <div className="flex flex-wrap gap-1">
+                            {skill.evidence.map((ev) => (
+                              <span
+                                key={ev}
+                                className="text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-[#f4efff] text-purple-700 font-semibold"
+                              >
+                                {EVIDENCE_LABEL[ev] || ev}
+                              </span>
+                            ))}
+                          </div>
+                        ) : (
+                          <span className="text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-[#fff0ed] text-red-600 font-semibold">
+                            no evidence yet
+                          </span>
+                        )}
+                      </div>
 
                       <div>
                         <p className="text-sm text-slate-500 mb-2">

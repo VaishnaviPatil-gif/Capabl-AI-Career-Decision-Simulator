@@ -359,7 +359,8 @@ export const endVoiceCall = async (req: any, res: any) => {
         const call = await getCall(session.retellCallId);
         transcript = normaliseTranscript(call);
         durationSeconds =
-          call?.end_timestamp && call?.start_timestamp
+          typeof call?.end_timestamp === "number" &&
+          typeof call?.start_timestamp === "number"
             ? Math.round((call.end_timestamp - call.start_timestamp) / 1000)
             : null;
       } catch (e: any) {
@@ -377,9 +378,13 @@ export const endVoiceCall = async (req: any, res: any) => {
       : rawTurns;
 
     await prisma.interviewSession.update({
-      where: { id: sessionId },
-      data: { transcript, turns, durationSeconds },
-    });
+  where: { id: sessionId },
+  data: {
+    transcript,
+    turns: turns as any,
+    durationSeconds,
+  },
+});
 
     // Auto-finalise voice sessions right after the call ends.
     return finalise(session.id, userId, res);

@@ -1,4 +1,4 @@
-// retellService.js
+// retellService.ts
 // -----------------------------------------------------------------------------
 // Thin wrapper around the Retell AI REST API.
 //
@@ -20,17 +20,89 @@
 // SAME agent can run any of our 100+ candidate × type combinations.
 // -----------------------------------------------------------------------------
 
+// ---------------------------------------------------------------------------
+// Domain types
+// ---------------------------------------------------------------------------
+
+export interface VoiceStatus {
+  available: boolean;
+  hasApiKey: boolean;
+  hasAgentId: boolean;
+  phoneNumber: string | null;
+  interviewerName: string;
+}
+
+export interface WebCallResult {
+  provider: "retell-web" | "demo";
+  call_id: string | null;
+  access_token: string | null;
+  agent_id?: string;
+}
+
+export interface PhoneCallResult {
+  provider: "retell-phone" | "demo";
+  call_id: string | null;
+}
+
+/** Raw turn shape inside a Retell transcript object. */
+interface RetellTranscriptTurn {
+  role: string;
+  content?: string;
+  words?: Array<{ word: string }>;
+  start_time_ms?: number | null;
+}
+
+/** Raw call object returned by Retell's GET /v2/get-call/:id endpoint. */
+export interface RetellCall {
+  call_id?: string;
+  transcript_object?: RetellTranscriptTurn[];
+  transcript?: RetellTranscriptTurn[];
+  [key: string]: unknown;
+}
+
+/** Normalised turn used by the rest of the application. */
+export interface NormalisedTurn {
+  role: "ai" | "candidate";
+  text: string;
+  ts: number | null;
+}
+
+/** Q/A pair produced by pairTranscriptToTurns. */
+export interface TranscriptQAPair {
+  question: string;
+  answer: string | null;
+}
+
+/** Dynamic variables forwarded to the Retell agent. */
+type DynamicVariables = Record<string, unknown>;
+
+// Augmented Error with HTTP metadata
+class RetellError extends Error {
+  status: number;
+  body: unknown;
+  constructor(message: string, status: number, body: unknown) {
+    super(message);
+    this.name = "RetellError";
+    this.status = status;
+    this.body = body;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Constants & internal helpers
+// ---------------------------------------------------------------------------
+
 const RETELL_BASE = "https://api.retellai.com";
 
-function getKey() {
+function getKey(): string | null {
   return process.env.RETELL_API_KEY || null;
 }
 
-export function isVoiceAvailable() {
+export function isVoiceAvailable(): boolean {
   return Boolean(getKey() && process.env.RETELL_AGENT_ID);
 }
 
-export function getVoiceStatus() {
+export function getVoiceStatus(): VoiceStatus {
   return {
     available: isVoiceAvailable(),
     hasApiKey: Boolean(getKey()),
@@ -40,31 +112,38 @@ export function getVoiceStatus() {
   };
 }
 
-async function retellFetch(path, options = {}) {
+async function retellFetch(
+  path: string,
+  options: RequestInit = {}
+): Promise<Record<string, unknown>> {
   const key = getKey();
   if (!key) throw new Error("RETELL_API_KEY not configured");
+
   const res = await fetch(`${RETELL_BASE}${path}`, {
     ...options,
     headers: {
       Authorization: `Bearer ${key}`,
       "Content-Type": "application/json",
-      ...(options.headers || {}),
+      ...(options.headers as Record<string, string> || {}),
     },
   });
+
   const text = await res.text();
-  let body;
+  let body: Record<string, unknown>;
   try {
     body = text ? JSON.parse(text) : {};
   } catch {
     body = { raw: text };
   }
+
   if (!res.ok) {
-    const msg = body?.error_message || body?.message || `Retell ${res.status}`;
-    const err = new Error(msg);
-    err.status = res.status;
-    err.body = body;
-    throw err;
+    const msg =
+      (body?.error_message as string) ||
+      (body?.message as string) ||
+      `Retell ${res.status}`;
+    throw new RetellError(msg, res.status, body);
   }
+
   return body;
 }
 
@@ -74,7 +153,14 @@ async function retellFetch(path, options = {}) {
 // Returns { call_id, access_token } — the frontend uses retell-client-js-sdk
 // with that access_token to start an in-browser WebRTC voice session.
 // ---------------------------------------------------------------------------
-export async function createWebCall({ systemPrompt, dynamicVariables }) {
+
+export async function createWebCall({
+  systemPrompt,
+  dynamicVariables,
+}: {
+  systemPrompt: string;
+  dynamicVariables?: DynamicVariables;
+}): Promise<WebCallResult> {
   if (!isVoiceAvailable()) {
     return { provider: "demo", call_id: null, access_token: null };
   }
@@ -88,9 +174,9 @@ export async function createWebCall({ systemPrompt, dynamicVariables }) {
   });
   return {
     provider: "retell-web",
-    call_id: body.call_id,
-    access_token: body.access_token,
-    agent_id: body.agent_id,
+    call_id: body.call_id as string,
+    access_token: body.access_token as string,
+    agent_id: body.agent_id as string,
   };
 }
 
@@ -98,7 +184,14 @@ export async function createWebCall({ systemPrompt, dynamicVariables }) {
 // CREATE A PHONE CALL  (Phase 2-and-a-half — left wired but unused by the UI
 // until the user provisions a Twilio number bound to their Retell agent.)
 // ---------------------------------------------------------------------------
-export async function createPhoneCall({ toNumber, dynamicVariables }) {
+
+export async function createPhoneCall({
+  toNumber,
+  dynamicVariables,
+}: {
+  toNumber: string;
+  dynamicVariables?: DynamicVariables;
+}): Promise<PhoneCallResult> {
   if (!isVoiceAvailable() || !process.env.RETELL_PHONE_NUMBER) {
     return { provider: "demo", call_id: null };
   }
@@ -113,7 +206,7 @@ export async function createPhoneCall({ toNumber, dynamicVariables }) {
   });
   return {
     provider: "retell-phone",
-    call_id: body.call_id,
+    call_id: body.call_id as string,
   };
 }
 
@@ -123,35 +216,40 @@ export async function createPhoneCall({ toNumber, dynamicVariables }) {
 // Polled once on /finish to grab the full transcript + duration.
 // Retell's transcript shape: an array of { role, content, words? } turns.
 // ---------------------------------------------------------------------------
-export async function getCall(callId) {
+
+export async function getCall(callId: string): Promise<RetellCall | null> {
   if (!isVoiceAvailable()) return null;
-  return retellFetch(`/v2/get-call/${callId}`, { method: "GET" });
+  return retellFetch(`/v2/get-call/${callId}`, { method: "GET" }) as Promise<RetellCall>;
 }
 
 // Normalise Retell's transcript shape into our internal one.
 //   { role: "ai" | "candidate", text, ts }
-export function normaliseTranscript(retellCall) {
+export function normaliseTranscript(retellCall: RetellCall | null): NormalisedTurn[] {
   if (!retellCall) return [];
-  const turns = retellCall.transcript_object || retellCall.transcript || [];
+  const turns: RetellTranscriptTurn[] =
+    retellCall.transcript_object || retellCall.transcript || [];
   return turns
     .map((t) => {
-      const role =
+      const role: "ai" | "candidate" =
         t.role === "agent" || t.role === "assistant" || t.role === "ai"
           ? "ai"
           : "candidate";
       const text =
         t.content ||
         (Array.isArray(t.words) ? t.words.map((w) => w.word).join(" ") : "");
-      return { role, text: text?.trim() || "", ts: t.start_time_ms || null };
+      return { role, text: text?.trim() || "", ts: t.start_time_ms ?? null };
     })
     .filter((t) => t.text);
 }
 
 // Group a flat transcript back into Q/A pairs (ai-turn + the candidate's
 // next reply) so we can run the same evaluation pipeline we use for text.
-export function pairTranscriptToTurns(transcript) {
-  const turns = [];
-  let currentQ = null;
+export function pairTranscriptToTurns(
+  transcript: NormalisedTurn[]
+): TranscriptQAPair[] {
+  const turns: TranscriptQAPair[] = [];
+  let currentQ: string | null = null;
+
   for (const t of transcript) {
     if (t.role === "ai") {
       if (currentQ) turns.push({ question: currentQ, answer: null });
@@ -166,11 +264,16 @@ export function pairTranscriptToTurns(transcript) {
       }
     }
   }
+
   if (currentQ) turns.push({ question: currentQ, answer: null });
   return turns;
 }
 
-function truncate(s, n) {
+// ---------------------------------------------------------------------------
+// Utils
+// ---------------------------------------------------------------------------
+
+function truncate(s: string | undefined | null, n: number): string {
   if (!s) return "";
   return s.length > n ? s.slice(0, n) : s;
 }

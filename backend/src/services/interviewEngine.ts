@@ -1,4 +1,4 @@
-// interviewEngine.js
+// interviewEngine.ts
 // -----------------------------------------------------------------------------
 // The "brain" of the new interview module. Three jobs:
 //
@@ -20,7 +20,7 @@
 // stays with Gemini.
 // -----------------------------------------------------------------------------
 
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenerativeAI, GenerativeModel, ChatSession } from "@google/generative-ai";
 import {
   PURPOSE_MAP,
   ROLE_MAP,
@@ -32,10 +32,134 @@ import {
 } from "./interviewTypes.js";
 import { contextToPromptBlock } from "./candidateContext.js";
 
+// ---------------------------------------------------------------------------
+// Domain types
+// ---------------------------------------------------------------------------
+
+export interface InterviewType {
+  purpose: string;
+  role: string;
+  stage: string;
+  medium: string;
+  format: string;
+  level: string;
+  totalQuestions?: number;
+}
+
+export interface CandidateIdentity {
+  name?: string;
+  careerGoal?: string;
+}
+
+export interface CandidateContext {
+  identity: CandidateIdentity;
+  careerFit?: string;
+  [key: string]: unknown;
+}
+
+export interface InterviewContext {
+  candidateContext: CandidateContext;
+  type: InterviewType;
+  interviewerName?: string;
+}
+
+export interface ConversationTurn {
+  question?: string;
+  answer?: string;
+}
+
+/** Scores on a 0–10 scale (per-turn evaluation). */
+export interface TurnDims {
+  technical: number;
+  communication: number;
+  problemSolving: number;
+  confidence: number;
+  clarity: number;
+  culturalFit: number;
+}
+
+export interface TurnEvaluation {
+  feedback: string | null;
+  dims: TurnDims;
+}
+
+/** Scores on a 0–100 scale (final scorecard). */
+export interface ScorecardScores {
+  technical: number;
+  communication: number;
+  problemSolving: number;
+  confidence: number;
+  clarity: number;
+  culturalFit: number;
+}
+
+export interface Scorecard {
+  scores: ScorecardScores;
+  overall: number;
+  summary: string;
+  strengths: string[];
+  weaknesses: string[];
+  skillGaps: string[];
+  improvementPlan: string[];
+  advice: string[];
+  nextAdaptiveQuestion: string | null;
+  readinessScore: number;
+}
+
+export interface OpenerResult {
+  greeting: string;
+  question: string;
+  rationale: string | null;
+}
+
+export interface NextQuestionResult {
+  question: string;
+  rationale: string | null;
+}
+
+// Loose shape of what parseJsonLoose returns for question generation
+interface GeneratedQuestion {
+  greeting?: string;
+  question?: string;
+  rationale?: string;
+}
+
+// Loose shape of what parseJsonLoose returns for turn evaluation
+interface RawTurnEval {
+  feedback?: string;
+  dims?: Partial<TurnDims>;
+}
+
+// Loose shape of what parseJsonLoose returns for scorecard generation
+interface RawScorecard {
+  scores?: Partial<ScorecardScores>;
+  overall?: number;
+  summary?: string;
+  strengths?: unknown[];
+  weaknesses?: unknown[];
+  skillGaps?: unknown[];
+  improvementPlan?: unknown[];
+  advice?: unknown[];
+  nextAdaptiveQuestion?: string;
+  readinessScore?: number;
+}
+
+// Weights map returned by resolveWeights
+type DimWeights = Record<keyof ScorecardScores, number>;
+
+// ---------------------------------------------------------------------------
+// Constants
+// ---------------------------------------------------------------------------
+
 const MODEL_NAME = "gemini-2.5-flash";
 
-let cachedClient = null;
-function getClient() {
+// ---------------------------------------------------------------------------
+// Gemini client (cached singleton)
+// ---------------------------------------------------------------------------
+
+let cachedClient: GoogleGenerativeAI | null = null;
+
+function getClient(): GoogleGenerativeAI {
   if (cachedClient) return cachedClient;
   const key = process.env.GEMINI_API_KEY;
   if (!key) {
@@ -47,7 +171,7 @@ function getClient() {
   return cachedClient;
 }
 
-function getModel(temperature = 0.7) {
+function getModel(temperature = 0.7): GenerativeModel {
   return getClient().getGenerativeModel({
     model: MODEL_NAME,
     generationConfig: { temperature },
@@ -57,18 +181,19 @@ function getModel(temperature = 0.7) {
 // ---------------------------------------------------------------------------
 // SYSTEM PROMPT
 // ---------------------------------------------------------------------------
+
 export function buildSystemPrompt({
   candidateContext: ctx,
   type,
   interviewerName = "Rexa",
-}) {
+}: InterviewContext): string {
   const purpose = PURPOSE_MAP[type.purpose];
   const role = ROLE_MAP[type.role];
   const stage = STAGE_MAP[type.stage];
   const medium = MEDIUM_MAP[type.medium];
   const format = FORMAT_MAP[type.format];
 
-  const overlays = [
+  const overlays: string[] = [
     purpose?.promptOverlay,
     role?.promptOverlay,
     stage?.promptOverlay,
@@ -76,9 +201,9 @@ export function buildSystemPrompt({
     format?.promptOverlay,
   ]
     .filter(Boolean)
-    .map((s) => s.replace("{{careerFit}}", ctx.careerFit || "this role"));
+    .map((s) => (s as string).replace("{{careerFit}}", ctx.careerFit || "this role"));
 
-  const totalQuestions =
+  const totalQuestions: number =
     type.totalQuestions || DEFAULT_QUESTION_BUDGET[type.purpose] || 6;
 
   // Detect if this is a voice call (Retell) or text mode (Gemini)
@@ -132,7 +257,18 @@ ${responseFormat}`;
 // ---------------------------------------------------------------------------
 // QUESTION GENERATION (adaptive)
 // ---------------------------------------------------------------------------
-async function generateQuestion({ systemPrompt, turns, isOpener }) {
+
+interface GenerateQuestionArgs {
+  systemPrompt: string;
+  turns: ConversationTurn[];
+  isOpener: boolean;
+}
+
+async function generateQuestion({
+  systemPrompt,
+  turns,
+  isOpener,
+}: GenerateQuestionArgs): Promise<GeneratedQuestion> {
   const model = getModel(0.8);
 
   const history = [
@@ -148,7 +284,7 @@ async function generateQuestion({ systemPrompt, turns, isOpener }) {
       history.push({ role: "user", parts: [{ text: t.answer }] });
   }
 
-  const chat = model.startChat({ history });
+  const chat: ChatSession = model.startChat({ history });
 
   const instruction = isOpener
     ? `Greet the candidate by first name in one short sentence, then ask the FIRST question. Output JSON: { "greeting": "<one sentence>", "question": "<first question>", "rationale": "<why>" }`
@@ -156,10 +292,10 @@ async function generateQuestion({ systemPrompt, turns, isOpener }) {
 
   const result = await callGeminiWithRetry(() => chat.sendMessage(instruction));
   const raw = result.response.text().trim();
-  return parseJsonLoose(raw);
+  return (parseJsonLoose(raw) ?? {}) as GeneratedQuestion;
 }
 
-export async function generateOpener(ctx) {
+export async function generateOpener(ctx: InterviewContext): Promise<OpenerResult> {
   const firstName =
     ctx.candidateContext.identity.name?.split(" ")[0] || "there";
   try {
@@ -186,7 +322,10 @@ export async function generateOpener(ctx) {
   }
 }
 
-export async function generateNextQuestion(ctx, turns) {
+export async function generateNextQuestion(
+  ctx: InterviewContext,
+  turns: ConversationTurn[]
+): Promise<NextQuestionResult> {
   try {
     const systemPrompt = buildSystemPrompt(ctx);
     const out = await generateQuestion({
@@ -215,7 +354,10 @@ export async function generateNextQuestion(ctx, turns) {
 // the per-turn scores small so they roll up cleanly at finalization without
 // the model trying to "predict" a 100-scale every turn.
 //
-export async function evaluateTurn(ctx, turn) {
+export async function evaluateTurn(
+  ctx: InterviewContext,
+  turn: ConversationTurn
+): Promise<TurnEvaluation> {
   try {
     const systemPrompt = buildSystemPrompt(ctx);
     const model = getModel(0.3);
@@ -251,7 +393,7 @@ Output JSON only:
       model.generateContent(prompt)
     );
     const raw = result.response.text().trim();
-    const parsed = parseJsonLoose(raw) || {};
+    const parsed = (parseJsonLoose(raw) ?? {}) as RawTurnEval;
     const dims = parsed.dims || {};
     return {
       feedback: parsed.feedback || null,
@@ -283,9 +425,10 @@ Output JSON only:
 // ---------------------------------------------------------------------------
 // FINAL SCORECARD
 // ---------------------------------------------------------------------------
+
 // Default scorecard returned when Gemini is unavailable. Shape matches what
 // finalise() expects so the interview can still be marked complete.
-function defaultScorecard() {
+function defaultScorecard(): Scorecard {
   return {
     scores: {
       technical: 70,
@@ -311,9 +454,9 @@ function defaultScorecard() {
 // Retry a Gemini call up to 3 times with exponential backoff (1s → 2s → 4s).
 // `fn` is a thunk so it can wrap either model.generateContent(...) or
 // chat.sendMessage(...) — whichever shape the caller uses.
-async function callGeminiWithRetry(fn) {
+async function callGeminiWithRetry<T>(fn: () => Promise<T>): Promise<T> {
   const delays = [1000, 2000, 4000];
-  let lastError;
+  let lastError: unknown;
   for (let attempt = 0; attempt < delays.length; attempt++) {
     try {
       return await fn();
@@ -328,9 +471,12 @@ async function callGeminiWithRetry(fn) {
   throw lastError;
 }
 
-export async function generateScorecard({ candidateContext, type }, turns) {
+export async function generateScorecard(
+  { candidateContext, type }: Pick<InterviewContext, "candidateContext" | "type">,
+  turns: ConversationTurn[]
+): Promise<Scorecard> {
   try {
-    const weights = resolveWeights(type.purpose);
+    const weights = resolveWeights(type.purpose) as DimWeights;
     const systemPrompt = buildSystemPrompt({ candidateContext, type });
     const model = getModel(0.4);
 
@@ -341,7 +487,7 @@ export async function generateScorecard({ candidateContext, type }, turns) {
       )
       .join("\n\n");
 
-    const weightLine = Object.entries(weights)
+    const weightLine = (Object.entries(weights) as [keyof ScorecardScores, number][])
       .map(([k, v]) => `${k} ${v}%`)
       .join(" · ");
 
@@ -382,7 +528,8 @@ Output JSON only — no markdown fences — in this exact shape:
 
     const result = await callGeminiWithRetry(() => model.generateContent(prompt));
     const raw = result.response.text().trim();
-    const parsed = parseJsonLoose(raw);
+    const parsed = parseJsonLoose(raw) as RawScorecard | null;
+
     if (!parsed) {
       return {
         scores: zeroScores(),
@@ -398,7 +545,7 @@ Output JSON only — no markdown fences — in this exact shape:
       };
     }
 
-    const scores = {
+    const scores: ScorecardScores = {
       technical: clamp100(parsed.scores?.technical),
       communication: clamp100(parsed.scores?.communication),
       problemSolving: clamp100(parsed.scores?.problemSolving),
@@ -439,9 +586,10 @@ Output JSON only — no markdown fences — in this exact shape:
 }
 
 // ---------------------------------------------------------------------------
-// utils
+// Utils
 // ---------------------------------------------------------------------------
-function parseJsonLoose(raw) {
+
+function parseJsonLoose(raw: string): unknown {
   if (!raw) return null;
   const cleaned = raw
     .replace(/^```(?:json)?\s*/i, "")
@@ -459,23 +607,23 @@ function parseJsonLoose(raw) {
   return null;
 }
 
-function clamp10(n) {
+function clamp10(n: unknown): number {
   const v = Math.round(Number(n));
   if (!Number.isFinite(v)) return 0;
   return Math.max(0, Math.min(10, v));
 }
 
-function clamp100(n) {
+function clamp100(n: unknown): number {
   const v = Math.round(Number(n));
   if (!Number.isFinite(v)) return 0;
   return Math.max(0, Math.min(100, v));
 }
 
-function arr(v) {
+function arr(v: unknown): string[] {
   return Array.isArray(v) ? v.map(String) : [];
 }
 
-function zeroScores() {
+function zeroScores(): ScorecardScores {
   return {
     technical: 0,
     communication: 0,

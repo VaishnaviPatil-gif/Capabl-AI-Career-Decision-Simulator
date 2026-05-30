@@ -17,6 +17,9 @@ import {
   CheckCircle2,
   Code2,
   Folder,
+  Plus,
+  X,
+  Sparkles,
 } from "lucide-react";
 
 import { useEffect, useState } from "react";
@@ -44,59 +47,122 @@ export default function Projects() {
   const [activeFilter, setActiveFilter] = useState("all");
 
   const [searchTerm, setSearchTerm] = useState("");
+  const [showProjectForm, setShowProjectForm] = useState(false);
+  const [savingProject, setSavingProject] = useState(false);
+  const [projectError, setProjectError] = useState("");
+  const [projectForm, setProjectForm] = useState({
+    title: "",
+    description: "",
+    technologies: "",
+    status: "In Progress",
+    image: "",
+    url: "",
+  });
+
+  const fetchProjects = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const { data } = await axios.get(
+        "http://localhost:5000/api/projects",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setProjects(data.projects || []);
+      setRecommended(data.recommendedProjects || []);
+      setStats({
+        totalProjects: data.stats?.totalProjects || 0,
+        completedProjects: data.stats?.completedProjects || 0,
+        inProgressProjects: data.stats?.inProgressProjects || 0,
+        recommendedProjects: data.stats?.recommendedProjects || 0,
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-
-    const fetchProjects = async () => {
-
-      try {
-
-        const token = localStorage.getItem("token");
-
-        const { data } = await axios.get(
-          "http://localhost:5000/api/projects",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        setProjects(data.projects || []);
-
-        setRecommended(
-          data.recommendedProjects || []
-        );
-
-        setStats({
-          totalProjects:
-            data.stats?.totalProjects || 0,
-
-          completedProjects:
-            data.stats?.completedProjects || 0,
-
-          inProgressProjects:
-            data.stats?.inProgressProjects || 0,
-
-          recommendedProjects:
-            data.stats?.recommendedProjects || 0,
-        });
-
-      } catch (error) {
-
-        console.log(error);
-
-      } finally {
-
-        setLoading(false);
-
-      }
-
-    };
-
     fetchProjects();
 
   }, []);
+
+  const handleProjectInput = (field) => (event) => {
+    setProjectForm((current) => ({
+      ...current,
+      [field]: event.target.value,
+    }));
+  };
+
+  const openProjectForm = () => {
+    setProjectError("");
+    setShowProjectForm(true);
+  };
+
+  const closeProjectForm = () => {
+    if (savingProject) {
+      return;
+    }
+
+    setShowProjectForm(false);
+    setProjectError("");
+  };
+
+  const saveProjectMemory = async (event) => {
+    event.preventDefault();
+
+    if (!projectForm.title.trim()) {
+      setProjectError("Project title is required.");
+      return;
+    }
+
+    try {
+      setSavingProject(true);
+      setProjectError("");
+
+      const token = localStorage.getItem("token");
+
+      await axios.post(
+        "http://localhost:5000/api/projects",
+        {
+          title: projectForm.title,
+          description: projectForm.description,
+          technologies: projectForm.technologies,
+          status: projectForm.status,
+          image: projectForm.image,
+          url: projectForm.url,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setProjectForm({
+        title: "",
+        description: "",
+        technologies: "",
+        status: "In Progress",
+        image: "",
+        url: "",
+      });
+      setShowProjectForm(false);
+      await fetchProjects();
+    } catch (error) {
+      setProjectError(
+        error.response?.data?.message ||
+          "Unable to save project memory right now."
+      );
+    } finally {
+      setSavingProject(false);
+    }
+  };
 
   const filteredProjects = projects.filter(
     (project) => {
@@ -264,6 +330,14 @@ export default function Projects() {
 
           <div className="flex items-center gap-5">
 
+            <button
+              onClick={openProjectForm}
+              className="h-12 px-5 rounded-2xl bg-[#1d1d1f] text-white flex items-center gap-2 font-semibold transition-all duration-300 hover:scale-105 hover:shadow-[0_10px_30px_rgba(0,0,0,0.18)]"
+            >
+              <Plus className="w-4 h-4" />
+              Add Project Memory
+            </button>
+
             <div className="h-14 w-[260px] bg-white border border-[#e8e6e1] rounded-2xl px-5 flex items-center gap-3">
 
               <Search className="w-5 h-5 text-slate-400" />
@@ -299,6 +373,131 @@ export default function Projects() {
           </div>
 
         </div>
+
+        {showProjectForm && (
+          <div className="fixed inset-0 z-50 bg-black/35 backdrop-blur-sm flex items-center justify-center px-4 py-8">
+            <div className="w-full max-w-2xl bg-white rounded-[2rem] shadow-[0_30px_90px_rgba(0,0,0,0.18)] border border-[#ece3d3] overflow-hidden">
+              <div className="flex items-start justify-between gap-4 p-6 border-b border-[#f0e7d7] bg-[#faf7f2]">
+                <div>
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#fff1cf] text-[#8a6513] text-sm font-semibold mb-3">
+                    <Sparkles className="w-4 h-4" />
+                    Project memory
+                  </div>
+                  <h2 className="text-3xl font-semibold text-[#1d1d1f]">
+                    Add a non-GitHub project
+                  </h2>
+                  <p className="text-slate-500 mt-2 font-medium">
+                    Save a personal or private project here and Capabl will score it the same way it scores your repositories.
+                  </p>
+                </div>
+
+                <button
+                  onClick={closeProjectForm}
+                  className="w-11 h-11 rounded-2xl bg-white border border-[#e8e6e1] flex items-center justify-center text-slate-500 hover:text-[#1d1d1f]"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <form onSubmit={saveProjectMemory} className="p-6 space-y-5">
+                <div className="grid md:grid-cols-2 gap-4">
+                  <label className="space-y-2">
+                    <span className="text-sm font-semibold text-[#1d1d1f]">Project name</span>
+                    <input
+                      type="text"
+                      value={projectForm.title}
+                      onChange={handleProjectInput("title")}
+                      placeholder="AI Study Planner"
+                      className="w-full h-12 px-4 rounded-2xl border border-[#e8e6e1] bg-[#fcfbf9] outline-none focus:border-[#c89a2b]"
+                    />
+                  </label>
+
+                  <label className="space-y-2">
+                    <span className="text-sm font-semibold text-[#1d1d1f]">Status</span>
+                    <select
+                      value={projectForm.status}
+                      onChange={handleProjectInput("status")}
+                      className="w-full h-12 px-4 rounded-2xl border border-[#e8e6e1] bg-[#fcfbf9] outline-none focus:border-[#c89a2b]"
+                    >
+                      <option>In Progress</option>
+                      <option>Completed</option>
+                      <option>Planned</option>
+                    </select>
+                  </label>
+                </div>
+
+                <label className="space-y-2 block">
+                  <span className="text-sm font-semibold text-[#1d1d1f]">Description</span>
+                  <textarea
+                    rows="4"
+                    value={projectForm.description}
+                    onChange={handleProjectInput("description")}
+                    placeholder="Describe what it does, who it helps, and what you built."
+                    className="w-full px-4 py-3 rounded-2xl border border-[#e8e6e1] bg-[#fcfbf9] outline-none focus:border-[#c89a2b] resize-none"
+                  />
+                </label>
+
+                <div className="grid md:grid-cols-2 gap-4">
+                  <label className="space-y-2 block">
+                    <span className="text-sm font-semibold text-[#1d1d1f]">Technologies</span>
+                    <input
+                      type="text"
+                      value={projectForm.technologies}
+                      onChange={handleProjectInput("technologies")}
+                      placeholder="React, Node.js, PostgreSQL"
+                      className="w-full h-12 px-4 rounded-2xl border border-[#e8e6e1] bg-[#fcfbf9] outline-none focus:border-[#c89a2b]"
+                    />
+                  </label>
+
+                  <label className="space-y-2 block">
+                    <span className="text-sm font-semibold text-[#1d1d1f]">Project link</span>
+                    <input
+                      type="url"
+                      value={projectForm.url}
+                      onChange={handleProjectInput("url")}
+                      placeholder="https://your-demo-link.com"
+                      className="w-full h-12 px-4 rounded-2xl border border-[#e8e6e1] bg-[#fcfbf9] outline-none focus:border-[#c89a2b]"
+                    />
+                  </label>
+                </div>
+
+                <label className="space-y-2 block">
+                  <span className="text-sm font-semibold text-[#1d1d1f]">Cover image URL</span>
+                  <input
+                    type="text"
+                    value={projectForm.image}
+                    onChange={handleProjectInput("image")}
+                    placeholder="Optional image link or leave blank to use the default card image"
+                    className="w-full h-12 px-4 rounded-2xl border border-[#e8e6e1] bg-[#fcfbf9] outline-none focus:border-[#c89a2b]"
+                  />
+                </label>
+
+                {projectError && (
+                  <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-red-700 font-medium">
+                    {projectError}
+                  </div>
+                )}
+
+                <div className="flex items-center justify-end gap-3 pt-2">
+                  <button
+                    type="button"
+                    onClick={closeProjectForm}
+                    className="h-12 px-5 rounded-2xl border border-[#e8e6e1] font-semibold text-[#1d1d1f]"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={savingProject}
+                    className="h-12 px-6 rounded-2xl bg-[#1d1d1f] text-white font-semibold disabled:opacity-60"
+                  >
+                    {savingProject ? "Saving..." : "Save project memory"}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
 
         {/* STATS */}
 
@@ -530,7 +729,18 @@ export default function Projects() {
                   {project.description}
                 </p>
 
-                {project.reasons?.length > 0 && (
+                {project.breakdown?.length > 0 ? (
+                  <div className="mt-4 flex flex-wrap gap-2 max-w-[480px]">
+                    {project.breakdown.map((item) => (
+                      <span
+                        key={item.reason}
+                        className="px-3 py-1 rounded-full bg-[#f7f5f2] text-[12px] font-semibold text-slate-600 border border-[#ece6dc]"
+                      >
+                        {item.reason} +{item.points}
+                      </span>
+                    ))}
+                  </div>
+                ) : project.reasons?.length > 0 ? (
                   <div className="mt-4 flex flex-wrap gap-2 max-w-[480px]">
                     {project.reasons.slice(0, 3).map((reason) => (
                       <span
@@ -541,7 +751,7 @@ export default function Projects() {
                       </span>
                     ))}
                   </div>
-                )}
+                ) : null}
 
               </div>
 
@@ -712,10 +922,12 @@ export default function Projects() {
 
   </div>
 
-  <button className="h-14 px-8 rounded-2xl bg-[#1d1d1f] text-white flex items-center gap-3 font-semibold transition-all duration-300 hover:scale-105 hover:shadow-[0_10px_30px_rgba(0,0,0,0.18)]">
-
+  <button
+    onClick={openProjectForm}
+    className="h-14 px-8 rounded-2xl bg-[#1d1d1f] text-white flex items-center gap-3 font-semibold transition-all duration-300 hover:scale-105 hover:shadow-[0_10px_30px_rgba(0,0,0,0.18)]"
+  >
+    <Plus className="w-4 h-4" />
     Add New Project
-
   </button>
 
 </div>

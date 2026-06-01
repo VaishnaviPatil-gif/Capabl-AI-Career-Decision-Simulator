@@ -378,6 +378,9 @@ async function persistAnalysis(userId: any, analysisResult: any, hasResume: any)
       )
     ),
     extractedSkills: analysisResult.extractedSkills,
+    requiredSkills: analysisResult.requiredSkills,
+    roleIntelligence: analysisResult.roleIntelligence,
+    roleGoalSnapshot: analysisResult.roleGoalSnapshot,
     missingSkills: analysisResult.skillGaps,
     strengths: analysisResult.skillStrengths,
     weaknesses: analysisResult.skillGaps,
@@ -494,7 +497,7 @@ export const upsertProfile = async (req: any, res: any) => {
 
     const fullUser: any = await prisma.user.findUnique({
       where: { id: userId },
-      include: { skills: true },
+      include: { skills: true, aiAnalysis: true },
     });
 
     const { manualSkills, weeklyProgress } = await loadManualProgress(userId);
@@ -508,6 +511,11 @@ export const upsertProfile = async (req: any, res: any) => {
       linkedinUrl: fullUser.linkedin,
       manualSkills,
       weeklyProgress,
+      cachedRoleIntelligence: {
+        goalSnapshot: fullUser.aiAnalysis?.roleGoalSnapshot,
+        requiredSkills: fullUser.aiAnalysis?.requiredSkills,
+        roleIntelligence: fullUser.aiAnalysis?.roleIntelligence,
+      },
     });
 
     await persistAnalysis(userId, analysisResult, Boolean(fullUser.resume));
@@ -562,7 +570,7 @@ export const uploadResume = async (req: any, res: any) => {
 
     const fullUser: any = await prisma.user.findUnique({
       where: { id: userId },
-      include: { skills: true },
+      include: { skills: true, aiAnalysis: true },
     });
 
     const { manualSkills, weeklyProgress } = await loadManualProgress(userId);
@@ -576,6 +584,11 @@ export const uploadResume = async (req: any, res: any) => {
       linkedinUrl: fullUser.linkedin,
       manualSkills,
       weeklyProgress,
+      cachedRoleIntelligence: {
+        goalSnapshot: fullUser.aiAnalysis?.roleGoalSnapshot,
+        requiredSkills: fullUser.aiAnalysis?.requiredSkills,
+        roleIntelligence: fullUser.aiAnalysis?.roleIntelligence,
+      },
     });
 
     await persistAnalysis(userId, analysisResult, true);

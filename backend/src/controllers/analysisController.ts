@@ -31,6 +31,9 @@ async function persistAnalysis(userId: any, result: any, hasResume: any) {
     strengths: result.skillStrengths,
     weaknesses: result.skillGaps,
     recommendedRoles: [result.careerFit],
+    requiredSkills: result.requiredSkills,
+    roleIntelligence: result.roleIntelligence,
+    roleGoalSnapshot: result.roleGoalSnapshot,
     aiSuggestions: result.aiSuggestions.map(
       (s: any) => `${s.title}: ${s.description}`
     ),
@@ -89,7 +92,14 @@ export const getAnalysis = async (req: any, res: any) => {
       linkedinUrl: (user as any).linkedin,
       manualSkills,
       weeklyProgress,
+      cachedRoleIntelligence: {
+        goalSnapshot: (user as any).aiAnalysis?.roleGoalSnapshot,
+        requiredSkills: (user as any).aiAnalysis?.requiredSkills,
+        roleIntelligence: (user as any).aiAnalysis?.roleIntelligence,
+      },
     });
+
+    await persistAnalysis(userId, analysis, Boolean((user as any).resume));
 
     res.status(200).json({
       user: buildUserPayload(user),
@@ -108,7 +118,7 @@ export const refreshAnalysis = async (req: any, res: any) => {
 
     const user = await prisma.user.findUnique({
       where: { id: userId },
-      include: { skills: true },
+      include: { skills: true, aiAnalysis: true },
     });
 
     if (!user)
@@ -125,6 +135,11 @@ export const refreshAnalysis = async (req: any, res: any) => {
       linkedinUrl: (user as any).linkedin,
       manualSkills,
       weeklyProgress,
+      cachedRoleIntelligence: {
+        goalSnapshot: (user as any).aiAnalysis?.roleGoalSnapshot,
+        requiredSkills: (user as any).aiAnalysis?.requiredSkills,
+        roleIntelligence: (user as any).aiAnalysis?.roleIntelligence,
+      },
     });
 
     await persistAnalysis(userId, result, Boolean((user as any).resume));

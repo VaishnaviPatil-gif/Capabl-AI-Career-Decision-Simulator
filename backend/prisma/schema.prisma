@@ -219,6 +219,9 @@ model AIAnalysis {
   // CAREER FIT
 
   careerFit                 String?
+  requiredSkills            String[] @default([])
+  roleIntelligence          Json?
+  roleGoalSnapshot          String?
 
   // ARRAYS
 

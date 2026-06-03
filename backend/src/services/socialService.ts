@@ -26,26 +26,15 @@ export function extractLinkedInSlug(url: any) {
   return m ? m[1] : null;
 }
 
+// These helpers stay quiet on the wire: callers (fetchGithubProfile) decide
+// what — if anything — to log once, so a missing/private profile or a hit
+// rate-limit doesn't spam the console with a line per sub-request.
 async function safeFetchJson(url: any, _ignored?: any): Promise<any> {
   try {
     const r = await fetch(url, { headers: GITHUB_HEADERS });
-    console.log("GitHub rate limit remaining:", r.headers.get("x-ratelimit-remaining"));
-    console.log("GitHub rate limit reset:", r.headers.get("x-ratelimit-reset"));
-
-    if (r.status === 403) {
-      console.error("GitHub API rate limit exceeded");
-      return { ok: false, status: r.status, headers: r.headers, data: null };
-    }
-
-    if (r.status === 404) {
-      console.error("GitHub username not found");
-      return { ok: false, status: r.status, headers: r.headers, data: null };
-    }
-
     if (!r.ok) {
       return { ok: false, status: r.status, headers: r.headers, data: null };
     }
-
     return { ok: true, status: r.status, headers: r.headers, data: await r.json() };
   } catch {
     return { ok: false, status: null, headers: null, data: null };
@@ -60,14 +49,6 @@ async function safeFetchText(url: any): Promise<any> {
         Accept: "application/vnd.github.raw",
       },
     });
-    if (r.status === 403) {
-      console.error("GitHub API rate limit exceeded");
-      return null;
-    }
-    if (r.status === 404) {
-      console.error("GitHub username not found");
-      return null;
-    }
     if (!r.ok) return null;
     return await r.text();
   } catch {
@@ -90,17 +71,16 @@ export async function fetchGithubProfile(url: any): Promise<any> {
   );
 
   if (!profileResult?.ok || !profileResult?.data?.login) {
-    return {
-      ok: false,
-      reason:
-        profileResult?.status === 403
-          ? "GitHub API rate limit exceeded"
-          : profileResult?.status === 404
-          ? "GitHub user not found"
-          : "GitHub user not found or rate-limited",
-      username,
-      url,
-    };
+    const reason =
+      profileResult?.status === 403
+        ? "GitHub API rate limit exceeded"
+        : profileResult?.status === 404
+        ? "GitHub user not found"
+        : "GitHub user not found or rate-limited";
+    // Log once per analysis (not once per sub-request) so a bad/private URL
+    // doesn't flood the console.
+    console.warn(`[github] ${reason} for "${username}"`);
+    return { ok: false, reason, username, url };
   }
 
   const profile = profileResult.data;

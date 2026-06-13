@@ -5,6 +5,7 @@ import {
   upsertProfile,
   getProfile,
   uploadResume,
+  extractResume,
 } from "../controllers/profileController.js";
 
 const router = express.Router();
@@ -23,6 +24,13 @@ router.post(
   protect,
   upload.single("resume"),
   uploadResume
+);
+
+router.post(
+  "/resume/extract",
+  protect,
+  upload.single("resume"),
+  extractResume
 );
 
 export default router;

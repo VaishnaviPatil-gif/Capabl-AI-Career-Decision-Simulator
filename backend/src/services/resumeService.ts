@@ -66,9 +66,9 @@ const ATS_KEYWORDS_GENERIC = [
   "collaborated",
 ];
 
-const PHONE_RE = /(\+?\d[\d\s().-]{7,}\d)/;
-const EMAIL_RE = /[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+/;
-const URL_RE = /(https?:\/\/[^\s)<>"']+)/gi;
+export const PHONE_RE = /(\+?\d[\d\s().-]{7,}\d)/;
+export const EMAIL_RE = /[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+/;
+export const URL_RE = /(https?:\/\/[^\s)<>"']+)/gi;
 
 // Domains/path fragments that come from PDF metadata, Adobe tooling, or
 // XML/XMP namespaces — never useful to show as a "link in the resume".
@@ -88,7 +88,7 @@ const URL_BLOCKLIST = [
   "schemas.microsoft.com",
 ];
 
-function isUsefulUrl(u: any) {
+export function isUsefulUrl(u: any) {
   if (!u) return false;
   const lower = u.toLowerCase();
   if (URL_BLOCKLIST.some((b) => lower.includes(b))) return false;
@@ -96,8 +96,28 @@ function isUsefulUrl(u: any) {
   return /^https?:\/\/[a-z0-9.-]+\.[a-z]{2,}/i.test(u);
 }
 
-function cleanUrl(u: any) {
+export function cleanUrl(u: any) {
   return u.replace(/[),.;:'"]+$/g, "");
+}
+
+// Classify a list of resume URLs into the three optional evidence sources.
+// Returns the first match for each; everything that isn't GitHub/LinkedIn is
+// treated as a portfolio/personal site.
+export function classifyUrls(urls: string[] = []): {
+  githubUrl?: string;
+  linkedinUrl?: string;
+  portfolioUrl?: string;
+} {
+  const out: { githubUrl?: string; linkedinUrl?: string; portfolioUrl?: string } = {};
+  for (const raw of urls) {
+    const u = cleanUrl(String(raw));
+    if (!isUsefulUrl(u)) continue;
+    const lower = u.toLowerCase();
+    if (!out.githubUrl && lower.includes("github.com")) out.githubUrl = u;
+    else if (!out.linkedinUrl && lower.includes("linkedin.com")) out.linkedinUrl = u;
+    else if (!out.portfolioUrl) out.portfolioUrl = u;
+  }
+  return out;
 }
 
 // Remove PDF/XML metadata noise that pdf-parse sometimes leaves behind.

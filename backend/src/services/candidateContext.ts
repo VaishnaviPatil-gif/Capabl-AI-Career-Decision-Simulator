@@ -138,9 +138,12 @@ export async function buildCandidateContext(userId: any) {
     careerFit: analysis?.careerFit || ai?.careerFit || "Software Engineer",
     targetRole: analysis?.targetRole || null,
 
-    readinessScore: ai?.readinessScore ?? analysis?.readinessScore ?? null,
-    atsScore: ai?.atsScore ?? analysis?.resume?.atsScore ?? null,
-    resumeScore: ai?.resumeScore ?? analysis?.resume?.score ?? null,
+    // Prefer the freshly recomputed analysis over the persisted snapshot so the
+    // interviewer sees the SAME readiness picture as the Dashboard. The stored
+    // `ai` row is the pre-recompute value and would otherwise go stale (BUG-002/011).
+    readinessScore: analysis?.readinessScore ?? ai?.readinessScore ?? null,
+    atsScore: analysis?.resume?.atsScore ?? ai?.atsScore ?? null,
+    resumeScore: analysis?.resume?.score ?? ai?.resumeScore ?? null,
     matchScore: analysis?.matchScore ?? null,
 
     skills: {

@@ -31,6 +31,8 @@ model User {
   skills         Skill[]
   skillProgress  SkillProgress[]
   weeklyProgress WeeklyTaskProgress[]
+  weeklyGoals         WeeklyGoal[]
+  simulationSnapshots SimulationSnapshot[]
 }
 
 model InterviewSession {
@@ -177,4 +179,32 @@ model AIAnalysis {
   skillProficiency     Json?
   roadmapPlan          Json?
   user                     User     @relation(fields: [userId], references: [id])
+}
+
+model WeeklyGoal {
+  id           String   @id @default(uuid())
+  userId       Int
+  user         User     @relation(fields: [userId], references: [id])
+  targetRole   String
+  skillsFocus  String[]
+  weekStart    DateTime
+  weekGoal     String?
+  dailyPlan    Json?
+  expectedGain Int      @default(0)
+  createdAt    DateTime @default(now())
+
+  @@index([userId, weekStart])
+}
+
+model SimulationSnapshot {
+  id             String   @id @default(uuid())
+  userId         Int
+  user           User     @relation(fields: [userId], references: [id])
+  skillsToggled  Json
+  // [{ "skill": "Docker", "gain": 5 }, ...] — Json keeps per-skill gain, avoids a 2nd migration
+  projectedScore Int
+  delta          Int
+  createdAt      DateTime @default(now())
+
+  @@index([userId, createdAt])
 }

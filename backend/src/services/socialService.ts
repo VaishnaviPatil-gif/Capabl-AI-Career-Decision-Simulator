@@ -113,11 +113,15 @@ export async function fetchGithubProfile(url: any): Promise<any> {
 
   const topRepos = ownRepos
     .slice()
-    .sort(
-      (a: any, b: any) =>
-        (b.stargazers_count || 0) - (a.stargazers_count || 0)
-    )
-    .slice(0, 5)
+    .sort((a: any, b: any) => {
+      // Most-recently-pushed first, stars as a tiebreaker — surfaces active,
+      // scorable work instead of only the few starred repos.
+      const aT = new Date(a.pushed_at || a.updated_at || 0).getTime();
+      const bT = new Date(b.pushed_at || b.updated_at || 0).getTime();
+      if (bT !== aT) return bT - aT;
+      return (b.stargazers_count || 0) - (a.stargazers_count || 0);
+    })
+    .slice(0, 12)
     .map((r: any) => ({
       name: r.name,
       description: r.description,

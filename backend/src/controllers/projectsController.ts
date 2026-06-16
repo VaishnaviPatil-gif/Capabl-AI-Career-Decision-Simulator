@@ -379,8 +379,22 @@ function scoreProject({ project, repoContext, careerFit, aiAnalysis }: any) {
     breakdown.push({ reason: "Project completeness", points: 5 });
   }
 
+  // Final score is a weighted blend of the CONTINUOUS dimension scores (each
+  // 0-100), not a sum of binary threshold flags. The old breakdown-sum gave
+  // every repo that cleared the same thresholds an identical total, so scores
+  // clustered into the same narrow band. Blending the underlying continuous
+  // metrics spreads scores so genuinely different repos read differently.
+  // The breakdown is still surfaced below as the human-readable "reasons".
   const score = clampScore(
-    breakdown.reduce((total, entry) => total + entry.points, 0)
+    Math.round(
+      relevance * 0.22 +
+        technologies * 0.2 +
+        complexity * 0.18 +
+        completeness * 0.15 +
+        documentation * 0.1 +
+        innovation * 0.08 +
+        githubActivity * 0.07
+    )
   );
 
   const reasons = breakdown.map((entry) => entry.reason);

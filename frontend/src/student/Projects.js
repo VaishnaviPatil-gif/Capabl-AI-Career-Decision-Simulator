@@ -6,14 +6,13 @@ import {
   FileText,
   Video,
   FolderKanban,
-  Bookmark,
+  LogOut,
   User,
   Settings,
   Search,
   Bell,
   ChevronRight,
   Trophy,
-  Star,
   CheckCircle2,
   Code2,
   Folder,
@@ -25,6 +24,7 @@ import {
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { apiUrl } from "../config/api";
+import logout from "../utils/logout";
 
 export default function Projects() {
 
@@ -33,8 +33,6 @@ export default function Projects() {
   );
 
   const [projects, setProjects] = useState([]);
-
-  const [recommended, setRecommended] = useState([]);
 
   const [stats, setStats] = useState({
     totalProjects: 0,
@@ -74,12 +72,10 @@ export default function Projects() {
       );
 
       setProjects(data.projects || []);
-      setRecommended(data.recommendedProjects || []);
       setStats({
         totalProjects: data.stats?.totalProjects || 0,
         completedProjects: data.stats?.completedProjects || 0,
         inProgressProjects: data.stats?.inProgressProjects || 0,
-        recommendedProjects: data.stats?.recommendedProjects || 0,
       });
     } catch (error) {
       console.log(error);
@@ -280,14 +276,6 @@ export default function Projects() {
           </a>
 
           <a
-            href="/recommendations"
-            className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all font-medium"
-          >
-            <Bookmark className="w-5 h-5" />
-            Recommendations
-          </a>
-
-          <a
             href="/profile"
             className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all font-medium"
           >
@@ -304,6 +292,14 @@ export default function Projects() {
           </a>
 
         </div>
+
+        <button
+          onClick={logout}
+          className="flex items-center gap-3 px-4 py-3 rounded-2xl text-red-600 hover:bg-red-50 transition-all font-semibold mt-6"
+        >
+          <LogOut className="w-5 h-5" />
+          Logout
+        </button>
 
       </aside>
 
@@ -502,7 +498,7 @@ export default function Projects() {
 
         {/* STATS */}
 
-        <div className="grid lg:grid-cols-4 gap-5 mb-8">
+        <div className="grid lg:grid-cols-3 gap-5 mb-8">
 
           {/* CARD */}
 
@@ -588,38 +584,10 @@ export default function Projects() {
 
           </div>
 
-          {/* CARD */}
-
-          <div className="bg-[#f4f8ff] border border-[#dde9ff] rounded-[2rem] p-6">
-
-            <div className="flex items-center gap-5">
-
-              <div className="w-20 h-20 rounded-[1.7rem] bg-[#dceaff] flex items-center justify-center">
-
-                <Star className="w-9 h-9 text-blue-600" />
-
-              </div>
-
-              <div>
-
-                <h2 className="text-4xl font-bold">
-                  {stats.recommendedProjects}
-                </h2>
-
-                <p className="text-slate-500">
-                  Recommended
-                </p>
-
-              </div>
-
-            </div>
-
-          </div>
-
         </div>
 {/* CONTENT */}
 
-<div className="grid lg:grid-cols-[1.8fr,0.9fr] gap-6 mb-8">
+<div className="mb-8">
 
   {/* LEFT */}
 
@@ -814,82 +782,6 @@ export default function Projects() {
         <ChevronRight className="w-4 h-4 transition-all duration-300 group-hover:translate-x-1" />
 
       </button>
-
-    </div>
-
-  </div>
-
-  {/* RIGHT */}
-
-  <div>
-
-    <div className="flex items-center justify-between mb-6">
-
-      <h2 className="text-3xl font-semibold text-[#1d1d1f]">
-        Recommended Projects
-      </h2>
-
-      <button className="text-[#c89a2b] font-semibold">
-        View all
-      </button>
-
-    </div>
-
-    {/* LIST */}
-
-    <div className="space-y-4">
-
-      {recommended.length > 0 ? (
-
-  recommended.map((item, index) => (
-
-        <div
-          key={index}
-          className="group bg-white border border-[#e8e6e1] rounded-[1.7rem] p-5 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_15px_35px_rgba(0,0,0,0.08)] hover:border-[#e4d3b3]"
-        >
-
-          <div className="flex gap-4">
-
-            <div className="w-20 h-20 rounded-[1.5rem] bg-[#edf8ef] flex items-center justify-center text-4xl transition-all duration-300 group-hover:scale-110">
-
-              💡
-
-            </div>
-
-            <div>
-
-              <h3 className="text-[22px] font-semibold text-[#1d1d1f] mb-2">
-                {item.title}
-              </h3>
-
-              <p className="text-slate-500 leading-relaxed font-medium mb-4">
-                {item.desc}
-              </p>
-
-              <div className="inline-flex px-4 py-1 rounded-full text-sm font-medium bg-[#edf8ef] text-green-700">
-                {item.tag}
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-     ))
-
-) : (
-
-  <div className="bg-white border border-[#e8e6e1] rounded-[1.7rem] p-6 text-center">
-    <h3 className="text-xl font-semibold text-[#1d1d1f] mb-2">
-      No recommendations yet
-    </h3>
-    <p className="text-slate-500 font-medium leading-relaxed">
-      Complete your profile or connect GitHub so Capabl can suggest the next projects to build.
-    </p>
-  </div>
-
-)}
 
     </div>
 

@@ -6,7 +6,7 @@ import {
   FileText,
   Video,
   FolderKanban,
-  Bookmark,
+  LogOut,
   User,
   Settings,
   Bell,
@@ -16,6 +16,7 @@ import { useState } from "react";
 
 import axios from "axios";
 import { apiUrl } from "../config/api";
+import logout from "../utils/logout";
 
 export default function SettingsPage() {
 
@@ -195,14 +196,6 @@ export default function SettingsPage() {
           </a>
 
           <a
-            href="/recommendations"
-            className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all font-medium"
-          >
-            <Bookmark className="w-5 h-5" />
-            Recommendations
-          </a>
-
-          <a
             href="/profile"
             className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all font-medium"
           >
@@ -219,6 +212,14 @@ export default function SettingsPage() {
           </a>
 
         </div>
+
+        <button
+          onClick={logout}
+          className="flex items-center gap-3 px-4 py-3 rounded-2xl text-red-600 hover:bg-red-50 transition-all font-semibold mt-6"
+        >
+          <LogOut className="w-5 h-5" />
+          Logout
+        </button>
 
       </aside>
 

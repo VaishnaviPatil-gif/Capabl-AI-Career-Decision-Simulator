@@ -24,15 +24,18 @@ import {
   Loader2,
   Download,
   Info,
+  GitBranch,
 } from "lucide-react";
 
 import logout from "../utils/logout";
 import { apiUrl, assetUrl } from "../config/api";
 import ProfileStatus from "../components/ProfileStatus";
 import WhatIfSimulator from "./WhatIfSimulator";
+import PathComparison from "./PathComparison";
 import ConfidenceMeter, { getConfidenceBand } from "../components/ConfidenceMeter";
 import ResponsibleAIPanel from "../components/ResponsibleAIPanel";
 import ReasoningPanel from "../components/ReasoningPanel";
+import LogoMark from "../components/LogoMark";
 
 const GithubIcon = (props) => (
   <img src="/github.jpg" alt="GitHub" {...props} />
@@ -173,13 +176,34 @@ export default function Dashboard() {
   };
   const confidenceBand = getConfidenceBand(dataCompleteness);
 
+  // Tier required skills by their evidence-derived readiness so the headline
+  // reflects DEPTH, not mere presence. "Mastered" means genuinely Proficient
+  // (readiness ≥ 70) — not "a keyword appeared once". This is exactly why a
+  // profile with broad coverage can still sit near ~50% match: most skills are
+  // "Developing", not "Mastered". Falls back gracefully if per-skill data is
+  // absent on older cached analyses.
+  const proficiency = analysis?.skillProficiency || [];
+  const hasProficiency = proficiency.length > 0;
+  const requiredTotal =
+    analysis?.requiredSkills?.length || proficiency.length || 0;
+  const readinessOf = (s) => Number(s?.readiness) || 0;
+  const masteredSkills = proficiency.filter((s) => readinessOf(s) >= 70);
+  const developingSkills = proficiency.filter(
+    (s) => readinessOf(s) >= 20 && readinessOf(s) < 70
+  );
+  const gapSkills = proficiency.filter((s) => readinessOf(s) < 20);
+  const masteredCount = hasProficiency
+    ? masteredSkills.length
+    : analysis?.skillStrengths?.length ?? 0;
+  const masteredPct = requiredTotal
+    ? Math.round((masteredCount / requiredTotal) * 100)
+    : 0;
+
   return (
     <div className="min-h-screen bg-[#f7f5f2] flex">
       <aside className="w-[270px] bg-white border-r border-[#e8e6e1] h-screen overflow-y-auto px-6 py-8 hidden lg:flex flex-col fixed left-0 top-0">
         <a href="/" className="flex items-center gap-2 mb-12">
-          <div className="w-8 h-8 rounded-full border-[3px] border-[#1d1d1f] flex items-center justify-center">
-            <div className="w-1.5 h-1.5 bg-[#1d1d1f] rounded-full"></div>
-          </div>
+          <LogoMark className="w-8 h-8 text-[#1d1d1f]" />
           <span className="text-xl font-bold">Capabl</span>
         </a>
 
@@ -209,31 +233,41 @@ export default function Dashboard() {
       </aside>
 
       <main className="flex-1 lg:ml-[270px] p-8 lg:p-12">
-        <div className="flex items-start justify-between mb-10">
-          <div>
-            <h1 className="text-3xl font-bold text-[#1d1d1f] mb-3">
-              Welcome back, {userInfo?.name} 👋
-            </h1>
-            <p className="text-slate-500 text-lg font-medium">
-              Ready to take the next step in your career journey?
-            </p>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-[#77410e] flex items-center justify-center text-white font-bold text-lg">
-              {(userInfo?.name || "U").charAt(0).toUpperCase()}
-            </div>
+        <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#1d1d1f] via-[#2a2522] to-[#77410e] text-white p-8 lg:p-10 mb-8">
+          <div className="absolute -top-16 -right-10 w-56 h-56 rounded-full bg-[#b89968]/20 blur-3xl" />
+          <div className="absolute -bottom-20 right-32 w-48 h-48 rounded-full bg-white/5 blur-3xl" />
+          <div className="relative flex items-start justify-between gap-6">
             <div>
-              <h3 className="font-semibold text-[#1d1d1f]">{userInfo?.name}</h3>
-              <p className="text-sm text-slate-500">Student</p>
+              <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-[#e7d3b3] bg-white/10 px-3 py-1 rounded-full mb-4">
+                <Sparkles className="w-3.5 h-3.5" /> Your career dashboard
+              </span>
+              <h1 className="text-3xl lg:text-4xl font-bold mb-2">
+                Welcome back, {userInfo?.name?.split(" ")[0] || "there"} 👋
+              </h1>
+              <p className="text-white/70 text-lg font-medium">
+                Tracking your path to{" "}
+                <span className="text-[#e7d3b3] font-semibold">
+                  {analysis?.careerFit || userInfo?.careerGoal || "your goal"}
+                </span>
+              </p>
             </div>
-            <button
-              onClick={logout}
-              title="Log out"
-              className="lg:hidden ml-3 w-10 h-10 rounded-full border border-[#e8e6e1] flex items-center justify-center text-red-600 hover:bg-red-50"
-            >
-              <LogOut className="w-4 h-4" />
-            </button>
+
+            <div className="flex items-center gap-3 shrink-0">
+              <div className="hidden sm:block text-right">
+                <h3 className="font-semibold text-white">{userInfo?.name}</h3>
+                <p className="text-sm text-white/60">Student</p>
+              </div>
+              <div className="w-12 h-12 rounded-full bg-[#b89968] flex items-center justify-center text-[#1d1d1f] font-bold text-lg ring-2 ring-white/30">
+                {(userInfo?.name || "U").charAt(0).toUpperCase()}
+              </div>
+              <button
+                onClick={logout}
+                title="Log out"
+                className="lg:hidden w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20"
+              >
+                <LogOut className="w-4 h-4" />
+              </button>
+            </div>
           </div>
         </div>
 
@@ -299,7 +333,7 @@ export default function Dashboard() {
               </div>
               <div className="flex-1">
                 <h3 className="text-lg font-semibold text-[#1d1d1f] mb-2">
-                  Readiness Score
+                  Career Readiness Score
                 </h3>
                 <h2 className="text-4xl font-bold text-green-600 mb-2">
                   {analysis?.readinessScore ?? 0}%{" "}
@@ -308,7 +342,7 @@ export default function Dashboard() {
                   </span>
                 </h2>
                 <p className="text-slate-500 text-sm">
-                  Overall career readiness
+                  Composite of skills, resume, projects &amp; profile evidence
                 </p>
                 <ConfidenceMeter dataCompleteness={dataCompleteness} />
               </div>
@@ -323,7 +357,7 @@ export default function Dashboard() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="text-lg font-semibold text-[#1d1d1f] mb-2">
-                    Match Score
+                    Role Match Score
                   </h3>
                   <div className="flex items-center gap-4">
                     <h2 className="text-4xl font-bold text-purple-600">
@@ -355,13 +389,13 @@ export default function Dashboard() {
                     </div>
                   </div>
                   <p className="text-slate-500 text-sm mt-2 truncate">
-                    vs {analysis?.careerFit || "Full Stack Developer"}
+                    Your skills vs {analysis?.careerFit || "Full Stack Developer"}
                   </p>
                 </div>
               </div>
 
               <div className="space-y-2 mt-4 pt-4 border-t border-[#f7f5f2]">
-                <p className="text-xs text-slate-500 mb-2 font-medium">Profile Score Breakdown</p>
+                <p className="text-xs text-slate-500 mb-2 font-medium">Recruiter Visibility Signals</p>
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
                     <span className="w-16 text-xs text-slate-500">Resume</span>
@@ -389,7 +423,7 @@ export default function Dashboard() {
             </div>
             <p className="text-[11px] text-slate-400 mt-4 flex items-start gap-1">
               <Info className="w-3 h-3 mt-0.5 shrink-0" />
-              Strengthen your profiles to boost your overall Match Score.
+              These signals drive recruiter visibility. Your match score reflects skill evidence only.
             </p>
           </div>
 
@@ -401,11 +435,14 @@ export default function Dashboard() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="text-lg font-semibold text-[#1d1d1f] mb-2">
-                    Skill Strengths
+                    Skills Mastered
                   </h3>
                   <div className="flex items-center gap-4">
                     <h2 className="text-4xl font-bold text-blue-600">
-                      {analysis?.skillStrengths?.length ?? 0}
+                      {masteredCount}
+                      <span className="text-2xl font-semibold text-slate-300">
+                        /{requiredTotal || "—"}
+                      </span>
                     </h2>
                     <div className="w-14 h-14 shrink-0 relative flex items-center justify-center">
                       <svg className="w-full h-full transform -rotate-90">
@@ -425,24 +462,7 @@ export default function Dashboard() {
                           strokeWidth="4.5"
                           fill="transparent"
                           strokeDasharray="138.23"
-                          strokeDashoffset={
-                            138.23 -
-                            (138.23 *
-                              Math.min(
-                                100,
-                                Math.round(
-                                  (((analysis?.skillStrengths?.length ?? 0) /
-                                    Math.max(
-                                      1,
-                                      analysis?.requiredSkills?.length ||
-                                        ((analysis?.skillStrengths?.length ?? 0) +
-                                          (analysis?.skillGaps?.length ?? 0))
-                                    )) *
-                                    100)
-                                )
-                              )) /
-                              100
-                          }
+                          strokeDashoffset={138.23 - (138.23 * masteredPct) / 100}
                           strokeLinecap="round"
                           className="transition-all duration-1000"
                         />
@@ -450,48 +470,48 @@ export default function Dashboard() {
                     </div>
                   </div>
                   <p className="text-slate-500 text-sm mt-2 truncate">
-                    {analysis?.requiredSkills?.length
-                      ? `${analysis.skillStrengths?.length ?? 0} of ${analysis.requiredSkills.length} required skills`
+                    {requiredTotal
+                      ? `Proficient in ${masteredCount} of ${requiredTotal} required skills`
                       : "Skills aligned with your goal"}
                   </p>
                 </div>
               </div>
 
               <div className="space-y-2 mt-4 pt-4 border-t border-[#f7f5f2]">
-                <p className="text-xs text-slate-500 mb-2 font-medium">Skill Portfolio Breakdown</p>
+                <p className="text-xs text-slate-500 mb-2 font-medium">Proficiency Breakdown</p>
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
-                    <span className="w-16 text-xs text-slate-500">Strengths</span>
+                    <span className="w-20 text-xs text-slate-500">Proficient</span>
                     <div className="flex-1 h-2 rounded-full bg-green-50 overflow-hidden">
-                      <div className="h-full bg-green-500 rounded-full" style={{ width: `${Math.min(100, ((analysis?.skillStrengths?.length ?? 0) / Math.max(1, (analysis?.skillStrengths?.length ?? 0) + (analysis?.skillGaps?.length ?? 0))) * 100)}%` }} />
+                      <div className="h-full bg-green-500 rounded-full transition-all duration-700" style={{ width: `${requiredTotal ? (masteredSkills.length / requiredTotal) * 100 : 0}%` }} />
                     </div>
-                    <span className="text-[10px] text-slate-400 w-8 text-right">{analysis?.skillStrengths?.length ?? 0}</span>
+                    <span className="text-[10px] text-slate-400 w-8 text-right">{masteredSkills.length}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="w-16 text-xs text-slate-500">Gaps</span>
-                    <div className="flex-1 h-2 rounded-full bg-orange-50 overflow-hidden">
-                      <div className="h-full bg-orange-500 rounded-full" style={{ width: `${Math.min(100, ((analysis?.skillGaps?.length ?? 0) / Math.max(1, (analysis?.skillStrengths?.length ?? 0) + (analysis?.skillGaps?.length ?? 0))) * 100)}%` }} />
+                    <span className="w-20 text-xs text-slate-500">Developing</span>
+                    <div className="flex-1 h-2 rounded-full bg-amber-50 overflow-hidden">
+                      <div className="h-full bg-amber-500 rounded-full transition-all duration-700" style={{ width: `${requiredTotal ? (developingSkills.length / requiredTotal) * 100 : 0}%` }} />
                     </div>
-                    <span className="text-[10px] text-slate-400 w-8 text-right">{analysis?.skillGaps?.length ?? 0}</span>
+                    <span className="text-[10px] text-slate-400 w-8 text-right">{developingSkills.length}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="w-16 text-xs text-slate-500">Next Up</span>
-                    <div className="flex-1 h-2 rounded-full bg-blue-50 overflow-hidden">
-                      <div className="h-full bg-blue-600 rounded-full" style={{ width: `${Math.min(100, ((analysis?.recommendedSkills?.length ?? 0) / Math.max(1, (analysis?.skillStrengths?.length ?? 0) + (analysis?.skillGaps?.length ?? 0))) * 100)}%` }} />
+                    <span className="w-20 text-xs text-slate-500">Gap</span>
+                    <div className="flex-1 h-2 rounded-full bg-rose-50 overflow-hidden">
+                      <div className="h-full bg-rose-500 rounded-full transition-all duration-700" style={{ width: `${requiredTotal ? (gapSkills.length / requiredTotal) * 100 : 0}%` }} />
                     </div>
-                    <span className="text-[10px] text-slate-400 w-8 text-right">{analysis?.recommendedSkills?.length ?? 0}</span>
+                    <span className="text-[10px] text-slate-400 w-8 text-right">{gapSkills.length}</span>
                   </div>
                 </div>
               </div>
             </div>
             <p className="text-[11px] text-slate-400 mt-4 flex items-start gap-1">
               <Info className="w-3 h-3 mt-0.5 shrink-0" />
-              Complete roadmap tasks to convert gaps into strengths.
+              Mastered = Proficient (≥70% evidence). Developing skills lift your match as you add proof.
             </p>
           </div>
         </div>
 
-        {/* Readiness tabs — Overview vs What-if Simulator (no new route) */}
+        {/* Readiness tabs — Overview / Compare Paths / What-if Simulator (no new route) */}
         <div className="mb-6">
           <div className="inline-flex bg-white border border-[#e8e6e1] rounded-2xl p-1 mb-4">
             <button
@@ -505,6 +525,16 @@ export default function Dashboard() {
               Overview
             </button>
             <button
+              onClick={() => setActiveView("compare")}
+              className={
+                activeView === "compare"
+                  ? "px-4 py-2 rounded-xl bg-[#1d1d1f] text-white text-sm font-semibold flex items-center gap-2"
+                  : "px-4 py-2 rounded-xl text-sm font-medium text-slate-500 hover:text-[#1d1d1f] flex items-center gap-2"
+              }
+            >
+              <GitBranch className="w-4 h-4" /> Decision Simulator
+            </button>
+            <button
               onClick={() => setActiveView("simulate")}
               className={
                 activeView === "simulate"
@@ -512,9 +542,15 @@ export default function Dashboard() {
                   : "px-4 py-2 rounded-xl text-sm font-medium text-slate-500 hover:text-[#1d1d1f] flex items-center gap-2"
               }
             >
-              <Sparkles className="w-4 h-4" /> Simulate
+              <Sparkles className="w-4 h-4" /> What-If
             </button>
           </div>
+
+          {activeView === "compare" && (
+            <PathComparison
+              targetRole={analysis?.careerFit || userInfo?.careerGoal}
+            />
+          )}
 
           {activeView === "simulate" && (
             <WhatIfSimulator
@@ -525,61 +561,132 @@ export default function Dashboard() {
           )}
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-5 mb-6">
-          <div className="bg-white border border-[#e8e6e1] rounded-[2rem] p-6">
-            <div className="flex items-center gap-3 mb-5">
-              <div className="w-10 h-10 rounded-xl bg-[#e8f8ef] flex items-center justify-center">
-                <CheckCircle2 className="w-5 h-5 text-green-600" />
+        {hasProficiency ? (
+          <div className="bg-white border border-[#e8e6e1] rounded-[2rem] p-6 mb-6">
+            <div className="flex items-center justify-between gap-3 mb-5">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-[#edf3ff] flex items-center justify-center">
+                  <BarChart3 className="w-5 h-5 text-blue-600" />
+                </div>
+                <h2 className="text-xl font-bold text-[#1d1d1f]">Skill Mastery</h2>
               </div>
-              <h2 className="text-xl font-bold text-[#1d1d1f]">
-                Skill Strengths
-              </h2>
+              <span className="text-xs text-slate-400 hidden sm:block">
+                Readiness derived from resume, projects, interview &amp; certs
+              </span>
             </div>
-            {analysis?.skillStrengths?.length ? (
-              <div className="flex flex-wrap gap-2">
-                {analysis.skillStrengths.map((s) => (
-                  <span
-                    key={s}
-                    className="px-3 py-1.5 rounded-full bg-[#e8f8ef] text-green-700 text-sm font-medium capitalize"
-                  >
-                    {s}
-                  </span>
-                ))}
-              </div>
-            ) : (
-              <p className="text-slate-400 text-sm">
-                Add more skills matching your career goal to see strengths.
-              </p>
-            )}
-          </div>
 
-          <div className="bg-white border border-[#e8e6e1] rounded-[2rem] p-6">
-            <div className="flex items-center gap-3 mb-5">
-              <div className="w-10 h-10 rounded-xl bg-[#fff2e4] flex items-center justify-center">
-                <Puzzle className="w-5 h-5 text-orange-500" />
-              </div>
-              <h2 className="text-xl font-bold text-[#1d1d1f]">
-                Skill Gaps
-              </h2>
+            <div className="grid md:grid-cols-3 gap-5">
+              {[
+                {
+                  label: "Proficient",
+                  items: masteredSkills,
+                  dot: "bg-green-500",
+                  chip: "bg-[#e8f8ef] text-green-700",
+                  bar: "bg-green-500",
+                  empty: "No skills proven at proficient level yet.",
+                },
+                {
+                  label: "Developing",
+                  items: developingSkills,
+                  dot: "bg-amber-500",
+                  chip: "bg-amber-50 text-amber-700",
+                  bar: "bg-amber-500",
+                  empty: "Nothing in progress right now.",
+                },
+                {
+                  label: "Gap",
+                  items: gapSkills,
+                  dot: "bg-rose-500",
+                  chip: "bg-rose-50 text-rose-600",
+                  bar: "bg-rose-500",
+                  empty: "No gaps — great coverage!",
+                },
+              ].map((tier) => (
+                <div key={tier.label} className="rounded-2xl border border-[#f0eee9] p-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="flex items-center gap-2 text-sm font-semibold text-[#1d1d1f]">
+                      <span className={`w-2.5 h-2.5 rounded-full ${tier.dot}`} />
+                      {tier.label}
+                    </span>
+                    <span className="text-sm font-bold text-slate-400">
+                      {tier.items.length}
+                    </span>
+                  </div>
+                  {tier.items.length ? (
+                    <div className="flex flex-wrap gap-2">
+                      {tier.items
+                        .slice()
+                        .sort((a, b) => readinessOf(b) - readinessOf(a))
+                        .map((s) => (
+                          <span
+                            key={s.name}
+                            className={`px-2.5 py-1 rounded-full text-xs font-medium capitalize ${tier.chip}`}
+                          >
+                            {s.name}
+                            <span className="opacity-60"> · {readinessOf(s)}%</span>
+                          </span>
+                        ))}
+                    </div>
+                  ) : (
+                    <p className="text-slate-400 text-xs">{tier.empty}</p>
+                  )}
+                </div>
+              ))}
             </div>
-            {analysis?.skillGaps?.length ? (
-              <div className="flex flex-wrap gap-2">
-                {analysis.skillGaps.map((s) => (
-                  <span
-                    key={s}
-                    className="px-3 py-1.5 rounded-full bg-[#fff2e4] text-orange-600 text-sm font-medium capitalize"
-                  >
-                    {s}
-                  </span>
-                ))}
-              </div>
-            ) : (
-              <p className="text-slate-400 text-sm">
-                No skill gaps detected — you're on track!
-              </p>
-            )}
           </div>
-        </div>
+        ) : (
+          <div className="grid lg:grid-cols-2 gap-5 mb-6">
+            <div className="bg-white border border-[#e8e6e1] rounded-[2rem] p-6">
+              <div className="flex items-center gap-3 mb-5">
+                <div className="w-10 h-10 rounded-xl bg-[#e8f8ef] flex items-center justify-center">
+                  <CheckCircle2 className="w-5 h-5 text-green-600" />
+                </div>
+                <h2 className="text-xl font-bold text-[#1d1d1f]">Skill Strengths</h2>
+              </div>
+              {analysis?.skillStrengths?.length ? (
+                <div className="flex flex-wrap gap-2">
+                  {analysis.skillStrengths.map((s) => (
+                    <span
+                      key={s}
+                      className="px-3 py-1.5 rounded-full bg-[#e8f8ef] text-green-700 text-sm font-medium capitalize"
+                    >
+                      {s}
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-slate-400 text-sm">
+                  Add more skills matching your career goal to see strengths.
+                </p>
+              )}
+            </div>
+
+            <div className="bg-white border border-[#e8e6e1] rounded-[2rem] p-6">
+              <div className="flex items-center gap-3 mb-5">
+                <div className="w-10 h-10 rounded-xl bg-[#fff2e4] flex items-center justify-center">
+                  <Puzzle className="w-5 h-5 text-orange-500" />
+                </div>
+                <h2 className="text-xl font-bold text-[#1d1d1f]">Skill Gaps</h2>
+              </div>
+              {analysis?.skillGaps?.length ? (
+                <div className="flex flex-wrap gap-2">
+                  {analysis.skillGaps.map((s) => (
+                    <span
+                      key={s}
+                      className="px-3 py-1.5 rounded-full bg-[#fff2e4] text-orange-600 text-sm font-medium capitalize"
+                    >
+                      {s}
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-slate-400 text-sm">
+                  No skill gaps detected — you're on track!
+                </p>
+              )}
+            </div>
+          </div>
+        )}
 
         <div className="bg-white border border-[#e8e6e1] rounded-[2rem] p-6 mb-6">
           <div className="flex items-center gap-3 mb-5">
@@ -650,9 +757,9 @@ export default function Dashboard() {
               {analysis.roadmap.map((w) => (
                 <div
                   key={w.week}
-                  className="border border-[#e8e6e1] rounded-2xl p-5 flex items-center gap-5"
+                  className="border border-[#e8e6e1] rounded-2xl p-5 flex items-center gap-5 transition-all hover:border-[#b89968] hover:shadow-md"
                 >
-                  <div className="w-14 h-14 rounded-2xl bg-[#1d1d1f] text-white flex items-center justify-center font-bold shrink-0">
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#1d1d1f] to-[#77410e] text-white flex items-center justify-center font-bold shrink-0">
                     W{w.week}
                   </div>
                   <div className="flex-1">

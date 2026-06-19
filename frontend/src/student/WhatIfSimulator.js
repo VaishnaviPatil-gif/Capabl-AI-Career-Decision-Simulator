@@ -323,7 +323,7 @@ export default function WhatIfSimulator({ targetRole, skills, initialScore }) {
   );
 }
 
-function WeeklyPlanCard({ plan }) {
+export function WeeklyPlanCard({ plan }) {
   if (!plan) return null;
   const resources = Array.isArray(plan?.resources) ? plan.resources : [];
   return (

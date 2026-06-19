@@ -168,21 +168,13 @@ export default function Analyzer() {
 
   return (
     <div className="min-h-screen bg-[#f7f5f2] flex">
-      <aside className="w-[270px] bg-white border-r border-[#e8e6e1] min-h-screen px-6 py-8 hidden lg:flex flex-col fixed left-0 top-0">
+      <aside className="w-[270px] bg-white border-r border-[#e8e6e1] h-screen overflow-y-auto px-6 py-8 hidden lg:flex flex-col fixed left-0 top-0">
         <a href="/" className="flex items-center gap-2 mb-12">
           <div className="w-8 h-8 rounded-full border-[3px] border-[#1d1d1f] flex items-center justify-center">
             <div className="w-1.5 h-1.5 bg-[#1d1d1f] rounded-full"></div>
           </div>
           <span className="text-xl font-bold">Capabl</span>
         </a>
-
-        <button
-          onClick={logout}
-          className="flex items-center gap-3 px-4 py-3 rounded-2xl text-red-600 hover:bg-red-50 transition-all font-semibold mb-4"
-        >
-          <LogOut className="w-5 h-5" />
-          Logout
-        </button>
 
         <div className="space-y-2 flex-1">
           <SidebarLink href="/dashboard" icon={LayoutDashboard} label="Dashboard" />
@@ -195,6 +187,14 @@ export default function Analyzer() {
           <SidebarLink href="/profile" icon={User} label="Profile" />
           <SidebarLink href="/settings" icon={Settings} label="Settings" />
         </div>
+
+        <button
+          onClick={logout}
+          className="flex items-center gap-3 px-4 py-3 rounded-2xl text-red-600 hover:bg-red-50 transition-all font-semibold mt-4"
+        >
+          <LogOut className="w-5 h-5" />
+          Logout
+        </button>
       </aside>
 
       <main className="flex-1 lg:ml-[270px] p-8 lg:p-12">

@@ -13,10 +13,23 @@ import {
 } from "lucide-react";
 
 import { useState } from "react";
-
 import axios from "axios";
 import { apiUrl } from "../config/api";
 import logout from "../utils/logout";
+
+const SidebarLink = ({ href, icon: Icon, label, active }) => (
+  <a
+    href={href}
+    className={
+      active
+        ? "flex items-center gap-3 px-4 py-3 rounded-2xl bg-[#1d1d1f] text-white font-semibold"
+        : "flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all font-medium"
+    }
+  >
+    <Icon className={active ? "w-5 h-5 text-white" : "w-5 h-5"} />
+    {label}
+  </a>
+);
 
 export default function SettingsPage() {
 
@@ -123,7 +136,7 @@ export default function SettingsPage() {
 
       {/* SIDEBAR */}
 
-      <aside className="w-[270px] bg-white border-r border-[#e8e6e1] min-h-screen px-6 py-8 hidden lg:flex flex-col fixed left-0 top-0">
+      <aside className="w-[270px] bg-white border-r border-[#e8e6e1] h-screen overflow-y-auto px-6 py-8 hidden lg:flex flex-col fixed left-0 top-0">
 
         <a href="/" className="flex items-center gap-2 mb-12">
 
@@ -137,85 +150,23 @@ export default function SettingsPage() {
 
         </a>
 
-        <div className="space-y-2">
+        {/* NAV */}
 
-          <a
-            href="/dashboard"
-            className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all font-medium"
-          >
-            <LayoutDashboard className="w-5 h-5" />
-            Dashboard
-          </a>
-
-          <a
-            href="/analyzer"
-            className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all font-medium"
-          >
-            <Brain className="w-5 h-5" />
-            AI Analyzer
-          </a>
-
-          <a
-            href="/road-map"
-            className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all font-medium"
-          >
-            <Route className="w-5 h-5" />
-            Roadmap
-          </a>
-
-          <a
-            href="/skill-gap"
-            className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all font-medium"
-          >
-            <FileSearch className="w-5 h-5" />
-            Skill Gap
-          </a>
-
-          <a
-            href="/resume"
-            className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all font-medium"
-          >
-            <FileText className="w-5 h-5" />
-            Resume
-          </a>
-
-          <a
-            href="/interview"
-            className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all font-medium"
-          >
-            <Video className="w-5 h-5" />
-            Mock Interview
-          </a>
-
-          <a
-            href="/projects"
-            className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all font-medium"
-          >
-            <FolderKanban className="w-5 h-5" />
-            Projects
-          </a>
-
-          <a
-            href="/profile"
-            className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f1ea] transition-all font-medium"
-          >
-            <User className="w-5 h-5" />
-            Profile
-          </a>
-
-          <a
-            href="/settings"
-            className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-[#1d1d1f] text-white font-semibold"
-          >
-            <Settings className="w-5 h-5 text-white" />
-            Settings
-          </a>
-
+        <div className="space-y-2 flex-1">
+          <SidebarLink href="/dashboard" icon={LayoutDashboard} label="Dashboard" />
+          <SidebarLink href="/analyzer" icon={Brain} label="AI Analyzer" />
+          <SidebarLink href="/road-map" icon={Route} label="Roadmap" />
+          <SidebarLink href="/skill-gap" icon={FileSearch} label="Skill Gap" />
+          <SidebarLink href="/resume" icon={FileText} label="Resume" />
+          <SidebarLink href="/interview" icon={Video} label="Mock Interview" />
+          <SidebarLink href="/projects" icon={FolderKanban} label="Projects" />
+          <SidebarLink href="/profile" icon={User} label="Profile" />
+          <SidebarLink href="/settings" icon={Settings} label="Settings" active />
         </div>
 
         <button
           onClick={logout}
-          className="flex items-center gap-3 px-4 py-3 rounded-2xl text-red-600 hover:bg-red-50 transition-all font-semibold mt-6"
+          className="flex items-center gap-3 px-4 py-3 rounded-2xl text-red-600 hover:bg-red-50 transition-all font-semibold mt-4"
         >
           <LogOut className="w-5 h-5" />
           Logout

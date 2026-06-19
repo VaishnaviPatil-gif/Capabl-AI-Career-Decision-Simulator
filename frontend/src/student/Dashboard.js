@@ -23,6 +23,7 @@ import {
   LogOut,
   Loader2,
   Download,
+  Info,
 } from "lucide-react";
 
 import logout from "../utils/logout";
@@ -174,21 +175,13 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-[#f7f5f2] flex">
-      <aside className="w-[270px] bg-white border-r border-[#e8e6e1] min-h-screen px-6 py-8 hidden lg:flex flex-col fixed left-0 top-0">
+      <aside className="w-[270px] bg-white border-r border-[#e8e6e1] h-screen overflow-y-auto px-6 py-8 hidden lg:flex flex-col fixed left-0 top-0">
         <a href="/" className="flex items-center gap-2 mb-12">
           <div className="w-8 h-8 rounded-full border-[3px] border-[#1d1d1f] flex items-center justify-center">
             <div className="w-1.5 h-1.5 bg-[#1d1d1f] rounded-full"></div>
           </div>
           <span className="text-xl font-bold">Capabl</span>
         </a>
-
-        <button
-          onClick={logout}
-          className="flex items-center gap-3 px-4 py-3 rounded-2xl text-red-600 hover:bg-red-50 transition-all font-semibold mb-4"
-        >
-          <LogOut className="w-5 h-5" />
-          Logout
-        </button>
 
         <div className="space-y-2 flex-1">
           <SidebarLink href="/dashboard" icon={LayoutDashboard} label="Dashboard" active />
@@ -201,6 +194,14 @@ export default function Dashboard() {
           <SidebarLink href="/profile" icon={User} label="Profile" />
           <SidebarLink href="/settings" icon={Settings} label="Settings" />
         </div>
+
+        <button
+          onClick={logout}
+          className="flex items-center gap-3 px-4 py-3 rounded-2xl text-red-600 hover:bg-red-50 transition-all font-semibold mt-4"
+        >
+          <LogOut className="w-5 h-5" />
+          Logout
+        </button>
 
         <div className="mt-4">
           <ResponsibleAIPanel />
@@ -314,42 +315,179 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="bg-white border border-[#e8e6e1] rounded-[2rem] p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-            <div className="flex items-start gap-5">
-              <div className="w-16 h-16 rounded-2xl bg-[#f3ecff] flex items-center justify-center shrink-0">
-                <Brain className="w-8 h-8 text-purple-600" />
+          <div className="bg-white border border-[#e8e6e1] rounded-[2rem] p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl flex flex-col justify-between">
+            <div>
+              <div className="flex items-start gap-5">
+                <div className="w-16 h-16 rounded-2xl bg-[#f3ecff] flex items-center justify-center shrink-0">
+                  <Brain className="w-8 h-8 text-purple-600" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-lg font-semibold text-[#1d1d1f] mb-2">
+                    Match Score
+                  </h3>
+                  <div className="flex items-center gap-4">
+                    <h2 className="text-4xl font-bold text-purple-600">
+                      {analysis?.matchScore ?? 0}%
+                    </h2>
+                    <div className="w-14 h-14 shrink-0 relative flex items-center justify-center">
+                      <svg className="w-full h-full transform -rotate-90">
+                        <circle
+                          cx="28"
+                          cy="28"
+                          r="22"
+                          stroke="#f3ecff"
+                          strokeWidth="4.5"
+                          fill="transparent"
+                        />
+                        <circle
+                          cx="28"
+                          cy="28"
+                          r="22"
+                          stroke="#9333ea"
+                          strokeWidth="4.5"
+                          fill="transparent"
+                          strokeDasharray="138.23"
+                          strokeDashoffset={138.23 - (138.23 * (analysis?.matchScore ?? 0)) / 100}
+                          strokeLinecap="round"
+                          className="transition-all duration-1000"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                  <p className="text-slate-500 text-sm mt-2 truncate">
+                    vs {analysis?.careerFit || "Full Stack Developer"}
+                  </p>
+                </div>
               </div>
-              <div>
-                <h3 className="text-lg font-semibold text-[#1d1d1f] mb-2">
-                  Match Score
-                </h3>
-                <h2 className="text-4xl font-bold text-purple-600 mb-2">
-                  {analysis?.matchScore ?? 0}%
-                </h2>
-                <p className="text-slate-500 text-sm">
-                  vs {analysis?.careerFit}
-                </p>
+
+              <div className="space-y-2 mt-4 pt-4 border-t border-[#f7f5f2]">
+                <p className="text-xs text-slate-500 mb-2 font-medium">Profile Score Breakdown</p>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <span className="w-16 text-xs text-slate-500">Resume</span>
+                    <div className="flex-1 h-2 rounded-full bg-purple-50 overflow-hidden">
+                      <div className="h-full bg-purple-600 rounded-full" style={{ width: `${analysis?.resume?.score ?? 0}%` }} />
+                    </div>
+                    <span className="text-[10px] text-slate-400 w-8 text-right">{analysis?.resume?.score ?? 0}%</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="w-16 text-xs text-slate-500">GitHub</span>
+                    <div className="flex-1 h-2 rounded-full bg-slate-100 overflow-hidden">
+                      <div className="h-full bg-slate-800 rounded-full" style={{ width: `${analysis?.github?.score ?? 0}%` }} />
+                    </div>
+                    <span className="text-[10px] text-slate-400 w-8 text-right">{analysis?.github?.score ?? 0}%</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="w-16 text-xs text-slate-500">LinkedIn</span>
+                    <div className="flex-1 h-2 rounded-full bg-blue-50 overflow-hidden">
+                      <div className="h-full bg-blue-600 rounded-full" style={{ width: `${analysis?.linkedin?.score ?? 0}%` }} />
+                    </div>
+                    <span className="text-[10px] text-slate-400 w-8 text-right">{analysis?.linkedin?.score ?? 0}%</span>
+                  </div>
+                </div>
               </div>
             </div>
+            <p className="text-[11px] text-slate-400 mt-4 flex items-start gap-1">
+              <Info className="w-3 h-3 mt-0.5 shrink-0" />
+              Strengthen your profiles to boost your overall Match Score.
+            </p>
           </div>
 
-          <div className="bg-white border border-[#e8e6e1] rounded-[2rem] p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-            <div className="flex items-start gap-5">
-              <div className="w-16 h-16 rounded-2xl bg-[#edf3ff] flex items-center justify-center shrink-0">
-                <BarChart3 className="w-8 h-8 text-blue-600" />
+          <div className="bg-white border border-[#e8e6e1] rounded-[2rem] p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl flex flex-col justify-between">
+            <div>
+              <div className="flex items-start gap-5">
+                <div className="w-16 h-16 rounded-2xl bg-[#edf3ff] flex items-center justify-center shrink-0">
+                  <BarChart3 className="w-8 h-8 text-blue-600" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-lg font-semibold text-[#1d1d1f] mb-2">
+                    Skill Strengths
+                  </h3>
+                  <div className="flex items-center gap-4">
+                    <h2 className="text-4xl font-bold text-blue-600">
+                      {analysis?.skillStrengths?.length ?? 0}
+                    </h2>
+                    <div className="w-14 h-14 shrink-0 relative flex items-center justify-center">
+                      <svg className="w-full h-full transform -rotate-90">
+                        <circle
+                          cx="28"
+                          cy="28"
+                          r="22"
+                          stroke="#edf3ff"
+                          strokeWidth="4.5"
+                          fill="transparent"
+                        />
+                        <circle
+                          cx="28"
+                          cy="28"
+                          r="22"
+                          stroke="#2563eb"
+                          strokeWidth="4.5"
+                          fill="transparent"
+                          strokeDasharray="138.23"
+                          strokeDashoffset={
+                            138.23 -
+                            (138.23 *
+                              Math.min(
+                                100,
+                                Math.round(
+                                  (((analysis?.skillStrengths?.length ?? 0) /
+                                    Math.max(
+                                      1,
+                                      analysis?.requiredSkills?.length ||
+                                        ((analysis?.skillStrengths?.length ?? 0) +
+                                          (analysis?.skillGaps?.length ?? 0))
+                                    )) *
+                                    100)
+                                )
+                              )) /
+                              100
+                          }
+                          strokeLinecap="round"
+                          className="transition-all duration-1000"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                  <p className="text-slate-500 text-sm mt-2 truncate">
+                    {analysis?.requiredSkills?.length
+                      ? `${analysis.skillStrengths?.length ?? 0} of ${analysis.requiredSkills.length} required skills`
+                      : "Skills aligned with your goal"}
+                  </p>
+                </div>
               </div>
-              <div>
-                <h3 className="text-lg font-semibold text-[#1d1d1f] mb-2">
-                  Skill Strengths
-                </h3>
-                <h2 className="text-4xl font-bold text-blue-600 mb-2">
-                  {analysis?.skillStrengths?.length ?? 0}
-                </h2>
-                <p className="text-slate-500 text-sm">
-                  Skills aligned with your goal
-                </p>
+
+              <div className="space-y-2 mt-4 pt-4 border-t border-[#f7f5f2]">
+                <p className="text-xs text-slate-500 mb-2 font-medium">Skill Portfolio Breakdown</p>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <span className="w-16 text-xs text-slate-500">Strengths</span>
+                    <div className="flex-1 h-2 rounded-full bg-green-50 overflow-hidden">
+                      <div className="h-full bg-green-500 rounded-full" style={{ width: `${Math.min(100, ((analysis?.skillStrengths?.length ?? 0) / Math.max(1, (analysis?.skillStrengths?.length ?? 0) + (analysis?.skillGaps?.length ?? 0))) * 100)}%` }} />
+                    </div>
+                    <span className="text-[10px] text-slate-400 w-8 text-right">{analysis?.skillStrengths?.length ?? 0}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="w-16 text-xs text-slate-500">Gaps</span>
+                    <div className="flex-1 h-2 rounded-full bg-orange-50 overflow-hidden">
+                      <div className="h-full bg-orange-500 rounded-full" style={{ width: `${Math.min(100, ((analysis?.skillGaps?.length ?? 0) / Math.max(1, (analysis?.skillStrengths?.length ?? 0) + (analysis?.skillGaps?.length ?? 0))) * 100)}%` }} />
+                    </div>
+                    <span className="text-[10px] text-slate-400 w-8 text-right">{analysis?.skillGaps?.length ?? 0}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="w-16 text-xs text-slate-500">Next Up</span>
+                    <div className="flex-1 h-2 rounded-full bg-blue-50 overflow-hidden">
+                      <div className="h-full bg-blue-600 rounded-full" style={{ width: `${Math.min(100, ((analysis?.recommendedSkills?.length ?? 0) / Math.max(1, (analysis?.skillStrengths?.length ?? 0) + (analysis?.skillGaps?.length ?? 0))) * 100)}%` }} />
+                    </div>
+                    <span className="text-[10px] text-slate-400 w-8 text-right">{analysis?.recommendedSkills?.length ?? 0}</span>
+                  </div>
+                </div>
               </div>
             </div>
+            <p className="text-[11px] text-slate-400 mt-4 flex items-start gap-1">
+              <Info className="w-3 h-3 mt-0.5 shrink-0" />
+              Complete roadmap tasks to convert gaps into strengths.
+            </p>
           </div>
         </div>
 

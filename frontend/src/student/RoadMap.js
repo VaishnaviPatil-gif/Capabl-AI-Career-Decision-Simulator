@@ -181,7 +181,7 @@ export default function RoadMap() {
 
   return (
     <div className="min-h-screen bg-[#f7f5f2] flex">
-      <aside className="w-[270px] bg-white border-r border-[#e8e6e1] min-h-screen px-6 py-8 hidden lg:flex flex-col fixed left-0 top-0">
+      <aside className="w-[270px] bg-white border-r border-[#e8e6e1] h-screen overflow-y-auto px-6 py-8 hidden lg:flex flex-col fixed left-0 top-0">
         <a href="/" className="flex items-center gap-2 mb-12">
           <div className="w-8 h-8 rounded-full border-[3px] border-[#1d1d1f] flex items-center justify-center">
             <div className="w-1.5 h-1.5 bg-[#1d1d1f] rounded-full"></div>
@@ -197,7 +197,7 @@ export default function RoadMap() {
           <SidebarLink href="/resume" icon={FileText} label="Resume" />
           <SidebarLink href="/interview" icon={Video} label="Mock Interview" />
           <SidebarLink href="/projects" icon={FolderKanban} label="Projects" />
-                    <SidebarLink href="/profile" icon={User} label="Profile" />
+          <SidebarLink href="/profile" icon={User} label="Profile" />
           <SidebarLink href="/settings" icon={Settings} label="Settings" />
         </div>
 

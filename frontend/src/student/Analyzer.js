@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import logout from "../utils/logout";
 import { apiUrl } from "../config/api";
 import ProfileStatus from "../components/ProfileStatus";
+import LogoMark from "../components/LogoMark";
 
 import {
   LayoutDashboard,
@@ -170,9 +171,7 @@ export default function Analyzer() {
     <div className="min-h-screen bg-[#f7f5f2] flex">
       <aside className="w-[270px] bg-white border-r border-[#e8e6e1] h-screen overflow-y-auto px-6 py-8 hidden lg:flex flex-col fixed left-0 top-0">
         <a href="/" className="flex items-center gap-2 mb-12">
-          <div className="w-8 h-8 rounded-full border-[3px] border-[#1d1d1f] flex items-center justify-center">
-            <div className="w-1.5 h-1.5 bg-[#1d1d1f] rounded-full"></div>
-          </div>
+          <LogoMark className="w-8 h-8 text-[#1d1d1f]" />
           <span className="text-xl font-bold">Capabl</span>
         </a>
 

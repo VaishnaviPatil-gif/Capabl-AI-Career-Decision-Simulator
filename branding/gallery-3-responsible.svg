@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif">
+  <rect width="1200" height="800" fill="#f4efe7"/>
+  <rect width="1200" height="170" fill="#1d1d1f"/>
+  <rect x="0" y="166" width="1200" height="6" fill="#77410e"/>
+
+  <g transform="translate(60,46)">
+    <polyline points="9,11 17,11 17,20 25,20 25,29 34,29" fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="square"/>
+    <text x="56" y="29" fill="#ffffff" font-size="30" font-weight="700">Capabl</text>
+  </g>
+  <text x="60" y="128" fill="#ffffff" font-size="40" font-weight="800">Responsible AI, built in</text>
+
+  <!-- three pillars -->
+  <g transform="translate(60,230)">
+    <rect width="340" height="300" rx="24" fill="#ffffff"/>
+    <rect width="340" height="8" rx="4" fill="#e11d48"/>
+    <text x="32" y="70" fill="#1d1d1f" font-size="24" font-weight="800">The risk</text>
+    <text x="32" y="118" fill="#555" font-size="19">Over-reliance &amp; false</text>
+    <text x="32" y="146" fill="#555" font-size="19">confidence — treating</text>
+    <text x="32" y="174" fill="#555" font-size="19">one score as destiny.</text>
+    <rect x="32" y="230" rx="13" width="150" height="30" fill="#fde7ec"/><text x="48" y="250" fill="#b4123c" font-size="15" font-weight="700">identified</text>
+  </g>
+  <g transform="translate(430,230)">
+    <rect width="340" height="300" rx="24" fill="#ffffff"/>
+    <rect width="340" height="8" rx="4" fill="#16a34a"/>
+    <text x="32" y="70" fill="#1d1d1f" font-size="24" font-weight="800">The mitigation</text>
+    <text x="32" y="118" fill="#555" font-size="19">Confidence bands that</text>
+    <text x="32" y="146" fill="#555" font-size="19">widen on thin evidence,</text>
+    <text x="32" y="174" fill="#555" font-size="19">per-skill breakdowns,</text>
+    <text x="32" y="202" fill="#555" font-size="19">no unverifiable signals.</text>
+    <rect x="32" y="240" rx="13" width="150" height="30" fill="#e8f8ef"/><text x="48" y="260" fill="#16794a" font-size="15" font-weight="700">mitigated</text>
+  </g>
+  <g transform="translate(800,230)">
+    <rect width="340" height="300" rx="24" fill="#ffffff"/>
+    <rect width="340" height="8" rx="4" fill="#2563eb"/>
+    <text x="32" y="70" fill="#1d1d1f" font-size="24" font-weight="800">Human in the loop</text>
+    <text x="32" y="118" fill="#555" font-size="19">Capabl models options</text>
+    <text x="32" y="146" fill="#555" font-size="19">&amp; tradeoffs — it never</text>
+    <text x="32" y="174" fill="#555" font-size="19">chooses the path.</text>
+    <text x="32" y="202" fill="#555" font-size="19">The student decides.</text>
+    <rect x="32" y="240" rx="13" width="180" height="30" fill="#e6efff"/><text x="48" y="260" fill="#1d4ed8" font-size="15" font-weight="700">you stay in control</text>
+  </g>
+
+  <!-- confidence band visual -->
+  <g transform="translate(60,580)">
+    <rect width="1080" height="150" rx="24" fill="#1d1d1f"/>
+    <text x="40" y="58" fill="#ffffff" font-size="24" font-weight="800">Projected match = 78% <tspan fill="#9a9a9a" font-weight="600">± 5</tspan></text>
+    <text x="40" y="92" fill="#e7d3b3" font-size="18" font-weight="600">A decision input — not a guarantee, not a "correct answer."</text>
+    <rect x="40" y="112" width="1000" height="10" rx="5" fill="#3a342f"/>
+    <rect x="690" y="112" width="80" height="10" rx="5" fill="#b89968"/>
+    <rect x="740" y="106" width="22" height="22" rx="5" fill="#ffffff"/>
+  </g>
+</svg>

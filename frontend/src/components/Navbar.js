@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import LogoMark from "./LogoMark";
 
 export default function Navbar() {
   return (
@@ -9,9 +10,7 @@ export default function Navbar() {
 
         <Link to="/" className="flex items-center gap-2">
 
-          <div className="w-8 h-8 rounded-full border-[3px] border-black flex items-center justify-center">
-            <div className="w-1.5 h-1.5 bg-black rounded-full"></div>
-          </div>
+          <LogoMark className="w-8 h-8 text-black" />
 
           <span className="text-xl font-bold tracking-tight">
             Capabl

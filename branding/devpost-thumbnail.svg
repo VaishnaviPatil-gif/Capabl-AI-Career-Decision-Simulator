@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <!-- Warm brand gradient backdrop -->
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#faf8f5"/>
+      <stop offset="1" stop-color="#f1ece3"/>
+    </linearGradient>
+    <linearGradient id="header" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1d1d1f"/>
+      <stop offset="0.55" stop-color="#2a2522"/>
+      <stop offset="1" stop-color="#77410e"/>
+    </linearGradient>
+    <linearGradient id="green" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#34d27f"/><stop offset="1" stop-color="#16a34a"/>
+    </linearGradient>
+    <linearGradient id="rose" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fb7185"/><stop offset="1" stop-color="#e11d48"/>
+    </linearGradient>
+    <linearGradient id="blue" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#60a5fa"/><stop offset="1" stop-color="#2563eb"/>
+    </linearGradient>
+    <filter id="cardShadow" x="-20%" y="-20%" width="140%" height="160%">
+      <feDropShadow dx="0" dy="10" stdDeviation="16" flood-color="#1d1d1f" flood-opacity="0.14"/>
+    </filter>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="160%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#1d1d1f" flood-opacity="0.10"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="800" fill="url(#bg)"/>
+  <circle cx="1080" cy="120" r="220" fill="#b89968" opacity="0.10"/>
+  <circle cx="120" cy="720" r="180" fill="#77410e" opacity="0.07"/>
+
+  <!-- Header band -->
+  <rect x="0" y="0" width="1200" height="250" fill="url(#header)"/>
+  <circle cx="1050" cy="60" r="160" fill="#b89968" opacity="0.18"/>
+  <circle cx="930" cy="230" r="90" fill="#ffffff" opacity="0.05"/>
+
+  <!-- Brand mark — staircase (three rising steps) -->
+  <g transform="translate(70,58)">
+    <polyline points="11,13 20,13 20,23 29,23 29,33 39,33" fill="none" stroke="#ffffff" stroke-width="7" stroke-linecap="square" stroke-linejoin="miter"/>
+    <text x="64" y="34" fill="#ffffff" font-size="38" font-weight="700" letter-spacing="0.5">Capabl</text>
+  </g>
+
+  <!-- Eyebrow chip -->
+  <g transform="translate(70,120)">
+    <rect x="0" y="0" rx="16" ry="16" width="442" height="34" fill="#ffffff" opacity="0.12"/>
+    <text x="20" y="23" fill="#e7d3b3" font-size="16" font-weight="700" letter-spacing="2">AI-POWERED CAREER DECISION SUPPORT</text>
+  </g>
+
+  <!-- Headline -->
+  <text x="70" y="200" fill="#ffffff" font-size="48" font-weight="800" letter-spacing="-0.5">AI Career Decision Simulator</text>
+
+  <!-- Tagline -->
+  <text x="70" y="232" fill="#e7d3b3" font-size="18" font-weight="500">Evidence-Based Career Readiness &amp; Path Simulation</text>
+
+  <!-- Sub-headline (below header, on cream) -->
+  <text x="70" y="312" fill="#1d1d1f" font-size="27" font-weight="600">Compare real paths. See the tradeoffs.</text>
+  <text x="70" y="350" fill="#6b6b6b" font-size="23" font-weight="500">Evidence-based readiness — </text>
+  <text x="362" y="350" fill="#77410e" font-size="23" font-weight="700">you decide, not the AI.</text>
+
+  <!-- ===================== THREE PATH CARDS ===================== -->
+  <!-- Card geometry: width 340, gap 30, start x=70 -->
+
+  <!-- Card 1: Quick Wins -->
+  <g transform="translate(70,400)" filter="url(#cardShadow)">
+    <rect width="340" height="320" rx="28" fill="#ffffff"/>
+    <rect width="340" height="8" rx="4" fill="url(#green)"/>
+    <circle cx="40" cy="58" r="7" fill="#16a34a"/>
+    <text x="62" y="65" fill="#1d1d1f" font-size="26" font-weight="800">Quick Wins</text>
+    <text x="32" y="150" fill="#16a34a" font-size="72" font-weight="800">+5%</text>
+    <text x="32" y="188" fill="#9a9a9a" font-size="20" font-weight="600">~1 week · low effort</text>
+    <line x1="32" y1="214" x2="308" y2="214" stroke="#eee7db" stroke-width="2"/>
+    <text x="32" y="252" fill="#444" font-size="19" font-weight="600">Finish what you're</text>
+    <text x="32" y="278" fill="#444" font-size="19" font-weight="600">closest to mastering</text>
+    <g transform="translate(32,294)">
+      <rect x="0" y="0" rx="13" ry="13" width="120" height="26" fill="#e8f8ef"/>
+      <text x="14" y="18" fill="#16794a" font-size="14" font-weight="700">Momentum</text>
+    </g>
+  </g>
+
+  <!-- Card 2: Critical Gaps -->
+  <g transform="translate(430,400)" filter="url(#cardShadow)">
+    <rect width="340" height="320" rx="28" fill="#ffffff"/>
+    <rect width="340" height="8" rx="4" fill="url(#rose)"/>
+    <circle cx="40" cy="58" r="7" fill="#e11d48"/>
+    <text x="62" y="65" fill="#1d1d1f" font-size="26" font-weight="800">Critical Gaps</text>
+    <text x="32" y="150" fill="#e11d48" font-size="72" font-weight="800">+17%</text>
+    <text x="32" y="188" fill="#9a9a9a" font-size="20" font-weight="600">~3 weeks · high impact</text>
+    <line x1="32" y1="214" x2="308" y2="214" stroke="#eee7db" stroke-width="2"/>
+    <text x="32" y="252" fill="#444" font-size="19" font-weight="600">Close the skills this</text>
+    <text x="32" y="278" fill="#444" font-size="19" font-weight="600">role demands most</text>
+    <g transform="translate(32,294)">
+      <rect x="0" y="0" rx="13" ry="13" width="140" height="26" fill="#fde7ec"/>
+      <text x="14" y="18" fill="#b4123c" font-size="14" font-weight="700">Biggest levers</text>
+    </g>
+  </g>
+
+  <!-- Card 3: Balanced Sprint -->
+  <g transform="translate(790,400)" filter="url(#cardShadow)">
+    <rect width="340" height="320" rx="28" fill="#ffffff"/>
+    <rect width="340" height="8" rx="4" fill="url(#blue)"/>
+    <circle cx="40" cy="58" r="7" fill="#2563eb"/>
+    <text x="62" y="65" fill="#1d1d1f" font-size="26" font-weight="800">Balanced Sprint</text>
+    <text x="32" y="150" fill="#2563eb" font-size="72" font-weight="800">+27%</text>
+    <text x="32" y="188" fill="#9a9a9a" font-size="20" font-weight="600">~5 weeks · best ROI</text>
+    <line x1="32" y1="214" x2="308" y2="214" stroke="#eee7db" stroke-width="2"/>
+    <text x="32" y="252" fill="#444" font-size="19" font-weight="600">Most score gained</text>
+    <text x="32" y="278" fill="#444" font-size="19" font-weight="600">per week invested</text>
+    <g transform="translate(32,294)">
+      <rect x="0" y="0" rx="13" ry="13" width="132" height="26" fill="#e6efff"/>
+      <text x="14" y="18" fill="#1d4ed8" font-size="14" font-weight="700">Efficient</text>
+    </g>
+  </g>
+
+</svg>

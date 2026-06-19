@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif">
+  <rect width="1200" height="800" fill="#f4efe7"/>
+  <rect width="1200" height="170" fill="#1d1d1f"/>
+  <rect x="0" y="166" width="1200" height="6" fill="#77410e"/>
+
+  <g transform="translate(60,46)">
+    <polyline points="9,11 17,11 17,20 25,20 25,29 34,29" fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="square"/>
+    <text x="56" y="29" fill="#ffffff" font-size="30" font-weight="700">Capabl</text>
+  </g>
+  <text x="60" y="128" fill="#ffffff" font-size="40" font-weight="800">Explainable scoring — the AI never invents a number</text>
+
+  <!-- Principle banner -->
+  <g transform="translate(60,210)">
+    <rect width="1080" height="90" rx="20" fill="#1d1d1f"/>
+    <text x="40" y="56" fill="#e7d3b3" font-size="28" font-weight="800">LLM where meaning matters · rules where trust matters</text>
+  </g>
+
+  <!-- Formula card -->
+  <g transform="translate(60,330)">
+    <rect width="1080" height="160" rx="24" fill="#ffffff"/>
+    <text x="40" y="58" fill="#9a9a9a" font-size="18" font-weight="700" letter-spacing="1">PER-SKILL READINESS (0–100), DETERMINISTIC</text>
+    <text x="40" y="112" fill="#1d1d1f" font-size="27" font-weight="800">readiness = 0.35·interview + 0.25·projects + 0.20·resume</text>
+    <text x="40" y="146" fill="#1d1d1f" font-size="27" font-weight="800">+ 0.12·certifications + 0.08·roadmap</text>
+  </g>
+
+  <!-- Two pillars -->
+  <g transform="translate(60,520)">
+    <rect width="525" height="210" rx="24" fill="#ffffff"/>
+    <circle cx="42" cy="52" r="9" fill="#7c3aed"/>
+    <text x="66" y="60" fill="#1d1d1f" font-size="24" font-weight="800">AI handles meaning</text>
+    <text x="40" y="104" fill="#555" font-size="18">• LLM infers the 12 role skills + weights</text>
+    <text x="40" y="136" fill="#555" font-size="18">• Embeddings match evidence by meaning</text>
+    <text x="40" y="168" fill="#555" font-size="18">  ("built a chatbot" ↔ "LLM integration")</text>
+  </g>
+  <g transform="translate(615,520)">
+    <rect width="525" height="210" rx="24" fill="#ffffff"/>
+    <circle cx="42" cy="52" r="9" fill="#16a34a"/>
+    <text x="66" y="60" fill="#1d1d1f" font-size="24" font-weight="800">Rules handle trust</text>
+    <text x="40" y="104" fill="#555" font-size="18">• Every score &amp; projection from a formula</text>
+    <text x="40" y="136" fill="#555" font-size="18">• LLM receives no numbers — can't fabricate</text>
+    <text x="40" y="168" fill="#555" font-size="18">• Each figure is reproducible &amp; auditable</text>
+  </g>
+</svg>

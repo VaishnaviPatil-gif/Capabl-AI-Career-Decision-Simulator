@@ -15,6 +15,7 @@ import {
 import axios from "axios";
 import toast from "react-hot-toast";
 import { apiUrl } from "../config/api";
+import LogoMark from "../components/LogoMark";
 
 export default function Signup() {
 
@@ -94,11 +95,7 @@ export default function Signup() {
 
           <a href="/" className="flex items-center gap-2">
 
-            <div className="w-8 h-8 rounded-full border-[3px] border-[#1d1d1f] flex items-center justify-center">
-
-              <div className="w-1.5 h-1.5 bg-[#1d1d1f] rounded-full"></div>
-
-            </div>
+            <LogoMark className="w-8 h-8 text-[#1d1d1f]" />
 
             <span className="text-xl font-bold tracking-tight">
               Capabl

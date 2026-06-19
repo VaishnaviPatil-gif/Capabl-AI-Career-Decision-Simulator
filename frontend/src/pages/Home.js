@@ -1,4 +1,5 @@
 import MainLayout from "../layouts/MainLayout";
+import LogoMark from "../components/LogoMark";
 
 import {
   Upload,
@@ -132,11 +133,7 @@ export default function Home() {
 
                   <div className="flex items-center gap-2 mb-10">
 
-                    <div className="w-5 h-5 rounded-full border-2 border-black flex items-center justify-center">
-
-                      <div className="w-1 h-1 bg-black rounded-full"></div>
-
-                    </div>
+                    <LogoMark className="w-5 h-5 text-black" />
 
                     <span className="text-sm font-bold">
                       Capabl

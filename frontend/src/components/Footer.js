@@ -1,3 +1,5 @@
+import LogoMark from "./LogoMark";
+
 export default function Footer() {
 
   return (
@@ -8,7 +10,8 @@ export default function Footer() {
 
         <div>
 
-          <h2 className="text-2xl font-bold">
+          <h2 className="text-2xl font-bold flex items-center gap-2">
+            <LogoMark className="w-6 h-6 text-[#1d1d1f]" />
             Capabl
           </h2>
 

@@ -25,6 +25,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { apiUrl } from "../config/api";
 import logout from "../utils/logout";
+import LogoMark from "../components/LogoMark";
 
 const SidebarLink = ({ href, icon: Icon, label, active }) => (
   <a
@@ -217,11 +218,7 @@ export default function Projects() {
 
         <a href="/" className="flex items-center gap-2 mb-12">
 
-          <div className="w-8 h-8 rounded-full border-[3px] border-[#1d1d1f] flex items-center justify-center">
-
-            <div className="w-1.5 h-1.5 bg-[#1d1d1f] rounded-full"></div>
-
-          </div>
+          <LogoMark className="w-8 h-8 text-[#1d1d1f]" />
 
           <span className="text-xl font-bold">
             Capabl

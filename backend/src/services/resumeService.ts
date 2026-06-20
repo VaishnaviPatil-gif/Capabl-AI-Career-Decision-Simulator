@@ -10,17 +10,28 @@ async function getPdfParse() {
   if (pdfParseFn) return pdfParseFn;
   try {
     const mod: any = await import("pdf-parse");
-    if (typeof mod.default === "function") {
+    if (mod.PDFParse) {
+      // v2 (installed): class with instance.getText().
+      pdfParseFn = async (buf: any) => {
+        const p = new mod.PDFParse({ data: buf });
+        try {
+          const r = await p.getText({
+            // Capture clickable hyperlink annotations (GitHub/LinkedIn/portfolio
+            // links whose visible text isn't the URL) as [text](url) — picked up
+            // by extractResumeUrls. Off by default in v2, which is the main
+            // reason links frequently went missing from the analysis.
+            parseHyperlinks: true,
+          });
+          return r?.text || "";
+        } finally {
+          // Free the pdfjs document; otherwise repeated uploads leak handles.
+          await p.destroy?.().catch?.(() => {});
+        }
+      };
+    } else if (typeof mod.default === "function") {
       // v1: default export is `(buffer) => { text }`
       pdfParseFn = async (buf: any) => {
         const r = await mod.default(buf);
-        return r?.text || "";
-      };
-    } else if (mod.PDFParse) {
-      // v2: class with instance.getText()
-      pdfParseFn = async (buf: any) => {
-        const p = new mod.PDFParse({ data: buf });
-        const r = await p.getText();
         return r?.text || "";
       };
     }
@@ -28,6 +39,22 @@ async function getPdfParse() {
     pdfParseFn = null;
   }
   return pdfParseFn;
+}
+
+// Guard against feeding binary/metadata noise into the analyzer. When pdf-parse
+// can't read a PDF (scanned/image-only or odd encoding), the printable-strings
+// scan of a *compressed* PDF yields font names and dictionary keys, not resume
+// prose. Real resume text is mostly letters with normal word spacing and many
+// dictionary-shaped words — require that before trusting the salvaged text.
+function looksLikeReadableText(s: any): boolean {
+  const t = String(s || "").trim();
+  if (t.length < 40) return false;
+  const letters = (t.match(/[a-zA-Z]/g) || []).length;
+  const spaces = (t.match(/\s/g) || []).length;
+  const realWords = t
+    .split(/\s+/)
+    .filter((w: string) => /^[a-zA-Z][a-zA-Z.'-]{2,}$/.test(w)).length;
+  return letters / t.length > 0.55 && spaces / t.length > 0.08 && realWords >= 20;
 }
 
 // Last-resort fallback when pdf-parse can't load or fails on a specific file.
@@ -176,11 +203,21 @@ export async function extractResumeText(resumePath: any) {
       try {
         const text = await parser(buf);
         if (text && text.trim()) return cleanResumeText(text);
-      } catch {
-        /* fall through to printable-strings fallback */
+        console.warn(
+          `[resume] pdf-parse returned no text for ${path.basename(abs)} ` +
+            `(likely scanned/image-only PDF)`
+        );
+      } catch (e: any) {
+        console.warn(
+          `[resume] pdf-parse failed for ${path.basename(abs)}: ${e?.message}`
+        );
       }
     }
-    return cleanResumeText(extractPrintableStrings(buf));
+    // Last resort: only trust the printable-strings scan if it actually looks
+    // like prose — otherwise return "" so the analyzer reports an honest
+    // "couldn't extract" instead of scoring against binary noise.
+    const salvaged = cleanResumeText(extractPrintableStrings(buf));
+    return looksLikeReadableText(salvaged) ? salvaged : "";
   }
 
   // .doc/.docx: pull printable strings out of the binary container.

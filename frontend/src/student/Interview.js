@@ -471,23 +471,33 @@ export default function Interview() {
     setMuted(!muted);
   };
 
-  const abandonInterview = async () => {
-    if (!session) return;
+  // End a text interview early but STILL score whatever was answered. /finish →
+  // finalise() filters to answered questions: with ≥1 answer it scores the
+  // partial interview, otherwise it returns "abandoned" and we just go home.
+  const finishEarly = async () => {
+    if (!session || busy) return;
+    setBusy(true);
     try {
-      await axios.post(
-        `${API}/api/interviews/${session.id}/abandon`,
+      const { data } = await axios.post(
+        `${API}/api/interviews/${session.id}/finish`,
         {},
         { headers: authHeaders() }
       );
-    } catch {
-      /* best effort */
+      if (data.status === "abandoned") {
+        toast(data.message || "Ended — no answers to score yet.");
+        setSession(null);
+        setView("home");
+        fetchMeta();
+        return;
+      }
+      setScorecard(data);
+      setView("scorecard");
+      if (data.status !== "evaluation_unavailable") fetchMeta();
+    } catch (e) {
+      toast.error(e.response?.data?.message || e.message);
+    } finally {
+      setBusy(false);
     }
-    teardownRetell();
-    setSession(null);
-    setScorecard(null);
-    setAnswer("");
-    setView("home");
-    fetchMeta();
   };
 
   const openReview = async (id) => {
@@ -575,7 +585,7 @@ export default function Interview() {
         voiceTurns={voiceTurns}
         onToggleMute={toggleMute}
         onEnd={endVoiceCall}
-        onAbandon={abandonInterview}
+        onAbandon={endVoiceCall}
       />
     );
   }
@@ -607,11 +617,12 @@ export default function Interview() {
               {session.totalQuestions}
             </span>
             <button
-              onClick={abandonInterview}
-              className="h-9 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-sm font-semibold flex items-center gap-2"
+              onClick={finishEarly}
+              disabled={busy}
+              className="h-9 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-sm font-semibold flex items-center gap-2 disabled:opacity-50"
             >
               <X className="w-4 h-4" />
-              End
+              End & score
             </button>
           </div>
         </div>
@@ -1377,10 +1388,11 @@ function VoiceCallStage({
           </span>
           <button
             onClick={onAbandon}
-            className="h-9 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-sm font-semibold flex items-center gap-2"
+            disabled={voiceState === "ended"}
+            className="h-9 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-sm font-semibold flex items-center gap-2 disabled:opacity-50"
           >
             <X className="w-4 h-4" />
-            Abandon
+            End & score
           </button>
         </div>
       </div>

@@ -1068,7 +1068,9 @@ function ScorecardModal({ scorecard, onClose, onRetry, retrying }) {
             <AlertTriangle className="w-8 h-8 text-amber-500" />
           </div>
           <h2 className="text-2xl font-bold text-[#1d1d1f] mb-3">
-            Evaluation unavailable
+            {scorecard.retryable === false
+              ? "Scoring unavailable"
+              : "Evaluation unavailable"}
           </h2>
           <p className="text-slate-600 mb-6">
             {scorecard.message ||
@@ -1081,21 +1083,25 @@ function ScorecardModal({ scorecard, onClose, onRetry, retrying }) {
             >
               Close
             </button>
-            <button
-              onClick={() => onRetry?.(scorecard.sessionId)}
-              disabled={retrying}
-              className="flex-1 h-12 rounded-2xl bg-[#1d1d1f] text-white font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
-            >
-              {retrying ? (
-                <>
-                  <Loader2 className="w-4 h-4 animate-spin" /> Retrying…
-                </>
-              ) : (
-                <>
-                  <RefreshCw className="w-4 h-4" /> Retry scoring
-                </>
-              )}
-            </button>
+            {/* A non-retryable failure (bad key / denied project) won't resolve
+                by retrying — only offer Retry for transient overload. */}
+            {scorecard.retryable !== false && (
+              <button
+                onClick={() => onRetry?.(scorecard.sessionId)}
+                disabled={retrying}
+                className="flex-1 h-12 rounded-2xl bg-[#1d1d1f] text-white font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                {retrying ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" /> Retrying…
+                  </>
+                ) : (
+                  <>
+                    <RefreshCw className="w-4 h-4" /> Retry scoring
+                  </>
+                )}
+              </button>
+            )}
           </div>
         </div>
       </div>

@@ -463,10 +463,33 @@ Output JSON only:
 // as "evaluation unavailable" and let the user retry — we never fabricate a
 // neutral 70/100 scorecard, which misleads the candidate about their result.
 export class EvaluationUnavailableError extends Error {
-  constructor(message = "AI evaluation temporarily unavailable") {
+  // false → a permanent configuration/permission problem (bad key, denied
+  // project, disabled API). Retrying is futile, so the client should NOT show
+  // a "retry" affordance for these.
+  retryable: boolean;
+  constructor(message = "AI evaluation temporarily unavailable", retryable = true) {
     super(message);
     this.name = "EvaluationUnavailableError";
+    this.retryable = retryable;
   }
+}
+
+// A 401/403 (invalid/wrong API key, project denied access, API disabled) is a
+// server-side misconfiguration — fundamentally different from a transient 429 /
+// 503 / network blip. Retrying never fixes it, so we flag it so the user gets
+// an honest message instead of an endless "high service load, retry" loop.
+function isAuthOrPermissionError(error: any): boolean {
+  const status = Number(error?.status);
+  if (status === 401 || status === 403) return true;
+  const msg = String(error?.message || "").toLowerCase();
+  return (
+    msg.includes("[401") ||
+    msg.includes("[403") ||
+    msg.includes("denied access") ||
+    msg.includes("permission denied") ||
+    msg.includes("api key not valid") ||
+    msg.includes("api_key_invalid")
+  );
 }
 
 // Retry a Gemini call up to 3 times with exponential backoff (1s → 2s → 4s).
@@ -628,11 +651,18 @@ Return only valid JSON. No markdown. No explanation outside the JSON.`;
       readinessShift,
     };
   } catch (error) {
-    // Re-throw our own signal untouched; wrap any other failure (429, network,
-    // overload) as an unavailable evaluation so the caller can offer a retry.
+    // Re-throw our own signal untouched; wrap any other failure as an
+    // unavailable evaluation. Auth/permission failures (403 denied, bad key)
+    // are flagged non-retryable so the user isn't told to retry in vain.
     if (error instanceof EvaluationUnavailableError) throw error;
     console.error("Scorecard generation failed:", error);
-    throw new EvaluationUnavailableError();
+    const authProblem = isAuthOrPermissionError(error);
+    throw new EvaluationUnavailableError(
+      authProblem
+        ? "AI scoring is misconfigured on the server (the AI provider denied access)."
+        : "AI evaluation temporarily unavailable",
+      !authProblem
+    );
   }
 }
 

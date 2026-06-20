@@ -579,8 +579,10 @@ async function finalise(sessionId: any, userId: any, res: any) {
       return res.json({
         sessionId,
         status: "evaluation_unavailable",
-        message:
-          "Your interview was recorded, but AI scoring is temporarily unavailable due to high service load. Your answers are saved — please retry scoring in a moment.",
+        retryable: e.retryable,
+        message: e.retryable
+          ? "Your interview was recorded, but AI scoring is temporarily unavailable due to high service load. Your answers are saved — please retry scoring in a moment."
+          : "Your interview was recorded and your answers are saved, but AI scoring is currently unavailable because the server's AI access is misconfigured. Retrying won't help — please contact support.",
       });
     }
     throw e;
